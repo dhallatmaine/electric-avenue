@@ -1,0 +1,61 @@
+{
+  "america": [
+    {
+      "savannah": {
+        "districts": [
+          10,
+          15,
+          20
+        ],
+        "connections": [
+          {
+            "city": "raleigh",
+            "cost": 12
+          },
+          {
+            "city": "atlanta",
+            "cost": 0
+          }
+        ]
+      }
+    },
+    {
+      "atlanta": {
+        "districts": [
+          10,
+          15,
+          20
+        ],
+        "connections": [
+          {
+            "city": "savannah",
+            "cost": 0
+          },
+          {
+            "city": "raleigh",
+            "cost": 15
+          }
+        ]
+      }
+    },
+    {
+      "raleigh": {
+        "districts": [
+          10,
+          15,
+          20
+        ],
+        "connections": [
+          {
+            "city": "atlanta",
+            "cost": 15
+          },
+          {
+            "city": "savannah",
+            "cost": 12
+          }
+        ]
+      }
+    }
+  ]
+}
