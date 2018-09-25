@@ -3,8 +3,8 @@ package ea.engine.phase.impl;
 import ea.data.Player;
 import ea.data.Resource;
 import ea.engine.GameState;
+import ea.services.PlayerService;
 import ea.services.ResourceService;
-import ea.services.impl.PlayerService;
 import ea.views.DefaultView;
 import ea.views.PlayerView;
 import ea.views.ResourcesView;
@@ -27,8 +27,7 @@ public class ResourcePhase extends BasePhaseImpl {
     gameState.setPhase(this);
     this.resourceService = resourceService;
     this.playerService = playerService;
-
-    resourcesView = new ResourcesView(resourceService);
+    resourcesView = new ResourcesView(gameState);
     playerView = new PlayerView();
     defaultView = new DefaultView();
   }

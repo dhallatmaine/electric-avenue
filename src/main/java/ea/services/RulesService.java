@@ -1,4 +1,4 @@
-package ea.services.impl;
+package ea.services;
 
 import ea.rules.AmericaGermanyRules;
 import ea.rules.BaseRules;

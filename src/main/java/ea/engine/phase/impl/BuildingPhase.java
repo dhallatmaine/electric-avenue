@@ -5,7 +5,7 @@ import ea.data.Player;
 import ea.engine.GameState;
 import ea.maps.BaseMap;
 import ea.rules.BaseRules;
-import ea.services.impl.PlayerService;
+import ea.services.PlayerService;
 import ea.views.CityView;
 import ea.views.DefaultView;
 import ea.views.PlayerView;

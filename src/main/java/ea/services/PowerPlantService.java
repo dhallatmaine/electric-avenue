@@ -1,4 +1,4 @@
-package ea.services.impl;
+package ea.services;
 
 import ea.data.PowerPlant;
 import ea.data.Resource;

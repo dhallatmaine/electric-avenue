@@ -1,10 +1,12 @@
-package ea.services.impl;
+package ea.services;
 
 import ea.data.City;
 import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.data.Resource;
+import ea.engine.GameState;
 import ea.rules.BaseRules;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
@@ -14,7 +16,12 @@ import java.util.List;
 @Component
 public class PlayerService {
 
-  private List<Player> players;
+  private final GameState gameState;
+
+  @Autowired
+  public PlayerService(GameState gameState) {
+    this.gameState = gameState;
+  }
 
   public void setupPlayers() {
     List<Player> playerList = new LinkedList<>();
@@ -53,11 +60,11 @@ public class PlayerService {
     player3.setUranium(new LinkedList<>());
     playerList.add(player3);
 
-    setPlayers(playerList);
+    gameState.setPlayers(playerList);
   }
 
   public Player getPlayerByName(String name) {
-    Iterator itr = getPlayers().iterator();
+    Iterator itr = gameState.getPlayers().iterator();
     while (itr.hasNext()) {
       Player player = (Player) itr.next();
       if (player.getName().equalsIgnoreCase(name)) {
@@ -141,8 +148,5 @@ public class PlayerService {
 
     return resources;
   }
-
-  public List<Player> getPlayers() { return players; }
-  public void setPlayers(List<Player> players) { this.players = players; }
 
 }

@@ -1,25 +1,28 @@
 package ea.views;
 
-import ea.data.City;
 import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.services.ResourceService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
+@Component
 public class BureaucracyPhaseView {
 
-  private ResourceService resourceService;
+  private final ResourceService resourceService;
   private DefaultView defaultView;
   private Scanner scan;
 
+  @Autowired
   public BureaucracyPhaseView(ResourceService resourceService) {
+    this.resourceService = resourceService;
     defaultView = new DefaultView();
     scan = new Scanner(System.in);
-    this.resourceService = resourceService;
   }
 
   public int getResourceAmountFromUser(String resource, int size) {

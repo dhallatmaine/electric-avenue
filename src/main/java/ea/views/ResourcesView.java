@@ -1,18 +1,22 @@
 package ea.views;
 
 import ea.data.Resource;
-import ea.services.ResourceService;
+import ea.engine.GameState;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
 import java.util.Scanner;
 
+@Component
 public class ResourcesView {
 
-  private ResourceService resourceService;
-  private DefaultView defaultView;
+  private final DefaultView defaultView;
+  private final GameState gameState;
 
-  public ResourcesView(ResourceService resourceService) {
-    this.resourceService = resourceService;
+  @Autowired
+  public ResourcesView(GameState gameState) {
+    this.gameState = gameState;
     defaultView = new DefaultView();
   }
 
@@ -20,19 +24,19 @@ public class ResourcesView {
     defaultView.outln("------ Resource Market ------");
 
     defaultView.out("1.) Coal: ");
-    Iterator coalItr = resourceService.getCoal().iterator();
+    Iterator coalItr = gameState.getCoal().iterator();
     displayPrice(coalItr);
 
     defaultView.out("2.) Oil: ");
-    Iterator oilItr = resourceService.getOil().iterator();
+    Iterator oilItr = gameState.getOil().iterator();
     displayPrice(oilItr);
 
     defaultView.out("3.) Trash: ");
-    Iterator trashItr = resourceService.getTrash().iterator();
+    Iterator trashItr = gameState.getTrash().iterator();
     displayPrice(trashItr);
 
     defaultView.out("4.) Uranium: ");
-    Iterator uraniumItr = resourceService.getUranium().iterator();
+    Iterator uraniumItr = gameState.getUranium().iterator();
     displayPrice(uraniumItr);
   }
 

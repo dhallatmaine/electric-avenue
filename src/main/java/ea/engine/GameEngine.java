@@ -7,7 +7,6 @@ import ea.engine.phase.impl.PowerPlantPhase;
 import ea.engine.phase.impl.ResourcePhase;
 import ea.maps.America;
 import ea.services.*;
-import ea.services.impl.*;
 import ea.views.DefaultView;
 import ea.views.PlayerView;
 import ea.views.PowerPlantsView;
@@ -26,6 +25,8 @@ public class GameEngine implements CommandLineRunner {
   private final America america;
   private final PowerPlantService powerPlantService;
   private final PlayerService playerService;
+  private final ResourceService resourceService;
+  private final BureaucracyPhase bureaucracyPhase;
   private final GameState gameState;
 
   @Autowired
@@ -33,16 +34,17 @@ public class GameEngine implements CommandLineRunner {
                     America america,
                     PowerPlantService powerPlantService,
                     PlayerService playerService,
+                    ResourceService resourceService,
+                    BureaucracyPhase bureaucracyPhase,
                     GameState gameState) {
     this.rulesService = rulesService;
     this.america = america;
     this.powerPlantService = powerPlantService;
     this.playerService = playerService;
+    this.resourceService = resourceService;
+    this.bureaucracyPhase = bureaucracyPhase;
     this.gameState = gameState;
   }
-
-  private ResourceService resourceService;
-  private PayoutService payoutService;
 
   //views
   private PowerPlantsView powerPlantsView;
@@ -54,21 +56,17 @@ public class GameEngine implements CommandLineRunner {
   private PowerPlantPhase powerPlantPhase;
   private ResourcePhase resourcePhase;
   private BuildingPhase buildingPhase;
-  private BureaucracyPhase bureaucracyPhase;
 
   @Override
   public void run(String... args) {
-    resourceService = new ResourceServiceImpl();
     resourceService.initializeResources();
-    payoutService = new PayoutServiceImpl();
     powerPlantsView = new PowerPlantsView();
     playerView = new PlayerView();
-    resourcesView = new ResourcesView(resourceService);
+    resourcesView = new ResourcesView(gameState);
     defaultView = new DefaultView();
     powerPlantPhase = new PowerPlantPhase(gameState, powerPlantService, playerService);
     resourcePhase = new ResourcePhase(gameState, resourceService, playerService);
     buildingPhase = new BuildingPhase(gameState, america, playerService);
-    bureaucracyPhase = new BureaucracyPhase(gameState, playerService);
 
     gameState.setRound(1);
 
@@ -86,42 +84,42 @@ public class GameEngine implements CommandLineRunner {
 
     while (!endGame()) {
       defaultView.outln("ROUND: " + gameState.getRound());
-      playerView.displayPlayersAttributes(playerService.getPlayers());
+      playerView.displayPlayersAttributes(gameState.getPlayers());
       resourcesView.displayResourceMarket();
 
-      playerView.displayPlayersCities(playerService.getPlayers());
+      playerView.displayPlayersCities(gameState.getPlayers());
 
       // Power Plant Phase
-      powerPlantPhase.initiate(playerService.getPlayers());
+      powerPlantPhase.initiate(gameState.getPlayers());
 
       powerPlantsView.displayCurrentMarketPlants(gameState.getCurrentMarketPlants());
       powerPlantsView.displayFutureMarketPlants(gameState.getFutureMarketPlants());
       powerPlantsView.displayDeckPlants(gameState.getDeckPlants());
-      playerView.displayPlayersAttributes(playerService.getPlayers());
+      playerView.displayPlayersAttributes(gameState.getPlayers());
 
       // Resource Phase
-      resourcePhase.initiate(playerService.getPlayers());
+      resourcePhase.initiate(gameState.getPlayers());
 
       resourcesView.displayResourceMarket();
-      playerView.displayPlayersAttributes(playerService.getPlayers());
+      playerView.displayPlayersAttributes(gameState.getPlayers());
 
       // Build Phase
-      buildingPhase.initiate(playerService.getPlayers());
+      buildingPhase.initiate(gameState.getPlayers());
 
-      playerView.displayPlayersAttributes(playerService.getPlayers());
+      playerView.displayPlayersAttributes(gameState.getPlayers());
 
       // Bureaucracy Phase
-      bureaucracyPhase.initiate(playerService.getPlayers());
+      bureaucracyPhase.initiate(gameState.getPlayers());
 
       gameState.setRound(gameState.getRound() + 1);
     }
   }
 
   private boolean endGame() {
-    Iterator itr = playerService.getPlayers().iterator();
+    Iterator itr = gameState.getPlayers().iterator();
     while (itr.hasNext()) {
       Player p = (Player) itr.next();
-      if (p.getCities().size() >= rulesService.getEndGameTrigger(playerService.getPlayers().size())) {
+      if (p.getCities().size() >= rulesService.getEndGameTrigger(gameState.getPlayers().size())) {
         return true;
       }
     }

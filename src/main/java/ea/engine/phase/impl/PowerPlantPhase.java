@@ -1,8 +1,8 @@
 package ea.engine.phase.impl;
 
 import ea.engine.GameState;
-import ea.services.impl.PlayerService;
-import ea.services.impl.PowerPlantService;
+import ea.services.PlayerService;
+import ea.services.PowerPlantService;
 import ea.util.Bid;
 import ea.data.Player;
 import ea.data.PowerPlant;
