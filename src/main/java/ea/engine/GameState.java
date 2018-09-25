@@ -3,7 +3,6 @@ package ea.engine;
 import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.data.Resource;
-import ea.engine.phase.impl.BasePhaseImpl;
 import ea.engine.phase.impl.BureaucracyPhase;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -14,7 +13,7 @@ import java.util.List;
 @Scope("singleton")
 public class GameState {
 
-    private BasePhaseImpl phase;
+    private String phase;
     private Integer round;
     private List<PowerPlant> deckPlants;
     private List<PowerPlant> currentMarketPlants;
@@ -31,13 +30,13 @@ public class GameState {
         round = 1;
     }
 
-    public BasePhaseImpl getPhase() {
+    public String getPhase() {
         return phase;
     }
 
-    public void setPhase(BasePhaseImpl phase) {
+    public void setPhase(String phase) {
         this.phase = phase;
-        if (this.phase instanceof BureaucracyPhase) {
+        if (this.phase.equals("BureaucracyPhase")) {
             round++;
         }
     }

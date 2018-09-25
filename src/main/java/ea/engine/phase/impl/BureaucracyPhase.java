@@ -4,7 +4,6 @@ import ea.data.Player;
 import ea.data.Resource;
 import ea.engine.GameState;
 import ea.services.PlayerService;
-import ea.services.ResourceService;
 import ea.views.BureaucracyPhaseView;
 import ea.views.DefaultView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,22 +14,24 @@ import java.util.List;
 import java.util.Scanner;
 
 @Component
-public class BureaucracyPhase extends BasePhaseImpl {
+public class BureaucracyPhase {
 
+  private final GameState gameState;
   private final PlayerService playerService;
   private final BureaucracyPhaseView bureaucracyPhaseView;
   private DefaultView defaultView;
 
   @Autowired
   public BureaucracyPhase(GameState gameState, PlayerService playerService, BureaucracyPhaseView bureaucracyPhaseView) {
-    super(gameState);
-    gameState.setPhase(this);
+    this.gameState = gameState;
     this.playerService = playerService;
     this.bureaucracyPhaseView = bureaucracyPhaseView;
     defaultView = new DefaultView();
   }
 
   public void initiate(List<Player> players) {
+    gameState.setPhase("BureaucracyPhase");
+
     Iterator playersItr = players.iterator();
     while (playersItr.hasNext()) {
       Player p = (Player) playersItr.next();
