@@ -112,7 +112,7 @@ public class GameEngine implements CommandLineRunner {
       playerView.displayPlayersAttributes(currentGame.getPlayers());
 
       // Bureaucracy Phase
-      bureaucracyPhase.initiate(currentGame.getPlayers());
+      bureaucracyPhase.initiate(currentGameId);
 
       currentGame.setRound(currentGame.getRound() + 1);
     }

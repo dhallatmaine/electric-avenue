@@ -4,26 +4,32 @@ import ea.data.City;
 import ea.data.Player;
 import ea.engine.GameState;
 import ea.engine.State;
+import ea.maps.America;
 import ea.maps.BaseMap;
 import ea.rules.BaseRules;
 import ea.services.PlayerService;
 import ea.views.CityView;
 import ea.views.DefaultView;
 import ea.views.PlayerView;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-public class BuildingPhase extends BasePhaseImpl {
+@Component
+public class BuildingPhase {
 
-  private BaseMap map;
+  private final GameState gameState;
+  private final PlayerService playerService;
+  private final America america;
   private DefaultView defaultView;
   private CityView cityView;
   private PlayerView playerView;
-  private PlayerService playerService;
 
-  public BuildingPhase(GameState gameState, BaseMap map, PlayerService playerService) {
-    super(gameState);
-    this.map = map;
+  @Autowired
+  public BuildingPhase(GameState gameState, America america, PlayerService playerService) {
+    this.gameState = gameState;
+    this.america = america;
     this.playerService = playerService;
     defaultView = new DefaultView();
     cityView = new CityView();
@@ -31,9 +37,9 @@ public class BuildingPhase extends BasePhaseImpl {
   }
 
   public void initiate(Integer gameId) {
-    State game = getGameState().getById(gameId);
+    State game = gameState.getById(gameId);
     List<Player> players = game.getPlayers();
-    //gameState.setPhase(this);
+    game.setPhase("BuildingPhase");
     defaultView.outln("===== Building Phase =====");
     Iterator playerItr = players.iterator();
     while (playerItr.hasNext()) {
@@ -49,13 +55,13 @@ public class BuildingPhase extends BasePhaseImpl {
   private void firstRound(Player p) {
     boolean done = false;
     while (!done) {
-      cityView.displayCities(map.getCities());
-      int choice = cityView.getCityToBuildInFromUser(map.getCities(), p);
+      cityView.displayCities(america.getCities());
+      int choice = cityView.getCityToBuildInFromUser(america.getCities(), p);
       if (choice == 0) {
         return;
       }
 
-      City c = map.getCities().get(choice - 1);
+      City c = america.getCities().get(choice - 1);
 
       if (p.getMoney() >= BaseRules.PHASE_1_CITY_COST && c.getPhase1() == null) {
         playerService.subtractMoneyFromPlayer(p, BaseRules.PHASE_1_CITY_COST);

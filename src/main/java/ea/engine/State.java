@@ -3,14 +3,12 @@ package ea.engine;
 import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.data.Resource;
-import ea.engine.phase.impl.BasePhaseImpl;
-import ea.engine.phase.impl.BureaucracyPhase;
 
 import java.util.List;
 
 public class State {
 
-    private BasePhaseImpl phase;
+    private String phase;
     private Integer round;
     private List<PowerPlant> deckPlants;
     private List<PowerPlant> currentMarketPlants;
@@ -27,13 +25,13 @@ public class State {
         round = 1;
     }
 
-    public BasePhaseImpl getPhase() {
+    public String getPhase() {
         return phase;
     }
 
-    public void setPhase(BasePhaseImpl phase) {
+    public void setPhase(String phase) {
         this.phase = phase;
-        if (this.phase instanceof BureaucracyPhase) {
+        if ("BureaucracyPhase".equalsIgnoreCase(this.phase)) {
             round++;
         }
     }

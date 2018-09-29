@@ -37,6 +37,7 @@ public class PowerPlantPhase {
 
   public void initiate(Integer gameId, List<Player> players) {
     State game = gameState.getById(gameId);
+    game.setPhase("PowerPlantPhase");
     List<Player> playerList = new LinkedList<>(players);
     boolean bidding = true;
     while (bidding) {

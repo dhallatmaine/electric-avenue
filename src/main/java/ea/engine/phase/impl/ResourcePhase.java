@@ -9,33 +9,38 @@ import ea.services.ResourceService;
 import ea.views.DefaultView;
 import ea.views.PlayerView;
 import ea.views.ResourcesView;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
-public class ResourcePhase extends BasePhaseImpl {
+@Component
+public class ResourcePhase {
 
-  private ResourceService resourceService;
-  private PlayerService playerService;
+  private final ResourceService resourceService;
+  private final PlayerService playerService;
+  private final GameState gameState;
 
   private ResourcesView resourcesView;
   private PlayerView playerView;
   private DefaultView defaultView;
 
+  @Autowired
   public ResourcePhase(GameState gameState, ResourceService resourceService, PlayerService playerService) {
-    super(gameState);
     this.resourceService = resourceService;
     this.playerService = playerService;
+    this.gameState = gameState;
     resourcesView = new ResourcesView(gameState);
     playerView = new PlayerView();
     defaultView = new DefaultView();
   }
 
   public void initiate(Integer gameId) {
-    State state = getGameState().getById(gameId);
+    State state = gameState.getById(gameId);
     List<Player> players = state.getPlayers();
-    state.setPhase(this);
+    state.setPhase("ResourcePhase");
     Iterator itr = players.iterator();
     while (itr.hasNext()) {
       Player p = (Player) itr.next();
