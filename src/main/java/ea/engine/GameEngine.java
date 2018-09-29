@@ -59,7 +59,6 @@ public class GameEngine implements CommandLineRunner {
 
   @Override
   public void run(String... args) {
-    resourceService.initializeResources();
     powerPlantsView = new PowerPlantsView();
     playerView = new PlayerView();
     resourcesView = new ResourcesView(gameState);
@@ -68,58 +67,62 @@ public class GameEngine implements CommandLineRunner {
     resourcePhase = new ResourcePhase(gameState, resourceService, playerService);
     buildingPhase = new BuildingPhase(gameState, america, playerService);
 
-    gameState.setRound(1);
+    //gameState.setRound(1);
+    Integer currentGameId = gameState.createNewGame();
+    State currentGame = gameState.getById(currentGameId);
+
+    resourceService.initializeResources(currentGameId);
 
     america.initializeCities();
 
-    gameState.setDeckPlants(powerPlantService.createInitialPowerPlants());
-    powerPlantService.setupMarket();
-    powerPlantService.shuffleDeck(true);
+    currentGame.setDeckPlants(powerPlantService.createInitialPowerPlants());
+    powerPlantService.setupMarket(currentGameId);
+    powerPlantService.shuffleDeck(currentGameId, true);
 
-    playerService.setupPlayers();
+    currentGame.setPlayers(playerService.setupPlayers());
 
-    powerPlantsView.displayCurrentMarketPlants(gameState.getCurrentMarketPlants());
-    powerPlantsView.displayFutureMarketPlants(gameState.getFutureMarketPlants());
-    powerPlantsView.displayDeckPlants(gameState.getDeckPlants());
+    powerPlantsView.displayCurrentMarketPlants(currentGame.getCurrentMarketPlants());
+    powerPlantsView.displayFutureMarketPlants(currentGame.getFutureMarketPlants());
+    powerPlantsView.displayDeckPlants(currentGame.getDeckPlants());
 
-    while (!endGame()) {
-      defaultView.outln("ROUND: " + gameState.getRound());
-      playerView.displayPlayersAttributes(gameState.getPlayers());
-      resourcesView.displayResourceMarket();
+    while (!endGame(currentGame)) {
+      defaultView.outln("ROUND: " + currentGame.getRound());
+      playerView.displayPlayersAttributes(currentGame.getPlayers());
+      resourcesView.displayResourceMarket(currentGameId);
 
-      playerView.displayPlayersCities(gameState.getPlayers());
+      playerView.displayPlayersCities(currentGame.getPlayers());
 
       // Power Plant Phase
-      powerPlantPhase.initiate(gameState.getPlayers());
+      powerPlantPhase.initiate(currentGameId, currentGame.getPlayers());
 
-      powerPlantsView.displayCurrentMarketPlants(gameState.getCurrentMarketPlants());
-      powerPlantsView.displayFutureMarketPlants(gameState.getFutureMarketPlants());
-      powerPlantsView.displayDeckPlants(gameState.getDeckPlants());
-      playerView.displayPlayersAttributes(gameState.getPlayers());
+      powerPlantsView.displayCurrentMarketPlants(currentGame.getCurrentMarketPlants());
+      powerPlantsView.displayFutureMarketPlants(currentGame.getFutureMarketPlants());
+      powerPlantsView.displayDeckPlants(currentGame.getDeckPlants());
+      playerView.displayPlayersAttributes(currentGame.getPlayers());
 
       // Resource Phase
-      resourcePhase.initiate(gameState.getPlayers());
+      resourcePhase.initiate(currentGameId);
 
-      resourcesView.displayResourceMarket();
-      playerView.displayPlayersAttributes(gameState.getPlayers());
+      resourcesView.displayResourceMarket(currentGameId);
+      playerView.displayPlayersAttributes(currentGame.getPlayers());
 
       // Build Phase
-      buildingPhase.initiate(gameState.getPlayers());
+      buildingPhase.initiate(currentGameId);
 
-      playerView.displayPlayersAttributes(gameState.getPlayers());
+      playerView.displayPlayersAttributes(currentGame.getPlayers());
 
       // Bureaucracy Phase
-      bureaucracyPhase.initiate(gameState.getPlayers());
+      bureaucracyPhase.initiate(currentGame.getPlayers());
 
-      gameState.setRound(gameState.getRound() + 1);
+      currentGame.setRound(currentGame.getRound() + 1);
     }
   }
 
-  private boolean endGame() {
-    Iterator itr = gameState.getPlayers().iterator();
+  private boolean endGame(State currentGame) {
+    Iterator itr = currentGame.getPlayers().iterator();
     while (itr.hasNext()) {
       Player p = (Player) itr.next();
-      if (p.getCities().size() >= rulesService.getEndGameTrigger(gameState.getPlayers().size())) {
+      if (p.getCities().size() >= rulesService.getEndGameTrigger(currentGame.getPlayers().size())) {
         return true;
       }
     }

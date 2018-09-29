@@ -3,6 +3,7 @@ package ea.engine.phase.impl;
 import ea.data.City;
 import ea.data.Player;
 import ea.engine.GameState;
+import ea.engine.State;
 import ea.maps.BaseMap;
 import ea.rules.BaseRules;
 import ea.services.PlayerService;
@@ -22,7 +23,6 @@ public class BuildingPhase extends BasePhaseImpl {
 
   public BuildingPhase(GameState gameState, BaseMap map, PlayerService playerService) {
     super(gameState);
-    gameState.setPhase(this);
     this.map = map;
     this.playerService = playerService;
     defaultView = new DefaultView();
@@ -30,12 +30,15 @@ public class BuildingPhase extends BasePhaseImpl {
     playerView = new PlayerView();
   }
 
-  public void initiate(List<Player> players) {
+  public void initiate(Integer gameId) {
+    State game = getGameState().getById(gameId);
+    List<Player> players = game.getPlayers();
+    //gameState.setPhase(this);
     defaultView.outln("===== Building Phase =====");
     Iterator playerItr = players.iterator();
     while (playerItr.hasNext()) {
       Player p = (Player) playerItr.next();
-      if (getGameState().getRound() == 1) {
+      if (game.getRound() == 1) {
         firstRound(p);
       } else {
         build(p);

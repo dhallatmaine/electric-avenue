@@ -2,6 +2,7 @@ package ea.services;
 
 import ea.data.Resource;
 import ea.engine.GameState;
+import ea.engine.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,8 @@ public class ResourceService {
     this.gameState = gameState;
   }
 
-  public void initializeResources() {
+  public void initializeResources(Integer gameId) {
+    State game = gameState.getById(gameId);
     // Start at 1 for coal
     List<Resource> coalList = new LinkedList<>();
     for (int i = 1; i <= 8; i++) {
@@ -27,7 +29,7 @@ public class ResourceService {
         coalList.add(new Resource(Resource.COAL, i));
       }
     }
-    gameState.setCoal(coalList);
+    game.setCoal(coalList);
 
     // 3 for oil
     List<Resource> oilList = new LinkedList<>();
@@ -36,7 +38,7 @@ public class ResourceService {
         oilList.add(new Resource(Resource.OIL, i));
       }
     }
-    gameState.setOil(oilList);
+    game.setOil(oilList);
 
     // 7 for trash
     List<Resource> trashList = new LinkedList<>();
@@ -45,25 +47,26 @@ public class ResourceService {
         trashList.add(new Resource(Resource.TRASH, i));
       }
     }
-    gameState.setTrash(trashList);
+    game.setTrash(trashList);
 
     // 14 for uranium
     List<Resource> uraniumList = new LinkedList<>();
     uraniumList.add(new Resource(Resource.URANIUM, 14));
     uraniumList.add(new Resource(Resource.URANIUM, 16));
-    gameState.setUranium(uraniumList);
+    game.setUranium(uraniumList);
   }
 
-  public List<Resource> getResourceListByConst(int choice) {
+  public List<Resource> getResourceListByConst(Integer gameId, int choice) {
+    State game = gameState.getById(gameId);
     switch (choice) {
       case 1:
-        return gameState.getCoal();
+        return game.getCoal();
       case 2:
-        return gameState.getOil();
+        return game.getOil();
       case 3:
-        return gameState.getTrash();
+        return game.getTrash();
       case 4:
-        return gameState.getUranium();
+        return game.getUranium();
       default:
         return null;
     }

@@ -24,13 +24,13 @@ public class BureaucracyPhase extends BasePhaseImpl {
   @Autowired
   public BureaucracyPhase(GameState gameState, PlayerService playerService, BureaucracyPhaseView bureaucracyPhaseView) {
     super(gameState);
-    gameState.setPhase(this);
     this.playerService = playerService;
     this.bureaucracyPhaseView = bureaucracyPhaseView;
     defaultView = new DefaultView();
   }
 
   public void initiate(List<Player> players) {
+    //gameState.setPhase(this);
     Iterator playersItr = players.iterator();
     while (playersItr.hasNext()) {
       Player p = (Player) playersItr.next();

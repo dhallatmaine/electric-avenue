@@ -1,6 +1,7 @@
 package ea.engine.phase.impl;
 
 import ea.engine.GameState;
+import ea.engine.State;
 import ea.services.PlayerService;
 import ea.services.PowerPlantService;
 import ea.util.Bid;
@@ -34,7 +35,8 @@ public class PowerPlantPhase {
     defaultView = new DefaultView();
   }
 
-  public void initiate(List<Player> players) {
+  public void initiate(Integer gameId, List<Player> players) {
+    State game = gameState.getById(gameId);
     List<Player> playerList = new LinkedList<>(players);
     boolean bidding = true;
     while (bidding) {
@@ -43,10 +45,10 @@ public class PowerPlantPhase {
       while (itr.hasNext()) {
         Player p = (Player) itr.next();
         playerView.displayPlayerAttributes(p);
-        bid = bidOnPlants(playerList, p, gameState.getCurrentMarketPlants(), gameState.getFutureMarketPlants());
+        bid = bidOnPlants(playerList, p, game.getCurrentMarketPlants(), game.getFutureMarketPlants());
 
         if (bid.getBid() > 0) {
-          powerPlantService.flipNewCard(bid.getPowerPlant());
+          powerPlantService.flipNewCard(gameId, bid.getPowerPlant());
         }
 
         break;

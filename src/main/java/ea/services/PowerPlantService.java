@@ -3,6 +3,7 @@ package ea.services;
 import ea.data.PowerPlant;
 import ea.data.Resource;
 import ea.engine.GameState;
+import ea.engine.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -281,38 +282,41 @@ public class PowerPlantService {
     return plants;
   }
 
-  public void setupMarket() {
-    setupCurrentMarket();
-    setupFutureMarket();
+  public void setupMarket(Integer gameId) {
+    setupCurrentMarket(gameId);
+    setupFutureMarket(gameId);
   }
 
-  public void shuffleDeck(boolean thirteenPlant) {
-    Collections.shuffle(gameState.getDeckPlants());
+  public void shuffleDeck(Integer gameId, boolean thirteenPlant) {
+    State game = gameState.getById(gameId);
+    Collections.shuffle(game.getDeckPlants());
 
     // special case for 13 plant
     if (thirteenPlant) {
-      PowerPlant thirteenPowerPlant = getPowerPlantInDeckByValue(gameState.getDeckPlants(), 13);
-      gameState.getDeckPlants().remove(thirteenPowerPlant);
-      gameState.getDeckPlants().add(0, thirteenPowerPlant);
+      PowerPlant thirteenPowerPlant = getPowerPlantInDeckByValue(game.getDeckPlants(), 13);
+      game.getDeckPlants().remove(thirteenPowerPlant);
+      game.getDeckPlants().add(0, thirteenPowerPlant);
     }
 
-    gameState.getDeckPlants().add(new PowerPlant().withValue(0));
+    game.getDeckPlants().add(new PowerPlant().withValue(0));
   }
 
-  public void flipNewCard(PowerPlant removedCard) {
-    gameState.getCurrentMarketPlants().remove(removedCard);
+  public void flipNewCard(Integer gameId, PowerPlant removedCard) {
+    State game = gameState.getById(gameId);
 
-    PowerPlant topPlant = gameState.getDeckPlants().remove(0);
+    game.getCurrentMarketPlants().remove(removedCard);
 
-    gameState.getFutureMarketPlants().add(topPlant);
+    PowerPlant topPlant = game.getDeckPlants().remove(0);
 
-    sortPlants(gameState.getFutureMarketPlants());
+    game.getFutureMarketPlants().add(topPlant);
 
-    PowerPlant lowestPlant = gameState.getFutureMarketPlants().remove(0);
+    sortPlants(game.getFutureMarketPlants());
 
-    gameState.getCurrentMarketPlants().add(lowestPlant);
+    PowerPlant lowestPlant = game.getFutureMarketPlants().remove(0);
 
-    sortPlants(gameState.getCurrentMarketPlants());
+    game.getCurrentMarketPlants().add(lowestPlant);
+
+    sortPlants(game.getCurrentMarketPlants());
   }
 
   private void sortPlants(List<PowerPlant> plants) {
@@ -331,34 +335,36 @@ public class PowerPlantService {
     return null;
   }
 
-  private void setupCurrentMarket() {
+  private void setupCurrentMarket(Integer gameId) {
+    State game = gameState.getById(gameId);
     List<PowerPlant> plants = new LinkedList<PowerPlant>();
 
     int count = 1;
-    Iterator itr = gameState.getDeckPlants().iterator();
+    Iterator itr = game.getDeckPlants().iterator();
     while (itr.hasNext() && count <= 4) {
       PowerPlant p = (PowerPlant) itr.next();
       plants.add(p);
       count++;
     }
 
-    gameState.setCurrentMarketPlants(plants);
-    gameState.getDeckPlants().removeAll(plants);
+    game.setCurrentMarketPlants(plants);
+    game.getDeckPlants().removeAll(plants);
   }
 
-  private void setupFutureMarket() {
+  private void setupFutureMarket(Integer gameId) {
+    State game = gameState.getById(gameId);
     List<PowerPlant> plants = new LinkedList<PowerPlant>();
 
     int count = 1;
-    Iterator itr = gameState.getDeckPlants().iterator();
+    Iterator itr = game.getDeckPlants().iterator();
     while (itr.hasNext() && count <= 4) {
       PowerPlant p = (PowerPlant) itr.next();
       plants.add(p);
       count++;
     }
 
-    gameState.setFutureMarketPlants(plants);
-    gameState.getDeckPlants().removeAll(plants);
+    game.setFutureMarketPlants(plants);
+    game.getDeckPlants().removeAll(plants);
   }
 
 }

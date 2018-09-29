@@ -3,6 +3,7 @@ package ea.engine.phase.impl;
 import ea.data.Player;
 import ea.data.Resource;
 import ea.engine.GameState;
+import ea.engine.State;
 import ea.services.PlayerService;
 import ea.services.ResourceService;
 import ea.views.DefaultView;
@@ -24,7 +25,6 @@ public class ResourcePhase extends BasePhaseImpl {
 
   public ResourcePhase(GameState gameState, ResourceService resourceService, PlayerService playerService) {
     super(gameState);
-    gameState.setPhase(this);
     this.resourceService = resourceService;
     this.playerService = playerService;
     resourcesView = new ResourcesView(gameState);
@@ -32,14 +32,17 @@ public class ResourcePhase extends BasePhaseImpl {
     defaultView = new DefaultView();
   }
 
-  public void initiate(List<Player> players) {
+  public void initiate(Integer gameId) {
+    State state = getGameState().getById(gameId);
+    List<Player> players = state.getPlayers();
+    state.setPhase(this);
     Iterator itr = players.iterator();
     while (itr.hasNext()) {
       Player p = (Player) itr.next();
 
       boolean done = false;
       while (!done) {
-        resourcesView.displayResourceMarket();
+        resourcesView.displayResourceMarket(gameId);
 
         playerView.displayPlayerAttributes(p);
 
@@ -51,7 +54,7 @@ public class ResourcePhase extends BasePhaseImpl {
         }
 
         // get resources in market for that type
-        List<Resource> resourceList = resourceService.getResourceListByConst(choice);
+        List<Resource> resourceList = resourceService.getResourceListByConst(gameId, choice);
         String resourceType = resourceService.getResourceNameByConst(choice);
 
 

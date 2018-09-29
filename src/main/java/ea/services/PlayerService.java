@@ -5,6 +5,7 @@ import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.data.Resource;
 import ea.engine.GameState;
+import ea.engine.State;
 import ea.rules.BaseRules;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,14 +17,7 @@ import java.util.List;
 @Component
 public class PlayerService {
 
-  private final GameState gameState;
-
-  @Autowired
-  public PlayerService(GameState gameState) {
-    this.gameState = gameState;
-  }
-
-  public void setupPlayers() {
+  public List<Player> setupPlayers() {
     List<Player> playerList = new LinkedList<>();
 
     Player player1 = new Player();
@@ -60,19 +54,7 @@ public class PlayerService {
     player3.setUranium(new LinkedList<>());
     playerList.add(player3);
 
-    gameState.setPlayers(playerList);
-  }
-
-  public Player getPlayerByName(String name) {
-    Iterator itr = gameState.getPlayers().iterator();
-    while (itr.hasNext()) {
-      Player player = (Player) itr.next();
-      if (player.getName().equalsIgnoreCase(name)) {
-        return player;
-      }
-    }
-
-    return null;
+    return playerList;
   }
 
   public void subtractMoneyFromPlayer(Player player, int amount) {
