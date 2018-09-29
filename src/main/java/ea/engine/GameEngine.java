@@ -67,9 +67,9 @@ public class GameEngine implements CommandLineRunner {
     resourcePhase = new ResourcePhase(gameState, resourceService, playerService);
     buildingPhase = new BuildingPhase(gameState, america, playerService);
 
-    //gameState.setRound(1);
     Integer currentGameId = gameState.createNewGame();
     State currentGame = gameState.getById(currentGameId);
+    currentGame.setRound(1);
 
     resourceService.initializeResources(currentGameId);
 
