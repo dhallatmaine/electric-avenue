@@ -14,10 +14,8 @@ import ea.views.PowerPlantsView;
 import ea.views.ResourcesView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -135,10 +133,6 @@ public class GameEngine implements CommandLineRunner {
     }
 
     return false;
-  }
-
-  public static void main(String[] args) {
-    SpringApplication.run(GameEngine.class, args);
   }
 
 }
