@@ -295,9 +295,11 @@ public class PowerPlantService {
 
     // not all maps place 13 on the top of the shuffled deck
     if (thirteenPlant) {
-      PowerPlant thirteenPowerPlant = getPowerPlantInDeckByValue(shuffled, 13);
-      shuffled.remove(thirteenPowerPlant);
-      shuffled.add(0, thirteenPowerPlant);
+      Optional<PowerPlant> thirteenPowerPlant = getPowerPlantInDeckByValue(shuffled, 13);
+      thirteenPowerPlant.ifPresent(thirteen -> {
+        shuffled.remove(thirteen);
+        shuffled.add(0, thirteen);
+      });
     }
 
     // phase 3 card
@@ -328,13 +330,10 @@ public class PowerPlantService {
     Collections.sort(plants);
   }
 
-  private PowerPlant getPowerPlantInDeckByValue(List<PowerPlant> plants, Integer value) {
-    Map<Integer, PowerPlant> valueToPlant = plants.stream()
-            .collect(Collectors.toMap(PowerPlant::getValue, Function.identity()));
-
-    return Optional.ofNullable(
-            valueToPlant.get(value))
-            .orElse(null);
+  private Optional<PowerPlant> getPowerPlantInDeckByValue(List<PowerPlant> plants, Integer value) {
+    return plants.stream()
+            .filter(plant -> plant.getValue().equals(value))
+            .findFirst();
   }
 
   private void setupCurrentMarket(Integer gameId) {
