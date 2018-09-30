@@ -315,16 +315,6 @@ public class PowerPlantService {
     sortPlants(game.getCurrentMarketPlants());
   }
 
-  private void sortPlants(List<PowerPlant> plants) {
-    Collections.sort(plants);
-  }
-
-  private Optional<PowerPlant> getPowerPlantInDeckByValue(List<PowerPlant> plants, Integer value) {
-    return plants.stream()
-            .filter(plant -> plant.getValue().equals(value))
-            .findFirst();
-  }
-
   public void setupCurrentMarket(Integer gameId) {
     State game = gameState.getById(gameId);
     List<PowerPlant> plants = game.getDeckPlants().stream()
@@ -343,6 +333,16 @@ public class PowerPlantService {
 
     game.withFutureMarketPlants(plants);
     game.getDeckPlants().removeAll(plants);
+  }
+
+  private void sortPlants(List<PowerPlant> plants) {
+    Collections.sort(plants);
+  }
+
+  private Optional<PowerPlant> getPowerPlantInDeckByValue(List<PowerPlant> plants, Integer value) {
+    return plants.stream()
+            .filter(plant -> plant.getValue().equals(value))
+            .findFirst();
   }
 
 }
