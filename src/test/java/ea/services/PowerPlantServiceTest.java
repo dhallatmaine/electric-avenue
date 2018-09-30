@@ -94,4 +94,68 @@ public class PowerPlantServiceTest {
                 new PowerPlant().withValue(13)));
     }
 
+    @Test
+    public void setupCurrentMarket() {
+        // Given
+        State state = new State()
+                .withDeckPlants(new LinkedList<>(Arrays.asList(
+                        new PowerPlant().withValue(3),
+                        new PowerPlant().withValue(4),
+                        new PowerPlant().withValue(5),
+                        new PowerPlant().withValue(6),
+                        new PowerPlant().withValue(7),
+                        new PowerPlant().withValue(8)
+                )));
+
+        // When
+        when(gameState.getById(any()))
+                .thenReturn(state);
+
+        target.setupCurrentMarket(1);
+
+        // Assert
+        assertThat(state.getCurrentMarketPlants()).isEqualTo(ImmutableList.of(
+                new PowerPlant().withValue(3),
+                new PowerPlant().withValue(4),
+                new PowerPlant().withValue(5),
+                new PowerPlant().withValue(6)
+        ));
+        assertThat(state.getDeckPlants()).isEqualTo(ImmutableList.of(
+                new PowerPlant().withValue(7),
+                new PowerPlant().withValue(8)
+        ));
+    }
+
+    @Test
+    public void setupFutureMarket() {
+        // Given
+        State state = new State()
+                .withDeckPlants(new LinkedList<>(Arrays.asList(
+                        new PowerPlant().withValue(7),
+                        new PowerPlant().withValue(8),
+                        new PowerPlant().withValue(9),
+                        new PowerPlant().withValue(10),
+                        new PowerPlant().withValue(11),
+                        new PowerPlant().withValue(12)
+                )));
+
+        // When
+        when(gameState.getById(any()))
+                .thenReturn(state);
+
+        target.setupFutureMarket(1);
+
+        // Assert
+        assertThat(state.getFutureMarketPlants()).isEqualTo(ImmutableList.of(
+                new PowerPlant().withValue(7),
+                new PowerPlant().withValue(8),
+                new PowerPlant().withValue(9),
+                new PowerPlant().withValue(10)
+        ));
+        assertThat(state.getDeckPlants()).isEqualTo(ImmutableList.of(
+                new PowerPlant().withValue(11),
+                new PowerPlant().withValue(12)
+        ));
+    }
+
 }

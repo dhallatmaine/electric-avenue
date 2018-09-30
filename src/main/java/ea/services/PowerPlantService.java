@@ -282,11 +282,6 @@ public class PowerPlantService {
     return plants;
   }
 
-  public void setupMarket(Integer gameId) {
-    setupCurrentMarket(gameId);
-    setupFutureMarket(gameId);
-  }
-
   public List<PowerPlant> shuffleDeck(List<PowerPlant> plants, boolean thirteenPlant) {
     List<PowerPlant> shuffled = new ArrayList<>(plants);
     Collections.shuffle(shuffled);
@@ -329,9 +324,9 @@ public class PowerPlantService {
             .findFirst();
   }
 
-  private void setupCurrentMarket(Integer gameId) {
+  public void setupCurrentMarket(Integer gameId) {
     State game = gameState.getById(gameId);
-    List<PowerPlant> plants = new LinkedList<PowerPlant>();
+    List<PowerPlant> plants = new LinkedList<>();
 
     int count = 1;
     Iterator itr = game.getDeckPlants().iterator();
@@ -345,7 +340,7 @@ public class PowerPlantService {
     game.getDeckPlants().removeAll(plants);
   }
 
-  private void setupFutureMarket(Integer gameId) {
+  public void setupFutureMarket(Integer gameId) {
     State game = gameState.getById(gameId);
     List<PowerPlant> plants = new LinkedList<PowerPlant>();
 
