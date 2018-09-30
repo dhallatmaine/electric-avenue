@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class PowerPlantService {
@@ -326,15 +327,9 @@ public class PowerPlantService {
 
   public void setupCurrentMarket(Integer gameId) {
     State game = gameState.getById(gameId);
-    List<PowerPlant> plants = new LinkedList<>();
-
-    int count = 1;
-    Iterator itr = game.getDeckPlants().iterator();
-    while (itr.hasNext() && count <= 4) {
-      PowerPlant p = (PowerPlant) itr.next();
-      plants.add(p);
-      count++;
-    }
+    List<PowerPlant> plants = game.getDeckPlants().stream()
+            .limit(4)
+            .collect(Collectors.toList());
 
     game.withCurrentMarketPlants(plants);
     game.getDeckPlants().removeAll(plants);
@@ -342,15 +337,9 @@ public class PowerPlantService {
 
   public void setupFutureMarket(Integer gameId) {
     State game = gameState.getById(gameId);
-    List<PowerPlant> plants = new LinkedList<PowerPlant>();
-
-    int count = 1;
-    Iterator itr = game.getDeckPlants().iterator();
-    while (itr.hasNext() && count <= 4) {
-      PowerPlant p = (PowerPlant) itr.next();
-      plants.add(p);
-      count++;
-    }
+    List<PowerPlant> plants = game.getDeckPlants().stream()
+            .limit(4)
+            .collect(Collectors.toList());
 
     game.withFutureMarketPlants(plants);
     game.getDeckPlants().removeAll(plants);
