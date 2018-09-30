@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Component
 public class PowerPlantService {
@@ -310,19 +308,14 @@ public class PowerPlantService {
 
   public void flipNewCard(Integer gameId, PowerPlant removedCard) {
     State game = gameState.getById(gameId);
-
     game.getCurrentMarketPlants().remove(removedCard);
 
     PowerPlant topPlant = game.getDeckPlants().remove(0);
-
-    game.getFutureMarketPlants().add(topPlant);
-
-    sortPlants(game.getFutureMarketPlants());
-
     PowerPlant lowestPlant = game.getFutureMarketPlants().remove(0);
-
+    game.getFutureMarketPlants().add(topPlant);
     game.getCurrentMarketPlants().add(lowestPlant);
 
+    sortPlants(game.getFutureMarketPlants());
     sortPlants(game.getCurrentMarketPlants());
   }
 
@@ -348,7 +341,7 @@ public class PowerPlantService {
       count++;
     }
 
-    game.setCurrentMarketPlants(plants);
+    game.withCurrentMarketPlants(plants);
     game.getDeckPlants().removeAll(plants);
   }
 
@@ -364,7 +357,7 @@ public class PowerPlantService {
       count++;
     }
 
-    game.setFutureMarketPlants(plants);
+    game.withFutureMarketPlants(plants);
     game.getDeckPlants().removeAll(plants);
   }
 

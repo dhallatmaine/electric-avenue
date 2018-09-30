@@ -46,4 +46,11 @@ public class PowerPlant implements Comparable<PowerPlant> {
     public int compareTo(PowerPlant plant) {
         return getValue().compareTo(plant.getValue());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        PowerPlant other = (PowerPlant) o;
+        return this.value.equals(other.getValue());
+    }
+
 }

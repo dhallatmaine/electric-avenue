@@ -48,24 +48,27 @@ public class State {
         return deckPlants;
     }
 
-    public void setDeckPlants(List<PowerPlant> deckPlants) {
+    public State withDeckPlants(List<PowerPlant> deckPlants) {
         this.deckPlants = deckPlants;
+        return this;
     }
 
     public List<PowerPlant> getCurrentMarketPlants() {
         return currentMarketPlants;
     }
 
-    public void setCurrentMarketPlants(List<PowerPlant> currentMarketPlants) {
+    public State withCurrentMarketPlants(List<PowerPlant> currentMarketPlants) {
         this.currentMarketPlants = currentMarketPlants;
+        return this;
     }
 
     public List<PowerPlant> getFutureMarketPlants() {
         return futureMarketPlants;
     }
 
-    public void setFutureMarketPlants(List<PowerPlant> futureMarketPlants) {
+    public State withFutureMarketPlants(List<PowerPlant> futureMarketPlants) {
         this.futureMarketPlants = futureMarketPlants;
+        return this;
     }
 
     public List<Resource> getCoal() {

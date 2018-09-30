@@ -76,13 +76,13 @@ public class GameEngine implements CommandLineRunner {
 
     america.initializeCities();
 
-    currentGame.setDeckPlants(powerPlantService.createInitialPowerPlants());
+    currentGame.withDeckPlants(powerPlantService.createInitialPowerPlants());
     powerPlantService.setupMarket(currentGameId);
 
     List<PowerPlant> shuffledDeck = powerPlantService.shuffleDeck(
             currentGame.getDeckPlants(),
             true);
-    currentGame.setDeckPlants(shuffledDeck);
+    currentGame.withDeckPlants(shuffledDeck);
 
     currentGame.setPlayers(playerService.setupPlayers());
 
