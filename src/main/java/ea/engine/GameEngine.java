@@ -1,6 +1,7 @@
 package ea.engine;
 
 import ea.data.Player;
+import ea.data.PowerPlant;
 import ea.engine.phase.impl.BuildingPhase;
 import ea.engine.phase.impl.BureaucracyPhase;
 import ea.engine.phase.impl.PowerPlantPhase;
@@ -16,7 +17,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 @Component
 public class GameEngine implements CommandLineRunner {
@@ -77,7 +80,11 @@ public class GameEngine implements CommandLineRunner {
 
     currentGame.setDeckPlants(powerPlantService.createInitialPowerPlants());
     powerPlantService.setupMarket(currentGameId);
-    powerPlantService.shuffleDeck(currentGameId, true);
+
+    List<PowerPlant> shuffledDeck = powerPlantService.shuffleDeck(
+            currentGame.getDeckPlants(),
+            true);
+    currentGame.setDeckPlants(shuffledDeck);
 
     currentGame.setPlayers(playerService.setupPlayers());
 

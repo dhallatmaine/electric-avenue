@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 public class PowerPlantService {
@@ -287,18 +289,21 @@ public class PowerPlantService {
     setupFutureMarket(gameId);
   }
 
-  public void shuffleDeck(Integer gameId, boolean thirteenPlant) {
-    State game = gameState.getById(gameId);
-    Collections.shuffle(game.getDeckPlants());
+  public List<PowerPlant> shuffleDeck(List<PowerPlant> plants, boolean thirteenPlant) {
+    List<PowerPlant> shuffled = new ArrayList<>(plants);
+    Collections.shuffle(shuffled);
 
-    // special case for 13 plant
+    // not all maps place 13 on the top of the shuffled deck
     if (thirteenPlant) {
-      PowerPlant thirteenPowerPlant = getPowerPlantInDeckByValue(game.getDeckPlants(), 13);
-      game.getDeckPlants().remove(thirteenPowerPlant);
-      game.getDeckPlants().add(0, thirteenPowerPlant);
+      PowerPlant thirteenPowerPlant = getPowerPlantInDeckByValue(shuffled, 13);
+      shuffled.remove(thirteenPowerPlant);
+      shuffled.add(0, thirteenPowerPlant);
     }
 
-    game.getDeckPlants().add(new PowerPlant().withValue(0));
+    // phase 3 card
+    shuffled.add(new PowerPlant().withValue(0));
+
+    return shuffled;
   }
 
   public void flipNewCard(Integer gameId, PowerPlant removedCard) {
@@ -324,15 +329,12 @@ public class PowerPlantService {
   }
 
   private PowerPlant getPowerPlantInDeckByValue(List<PowerPlant> plants, Integer value) {
-    Iterator itr = plants.iterator();
-    while (itr.hasNext()) {
-      PowerPlant p = (PowerPlant) itr.next();
-      if (p.getValue().equals(value)) {
-        return p;
-      }
-    }
+    Map<Integer, PowerPlant> valueToPlant = plants.stream()
+            .collect(Collectors.toMap(PowerPlant::getValue, Function.identity()));
 
-    return null;
+    return Optional.ofNullable(
+            valueToPlant.get(value))
+            .orElse(null);
   }
 
   private void setupCurrentMarket(Integer gameId) {
