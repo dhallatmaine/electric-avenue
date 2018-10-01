@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ResourceService {
@@ -88,16 +89,10 @@ public class ResourceService {
   }
 
   public Integer getPrice(List<Resource> resources, int amount) {
-    int price = 0;
-
-    Iterator itr = resources.iterator();
-    while (itr.hasNext() && amount > 0) {
-      Resource r = (Resource) itr.next();
-      price += r.getPrice();
-      amount--;
-    }
-
-    return price;
+    return resources.stream()
+            .limit(amount)
+            .mapToInt(Resource::getPrice)
+            .sum();
   }
 
   public void removeFromMarket(List<Resource> resources, int amount) {

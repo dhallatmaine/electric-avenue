@@ -26,10 +26,22 @@ public class Resource {
     this.price = price;
   }
 
-  public Integer getType() { return type; }
-  public void setType(Integer type) { this.type = type; }
+  public Integer getType() {
+    return type;
+  }
 
-  public Integer getPrice() { return price; }
-  public void setPrice(Integer price) { this.price = price; }
+  public Resource withType(Integer type) {
+    this.type = type;
+    return this;
+  }
+
+  public Integer getPrice() {
+    return price;
+  }
+
+  public Resource withPrice(Integer price) {
+    this.price = price;
+    return this;
+  }
 
 }
