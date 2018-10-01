@@ -1,4 +1,4 @@
-package ea.engine.phase.impl;
+package ea.engine.phase;
 
 import ea.engine.GameState;
 import ea.engine.State;

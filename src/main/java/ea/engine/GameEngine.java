@@ -2,10 +2,10 @@ package ea.engine;
 
 import ea.data.Player;
 import ea.data.PowerPlant;
-import ea.engine.phase.impl.BuildingPhase;
-import ea.engine.phase.impl.BureaucracyPhase;
-import ea.engine.phase.impl.PowerPlantPhase;
-import ea.engine.phase.impl.ResourcePhase;
+import ea.engine.phase.BuildingPhase;
+import ea.engine.phase.BureaucracyPhase;
+import ea.engine.phase.PowerPlantPhase;
+import ea.engine.phase.ResourcePhase;
 import ea.maps.America;
 import ea.services.*;
 import ea.views.DefaultView;
