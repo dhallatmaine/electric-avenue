@@ -72,8 +72,6 @@ public class GameEngine implements CommandLineRunner {
     State currentGame = gameState.getById(currentGameId);
     currentGame.setRound(1);
 
-    resourceService.initializeResources(currentGameId);
-
     america.initializeCities();
 
     currentGame.withDeckPlants(powerPlantService.createInitialPowerPlants());

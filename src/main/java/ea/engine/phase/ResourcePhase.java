@@ -2,6 +2,7 @@ package ea.engine.phase;
 
 import ea.data.Player;
 import ea.data.Resource;
+import ea.data.ResourceEnum;
 import ea.engine.GameState;
 import ea.engine.State;
 import ea.services.PlayerService;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.OptionalInt;
 import java.util.Scanner;
 
 @Component
@@ -53,14 +55,33 @@ public class ResourcePhase {
 
         int choice = resourcesView.getResourceTypeFromUser();
 
-        if (choice == 0) {
+        ResourceEnum userChoice;
+        switch (choice) {
+          case 1:
+            userChoice = ResourceEnum.COAL;
+            break;
+          case 2:
+            userChoice = ResourceEnum.OIL;
+            break;
+          case 3:
+            userChoice = ResourceEnum.TRASH;
+            break;
+          case 4:
+            userChoice = ResourceEnum.URANIUM;
+            break;
+          default:
+            userChoice = ResourceEnum.GREEN;
+        }
+
+        if (ResourceEnum.GREEN.equals(choice)) {
           defaultView.outln(p.getName() + " has decided to skip purchasing resources for this round.");
           continue;
         }
 
         // get resources in market for that type
-        List<Resource> resourceList = resourceService.getResourceListByConst(gameId, choice);
-        String resourceType = resourceService.getResourceNameByConst(choice);
+        //List<Resource> resourceList = resourceService.getResourceListByConst(gameId, choice);
+        List<OptionalInt> resourceList = state.getResources().get(userChoice);
+        //String resourceType = resourceService.getResourceNameByConst(choice);
 
 
         // prompt user for how many
@@ -69,8 +90,8 @@ public class ResourcePhase {
         boolean invalidInput = true;
         while (invalidInput) {
           int resources = playerService.getMaxResourcesAllowedForPurchase(p, choice);
-          defaultView.outln("You can purchase up to " + resources + " " + resourceType);
-          defaultView.outln("How much " + resourceType + " would you like to purchase?");
+          defaultView.outln("You can purchase up to " + resources + " " + userChoice.name());
+          defaultView.outln("How much " + userChoice.name() + " would you like to purchase?");
           if (scan.hasNextInt()) {
             amount = scan.nextInt();
 
@@ -88,13 +109,13 @@ public class ResourcePhase {
         // display price and confirm
         int price = resourceService.getPrice(resourceList, amount);
 
-        defaultView.outln("Are you sure you want to purchase " + price + " elektro worth of " + resourceType + "? [n/y]");
+        defaultView.outln("Are you sure you want to purchase " + price + " elektro worth of " + userChoice.name() + "? [n/y]");
 
         String confirm = scan.next();
 
         if (confirm.equals("y")) {
           // purchase
-          resourceService.removeFromMarket(resourceList, amount);
+          state.getResources().put(userChoice, resourceService.removeFromMarketEnum(resourceList, amount));
           // add to player market
           playerService.addToPlayerResources(p, choice, amount);
 

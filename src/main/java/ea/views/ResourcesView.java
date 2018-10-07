@@ -1,12 +1,13 @@
 package ea.views;
 
-import ea.data.Resource;
+import ea.data.ResourceEnum;
 import ea.engine.GameState;
 import ea.engine.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Iterator;
+import java.util.List;
+import java.util.OptionalInt;
 import java.util.Scanner;
 
 @Component
@@ -26,28 +27,25 @@ public class ResourcesView {
     defaultView.outln("------ Resource Market ------");
 
     defaultView.out("1.) Coal: ");
-    Iterator coalItr = game.getCoal().iterator();
+    List<OptionalInt> coalItr = game.getResources().get(ResourceEnum.COAL);
     displayPrice(coalItr);
 
     defaultView.out("2.) Oil: ");
-    Iterator oilItr = game.getOil().iterator();
+    List<OptionalInt> oilItr = game.getResources().get(ResourceEnum.OIL);
     displayPrice(oilItr);
 
     defaultView.out("3.) Trash: ");
-    Iterator trashItr = game.getTrash().iterator();
+    List<OptionalInt> trashItr = game.getResources().get(ResourceEnum.TRASH);
     displayPrice(trashItr);
 
     defaultView.out("4.) Uranium: ");
-    Iterator uraniumItr = game.getUranium().iterator();
+    List<OptionalInt> uraniumItr = game.getResources().get(ResourceEnum.URANIUM);
     displayPrice(uraniumItr);
   }
 
-  public void displayPrice(Iterator itr) {
-    while (itr.hasNext()) {
-      Resource resource = (Resource) itr.next();
-      defaultView.out(resource.getPrice() + " ");
-    }
-    defaultView.outln();
+  public void displayPrice(List<OptionalInt> resources) {
+    resources.forEach(resource -> System.out.print(resource.isPresent() ? resource.getAsInt() + " " : 0 + " "));
+    System.out.println();
   }
 
   public int getResourceTypeFromUser() {

@@ -1,6 +1,8 @@
 package ea.maps;
 
+import com.google.common.collect.ImmutableList;
 import ea.data.City;
+import ea.data.ResourceEnum;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -88,6 +90,56 @@ public class America extends BaseMap {
     knoxville.withConnectedCities(connectedCities);
 
     setCities(Arrays.asList(miami, tampa, jacksonville, savannah, atlanta, raleigh, birmingham, knoxville));
+  }
+
+  public static Map<ResourceEnum, List<OptionalInt>> initializeResources() {
+    Map<ResourceEnum, List<OptionalInt>> built = new HashMap<>();
+
+    built.put(ResourceEnum.COAL, ImmutableList.of(
+            OptionalInt.of(1), OptionalInt.of(1), OptionalInt.of(1),
+            OptionalInt.of(2), OptionalInt.of(2), OptionalInt.of(2),
+            OptionalInt.of(3), OptionalInt.of(3), OptionalInt.of(3),
+            OptionalInt.of(4), OptionalInt.of(4), OptionalInt.of(4),
+            OptionalInt.of(5), OptionalInt.of(5), OptionalInt.of(5),
+            OptionalInt.of(6), OptionalInt.of(6), OptionalInt.of(6),
+            OptionalInt.of(7), OptionalInt.of(7), OptionalInt.of(7),
+            OptionalInt.of(8), OptionalInt.of(8), OptionalInt.of(8)));
+
+    built.put(ResourceEnum.OIL, ImmutableList.of(
+            OptionalInt.empty(), OptionalInt.empty(), OptionalInt.empty(),
+            OptionalInt.empty(), OptionalInt.empty(), OptionalInt.empty(),
+            OptionalInt.of(3), OptionalInt.of(3), OptionalInt.of(3),
+            OptionalInt.of(4), OptionalInt.of(4), OptionalInt.of(4),
+            OptionalInt.of(5), OptionalInt.of(5), OptionalInt.of(5),
+            OptionalInt.of(6), OptionalInt.of(6), OptionalInt.of(6),
+            OptionalInt.of(7), OptionalInt.of(7), OptionalInt.of(7),
+            OptionalInt.of(8), OptionalInt.of(8), OptionalInt.of(8)));
+
+    built.put(ResourceEnum.TRASH, ImmutableList.of(
+            OptionalInt.empty(), OptionalInt.empty(), OptionalInt.empty(),
+            OptionalInt.empty(), OptionalInt.empty(), OptionalInt.empty(),
+            OptionalInt.empty(), OptionalInt.empty(), OptionalInt.empty(),
+            OptionalInt.empty(), OptionalInt.empty(), OptionalInt.empty(),
+            OptionalInt.empty(), OptionalInt.empty(), OptionalInt.empty(),
+            OptionalInt.empty(), OptionalInt.empty(), OptionalInt.empty(),
+            OptionalInt.of(7), OptionalInt.of(7), OptionalInt.of(7),
+            OptionalInt.of(8), OptionalInt.of(8), OptionalInt.of(8)));
+
+    built.put(ResourceEnum.URANIUM, ImmutableList.of(
+            OptionalInt.empty(),
+            OptionalInt.empty(),
+            OptionalInt.empty(),
+            OptionalInt.empty(),
+            OptionalInt.empty(),
+            OptionalInt.empty(),
+            OptionalInt.empty(),
+            OptionalInt.empty(),
+            OptionalInt.empty(),
+            OptionalInt.empty(),
+            OptionalInt.of(14),
+            OptionalInt.of(16)));
+
+    return built;
   }
 
 }

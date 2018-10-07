@@ -6,6 +6,7 @@ import ea.engine.GameState;
 import ea.engine.State;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
+import junitparams.naming.TestCaseName;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +36,7 @@ public class PowerPlantServiceTest {
             " true  | 13 Card on top of deck ",
             " false | 13 Card not on top of the deck "
     })
+    @TestCaseName("{1}")
     public void shuffleDeck(
             boolean thirteen,
             String description) {

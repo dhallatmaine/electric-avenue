@@ -2,9 +2,9 @@ package ea.engine;
 
 import ea.data.Player;
 import ea.data.PowerPlant;
-import ea.data.Resource;
+import ea.data.ResourceEnum;
 
-import java.util.List;
+import java.util.*;
 
 public class State {
 
@@ -14,10 +14,7 @@ public class State {
     private List<PowerPlant> currentMarketPlants;
     private List<PowerPlant> futureMarketPlants;
 
-    private List<Resource> coal;
-    private List<Resource> oil;
-    private List<Resource> trash;
-    private List<Resource> uranium;
+    private Map<ResourceEnum, List<OptionalInt>> resources;
 
     private List<Player> players;
 
@@ -71,44 +68,21 @@ public class State {
         return this;
     }
 
-    public List<Resource> getCoal() {
-        return coal;
-    }
-
-    public void setCoal(List<Resource> coal) {
-        this.coal = coal;
-    }
-
-    public List<Resource> getOil() {
-        return oil;
-    }
-
-    public void setOil(List<Resource> oil) {
-        this.oil = oil;
-    }
-
-    public List<Resource> getTrash() {
-        return trash;
-    }
-
-    public void setTrash(List<Resource> trash) {
-        this.trash = trash;
-    }
-
-    public List<Resource> getUranium() {
-        return uranium;
-    }
-
-    public void setUranium(List<Resource> uranium) {
-        this.uranium = uranium;
-    }
-
     public List<Player> getPlayers() {
         return players;
     }
 
     public void setPlayers(List<Player> players) {
         this.players = players;
+    }
+
+    public Map<ResourceEnum, List<OptionalInt>> getResources() {
+        return resources;
+    }
+
+    public State withResources(Map<ResourceEnum, List<OptionalInt>> resources) {
+        this.resources = resources;
+        return this;
     }
 
 }

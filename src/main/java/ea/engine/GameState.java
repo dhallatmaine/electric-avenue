@@ -1,5 +1,6 @@
 package ea.engine;
 
+import ea.maps.America;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +24,9 @@ public class GameState {
     }
 
     public Integer createNewGame() {
-        stateMap.put(currentId.get(), new State());
+        stateMap.put(
+                currentId.get(),
+                new State().withResources(America.initializeResources()));
         return currentId.getAndIncrement();
     }
 
