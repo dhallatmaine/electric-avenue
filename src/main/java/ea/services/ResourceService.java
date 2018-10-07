@@ -1,14 +1,14 @@
 package ea.services;
 
-import ea.data.Resource;
 import ea.engine.GameState;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.OptionalInt;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Component
 public class ResourceService {
@@ -35,19 +35,28 @@ public class ResourceService {
     }
   }
 
-  public Integer getPrice(List<OptionalInt> resources, int amount) {
+  public Integer getPrice(List<Integer> resources, int amount) {
     return resources.stream()
-            .filter(OptionalInt::isPresent)
+            .filter(i -> i > 0)
             .limit(amount)
-            .mapToInt(OptionalInt::getAsInt)
+            .mapToInt(Integer::intValue)
             .sum();
   }
 
-  public List<OptionalInt> removeFromMarketEnum(List<OptionalInt> resources, int amount) {
-    return resources.stream()
-            .filter(OptionalInt::isPresent)
-            .limit(amount)
-            .collect(Collectors.toList());
+  public List<Integer> removeFromMarket(List<Integer> resources, int amount) {
+    Stream<Integer> emptySpaces = resources.stream()
+            .filter(i -> i == 0);
+
+    Stream<Integer> removed = Stream.iterate(0, i -> 0)
+            .limit(amount);
+
+    Stream<Integer> newEmptyArea = Stream.concat(emptySpaces, removed);
+
+    Stream<Integer> remaining = resources.stream()
+            .filter(i -> i > 0)
+            .skip(amount);
+
+    return Stream.concat(newEmptyArea, remaining).collect(Collectors.toList());
   }
 
 }

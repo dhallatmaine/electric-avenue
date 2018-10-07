@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.OptionalInt;
 import java.util.Scanner;
 
 @Component
@@ -27,24 +26,24 @@ public class ResourcesView {
     defaultView.outln("------ Resource Market ------");
 
     defaultView.out("1.) Coal: ");
-    List<OptionalInt> coalItr = game.getResources().get(ResourceEnum.COAL);
+    List<Integer> coalItr = game.getResources().get(ResourceEnum.COAL);
     displayPrice(coalItr);
 
     defaultView.out("2.) Oil: ");
-    List<OptionalInt> oilItr = game.getResources().get(ResourceEnum.OIL);
+    List<Integer> oilItr = game.getResources().get(ResourceEnum.OIL);
     displayPrice(oilItr);
 
     defaultView.out("3.) Trash: ");
-    List<OptionalInt> trashItr = game.getResources().get(ResourceEnum.TRASH);
+    List<Integer> trashItr = game.getResources().get(ResourceEnum.TRASH);
     displayPrice(trashItr);
 
     defaultView.out("4.) Uranium: ");
-    List<OptionalInt> uraniumItr = game.getResources().get(ResourceEnum.URANIUM);
+    List<Integer> uraniumItr = game.getResources().get(ResourceEnum.URANIUM);
     displayPrice(uraniumItr);
   }
 
-  public void displayPrice(List<OptionalInt> resources) {
-    resources.forEach(resource -> System.out.print(resource.isPresent() ? resource.getAsInt() + " " : 0 + " "));
+  public void displayPrice(List<Integer> resources) {
+    resources.forEach(System.out::print);
     System.out.println();
   }
 

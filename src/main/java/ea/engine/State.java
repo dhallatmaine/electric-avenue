@@ -14,7 +14,7 @@ public class State {
     private List<PowerPlant> currentMarketPlants;
     private List<PowerPlant> futureMarketPlants;
 
-    private Map<ResourceEnum, List<OptionalInt>> resources;
+    private Map<ResourceEnum, List<Integer>> resources;
 
     private List<Player> players;
 
@@ -76,11 +76,11 @@ public class State {
         this.players = players;
     }
 
-    public Map<ResourceEnum, List<OptionalInt>> getResources() {
+    public Map<ResourceEnum, List<Integer>> getResources() {
         return resources;
     }
 
-    public State withResources(Map<ResourceEnum, List<OptionalInt>> resources) {
+    public State withResources(Map<ResourceEnum, List<Integer>> resources) {
         this.resources = resources;
         return this;
     }

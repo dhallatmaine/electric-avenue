@@ -1,7 +1,5 @@
 package ea.services;
 
-import com.google.common.collect.ImmutableList;
-import ea.data.Resource;
 import ea.data.ResourceEnum;
 import ea.engine.GameState;
 import ea.engine.State;
@@ -12,8 +10,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 @RunWith(JUnitParamsRunner.class)
 public class ResourceServiceTest {
@@ -24,9 +25,10 @@ public class ResourceServiceTest {
 
     @Before
     public void setup() {
-        gameState = mock(GameState.class);
+        gameState = new GameState();
+        int gameId = gameState.createNewGame();
+        state = gameState.getById(gameId);
         target = new ResourceService(gameState);
-        state = new State();
     }
 
     @Test
@@ -42,7 +44,7 @@ public class ResourceServiceTest {
             Integer amount,
             Integer expectedPrice,
             String description) {
-        // When
+        // Given
         ResourceEnum resourceType = ResourceEnum.valueOf(type);
 
         // Act
@@ -50,6 +52,32 @@ public class ResourceServiceTest {
 
         // Assert
         assertThat(actual).isEqualTo(expectedPrice);
+    }
+
+    @Test
+    @Parameters({
+            " COAL    | 4 | 0;0;0;0;2;2;3;3;3;4;4;4;5;5;5;6;6;6;7;7;7;8;8;8 | Remove 4 from COAL market ",
+            " OIL     | 5 | 0;0;0;0;0;0;0;0;0;0;0;4;5;5;5;6;6;6;7;7;7;8;8;8 | Remove 5 from OIL market  ",
+            " TRASH   | 3 | 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;8;8;8 | Remove 3 from TRASH market  ",
+            " URANIUM | 1 | 0;0;0;0;0;0;0;0;0;0;0;16                        | Remove 1 from URANIUM market  ",
+    })
+    @TestCaseName("{3}")
+    public void removeFromMarket(
+            String type,
+            Integer amount,
+            String expected,
+            String description) {
+        // Given
+        ResourceEnum resourceType = ResourceEnum.valueOf(type);
+        List<Integer> expectedMarket = Arrays.stream(expected.split(";"))
+                .map(Integer::valueOf)
+                .collect(Collectors.toList());
+
+        // Act
+        List<Integer> actual = target.removeFromMarket(state.getResources().get(resourceType), amount);
+
+        // Assert
+        assertThat(actual).isEqualTo(expectedMarket);
     }
 
 }

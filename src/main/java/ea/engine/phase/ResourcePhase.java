@@ -79,10 +79,7 @@ public class ResourcePhase {
         }
 
         // get resources in market for that type
-        //List<Resource> resourceList = resourceService.getResourceListByConst(gameId, choice);
-        List<OptionalInt> resourceList = state.getResources().get(userChoice);
-        //String resourceType = resourceService.getResourceNameByConst(choice);
-
+        List<Integer> resourceList = state.getResources().get(userChoice);
 
         // prompt user for how many
         Scanner scan = new Scanner(System.in);
@@ -115,7 +112,7 @@ public class ResourcePhase {
 
         if (confirm.equals("y")) {
           // purchase
-          state.getResources().put(userChoice, resourceService.removeFromMarketEnum(resourceList, amount));
+          state.getResources().put(userChoice, resourceService.removeFromMarket(resourceList, amount));
           // add to player market
           playerService.addToPlayerResources(p, choice, amount);
 

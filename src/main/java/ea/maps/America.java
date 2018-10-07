@@ -92,52 +92,52 @@ public class America extends BaseMap {
     setCities(Arrays.asList(miami, tampa, jacksonville, savannah, atlanta, raleigh, birmingham, knoxville));
   }
 
-  public static Map<ResourceEnum, List<OptionalInt>> initializeResources() {
-    Map<ResourceEnum, List<OptionalInt>> built = new HashMap<>();
+  public static Map<ResourceEnum, List<Integer>> initializeResources() {
+    Map<ResourceEnum, List<Integer>> built = new HashMap<>();
 
     built.put(ResourceEnum.COAL, ImmutableList.of(
-            OptionalInt.of(1), OptionalInt.of(1), OptionalInt.of(1),
-            OptionalInt.of(2), OptionalInt.of(2), OptionalInt.of(2),
-            OptionalInt.of(3), OptionalInt.of(3), OptionalInt.of(3),
-            OptionalInt.of(4), OptionalInt.of(4), OptionalInt.of(4),
-            OptionalInt.of(5), OptionalInt.of(5), OptionalInt.of(5),
-            OptionalInt.of(6), OptionalInt.of(6), OptionalInt.of(6),
-            OptionalInt.of(7), OptionalInt.of(7), OptionalInt.of(7),
-            OptionalInt.of(8), OptionalInt.of(8), OptionalInt.of(8)));
+            1, 1, 1,
+            2, 2, 2,
+            3, 3, 3,
+            4, 4, 4,
+            5, 5, 5,
+            6, 6, 6,
+            7, 7, 7,
+            8, 8, 8));
 
     built.put(ResourceEnum.OIL, ImmutableList.of(
-            OptionalInt.empty(), OptionalInt.empty(), OptionalInt.empty(),
-            OptionalInt.empty(), OptionalInt.empty(), OptionalInt.empty(),
-            OptionalInt.of(3), OptionalInt.of(3), OptionalInt.of(3),
-            OptionalInt.of(4), OptionalInt.of(4), OptionalInt.of(4),
-            OptionalInt.of(5), OptionalInt.of(5), OptionalInt.of(5),
-            OptionalInt.of(6), OptionalInt.of(6), OptionalInt.of(6),
-            OptionalInt.of(7), OptionalInt.of(7), OptionalInt.of(7),
-            OptionalInt.of(8), OptionalInt.of(8), OptionalInt.of(8)));
+            0, 0, 0,
+            0, 0, 0,
+            3, 3, 3,
+            4, 4, 4,
+            5, 5, 5,
+            6, 6, 6,
+            7, 7, 7,
+            8, 8, 8));
 
     built.put(ResourceEnum.TRASH, ImmutableList.of(
-            OptionalInt.empty(), OptionalInt.empty(), OptionalInt.empty(),
-            OptionalInt.empty(), OptionalInt.empty(), OptionalInt.empty(),
-            OptionalInt.empty(), OptionalInt.empty(), OptionalInt.empty(),
-            OptionalInt.empty(), OptionalInt.empty(), OptionalInt.empty(),
-            OptionalInt.empty(), OptionalInt.empty(), OptionalInt.empty(),
-            OptionalInt.empty(), OptionalInt.empty(), OptionalInt.empty(),
-            OptionalInt.of(7), OptionalInt.of(7), OptionalInt.of(7),
-            OptionalInt.of(8), OptionalInt.of(8), OptionalInt.of(8)));
+            0, 0, 0,
+            0, 0, 0,
+            0, 0, 0,
+            0, 0, 0,
+            0, 0, 0,
+            0, 0, 0,
+            7, 7, 7,
+            8, 8, 8));
 
     built.put(ResourceEnum.URANIUM, ImmutableList.of(
-            OptionalInt.empty(),
-            OptionalInt.empty(),
-            OptionalInt.empty(),
-            OptionalInt.empty(),
-            OptionalInt.empty(),
-            OptionalInt.empty(),
-            OptionalInt.empty(),
-            OptionalInt.empty(),
-            OptionalInt.empty(),
-            OptionalInt.empty(),
-            OptionalInt.of(14),
-            OptionalInt.of(16)));
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            14,
+            16));
 
     return built;
   }
