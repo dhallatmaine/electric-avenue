@@ -1,7 +1,6 @@
 package ea.engine.phase;
 
 import ea.data.Player;
-import ea.data.Resource;
 import ea.data.ResourceEnum;
 import ea.engine.GameState;
 import ea.engine.State;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.OptionalInt;
 import java.util.Scanner;
 
 @Component
