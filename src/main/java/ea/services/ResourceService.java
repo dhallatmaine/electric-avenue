@@ -1,8 +1,6 @@
 package ea.services;
 
-import ea.engine.GameState;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,13 +9,6 @@ import java.util.stream.Stream;
 
 @Component
 public class ResourceService {
-
-  private final GameState gameState;
-
-  @Autowired
-  public ResourceService(GameState gameState) {
-    this.gameState = gameState;
-  }
 
   public String getResourceNameByConst(int choice) {
     switch (choice) {

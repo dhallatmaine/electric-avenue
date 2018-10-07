@@ -1,8 +1,8 @@
 package ea.services;
 
 import ea.data.ResourceEnum;
-import ea.engine.GameState;
 import ea.engine.State;
+import ea.maps.America;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import junitparams.naming.TestCaseName;
@@ -19,16 +19,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(JUnitParamsRunner.class)
 public class ResourceServiceTest {
 
-    private ResourceService target;
-    private GameState gameState;
     private State state;
+    private ResourceService target;
 
     @Before
     public void setup() {
-        gameState = new GameState();
-        int gameId = gameState.createNewGame();
-        state = gameState.getById(gameId);
-        target = new ResourceService(gameState);
+        state = new State().withResources(America.initializeResources());
+        target = new ResourceService();
     }
 
     @Test
