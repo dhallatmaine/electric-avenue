@@ -84,7 +84,7 @@ public class ResourcePhase {
         int amount = 0;
         boolean invalidInput = true;
         while (invalidInput) {
-          int resources = playerService.getMaxResourcesAllowedForPurchase(p, choice);
+          int resources = playerService.getMaxResourcesAllowedForPurchase(p, userChoice);
           defaultView.outln("You can purchase up to " + resources + " " + userChoice.name());
           defaultView.outln("How much " + userChoice.name() + " would you like to purchase?");
           if (scan.hasNextInt()) {
@@ -112,7 +112,7 @@ public class ResourcePhase {
           // purchase
           state.getResources().put(userChoice, resourceService.removeFromMarket(resourceList, amount));
           // add to player market
-          playerService.addToPlayerResources(p, choice, amount);
+          playerService.addToPlayerResources(p, userChoice, amount);
 
           // remove money from player
           playerService.subtractMoneyFromPlayer(p, price);

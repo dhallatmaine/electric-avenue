@@ -2,6 +2,7 @@ package ea.engine.phase;
 
 import ea.data.Player;
 import ea.data.Resource;
+import ea.data.ResourceEnum;
 import ea.engine.GameState;
 import ea.engine.State;
 import ea.services.PlayerService;
@@ -10,6 +11,7 @@ import ea.views.DefaultView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
@@ -45,8 +47,6 @@ public class BureaucracyPhase {
       List<Resource> trash = p.getTrash();
       List<Resource> uranium = p.getUranium();
 
-
-      Scanner scan = new Scanner(System.in);
       if (coal.size() > 0) {
         int amount = bureaucracyPhaseView.getResourceAmountFromUser(Resource.SCOAL, coal.size());
         playerService.removeFromPlayerResources(p, coal, amount);

@@ -1,11 +1,14 @@
 package ea.data;
 
+import java.util.Set;
+
 public class PowerPlant implements Comparable<PowerPlant> {
 
     private Integer value;
     private Integer poweredCities;
     private Integer resources;
     private Integer type;
+    private Set<ResourceEnum> resourceEnums;
 
     public Integer getValue() {
         return value;
@@ -40,6 +43,15 @@ public class PowerPlant implements Comparable<PowerPlant> {
 
     public PowerPlant withPoweredCities(Integer poweredCities) {
         this.poweredCities = poweredCities;
+        return this;
+    }
+
+    public Set<ResourceEnum> getResourceEnums() {
+        return resourceEnums;
+    }
+
+    public PowerPlant withResourceEnums(Set<ResourceEnum> resourceEnums) {
+        this.resourceEnums = resourceEnums;
         return this;
     }
 

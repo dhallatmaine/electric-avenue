@@ -1,18 +1,12 @@
 package ea.services;
 
-import ea.data.City;
-import ea.data.Player;
-import ea.data.PowerPlant;
-import ea.data.Resource;
-import ea.engine.GameState;
-import ea.engine.State;
+import com.google.common.collect.ImmutableMap;
+import ea.data.*;
 import ea.rules.BaseRules;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.IntStream;
 
 @Component
 public class PlayerService {
@@ -30,6 +24,7 @@ public class PlayerService {
     player1.setOil(new LinkedList<>());
     player1.setTrash(new LinkedList<>());
     player1.setUranium(new LinkedList<>());
+    player1.setResources(new HashMap<>());
     playerList.add(player1);
 
     Player player2 = new Player();
@@ -41,6 +36,7 @@ public class PlayerService {
     player2.setOil(new LinkedList<>());
     player2.setTrash(new LinkedList<>());
     player2.setUranium(new LinkedList<>());
+    player2.setResources(new HashMap<>());
     playerList.add(player2);
 
     Player player3 = new Player();
@@ -52,6 +48,7 @@ public class PlayerService {
     player3.setOil(new LinkedList<>());
     player3.setTrash(new LinkedList<>());
     player3.setUranium(new LinkedList<>());
+    player3.setResources(new HashMap<>());
     playerList.add(player3);
 
     return playerList;
@@ -63,26 +60,39 @@ public class PlayerService {
     player.setMoney(money);
   }
 
-  public int getMaxResourcesAllowedForPurchase(Player player, int resource) {
-    int resources = 0;
-    if (resource == Resource.HYBRID) {
-      resources += getMaxAllowedResources(player, Resource.COAL);
-      resources += getMaxAllowedResources(player, Resource.OIL);
-    } else {
-      resources += getPlayerResourceListByConst(player, resource).size();
-    }
+  public int getMaxResourcesAllowedForPurchase(Player player, ResourceEnum resource) {
+    int capacity = player.getPowerPlants().stream()
+            .filter(plant -> plant.getResourceEnums().contains(resource))
+            .map(PowerPlant::getResources)
+            .mapToInt(Integer::intValue)
+            .sum();
 
-    int playerResources = getMaxAllowedResources(player, resource);
+    int held = Optional.ofNullable(player.getResources())
+            .orElse(ImmutableMap.of())
+            .values().stream()
+            .filter(resourceEnums -> resourceEnums.contains(resource))
+            .map(List::size)
+            .mapToInt(Integer::intValue)
+            .sum();
 
-    return playerResources - resources;
+    return capacity - held;
   }
 
-  public void addToPlayerResources(Player player, int choice, int amount) {
-    List<Resource> resources = getPlayerResourceListByConst(player, choice);
-    while (amount > 0) {
-      resources.add(new Resource(choice, 0));
-      amount--;
-    }
+  public void addToPlayerResources(
+          Player player,
+          ResourceEnum type,
+          int amountToAdd) {
+
+    IntStream.range(0, amountToAdd)
+            .forEach(i ->
+                    player.getResources().entrySet().stream()
+                            .forEach(entry -> {
+                              if (!entry.getKey().getResources().equals(entry.getValue().size())
+                                      && entry.getKey().getResourceEnums().contains(type)) {
+                                entry.getValue().add(type);
+                              }
+                            })
+            );
   }
 
   public void removeFromPlayerResources(Player player, List<Resource> resources, int amount) {
@@ -98,37 +108,6 @@ public class PlayerService {
   public void addToPlayerCities(Player player, City city) {
     List<City> playersCities = player.getCities();
     playersCities.add(city);
-  }
-
-  private List<Resource> getPlayerResourceListByConst(Player player, int resource) {
-    switch (resource) {
-      case 1:
-        return player.getCoal();
-      case 2:
-        return player.getOil();
-      case 3:
-        return player.getTrash();
-      case 4:
-        return player.getUranium();
-      default:
-        return null;
-    }
-  }
-
-  private Integer getMaxAllowedResources(Player player, int resource) {
-    List<PowerPlant> plants = player.getPowerPlants();
-
-    int resources = 0;
-    Iterator itr = plants.iterator();
-    while (itr.hasNext()) {
-      PowerPlant plant = (PowerPlant) itr.next();
-
-      if ((plant.getType() == resource) || (plant.getType() == Resource.HYBRID && (resource == Resource.COAL || resource == Resource.OIL))) {
-        resources += plant.getResources();
-      }
-    }
-
-    return resources;
   }
 
 }
