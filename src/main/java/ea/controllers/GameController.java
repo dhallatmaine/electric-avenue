@@ -1,6 +1,6 @@
 package ea.controllers;
 
-import ea.engine.GameState;
+import ea.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/game")
 public class GameController {
 
-    private GameState gameState;
+    private GameService gameService;
 
     @Autowired
-    public GameController(GameState gameState) {
-        this.gameState = gameState;
+    public GameController(GameService gameService) {
+        this.gameService = gameService;
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Integer createNewGame() {
-        return gameState.createNewGame();
+        return gameService.createGame();
     }
 
 }

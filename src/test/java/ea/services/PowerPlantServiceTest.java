@@ -21,14 +21,11 @@ import static org.mockito.Mockito.*;
 @RunWith(JUnitParamsRunner.class)
 public class PowerPlantServiceTest {
 
-    private GameState gameState;
     private PowerPlantService target;
 
     @Before
     public void setup() {
-        gameState = mock(GameState.class);
-
-        target = new PowerPlantService(gameState);
+        target = new PowerPlantService();
     }
 
     @Test
@@ -40,7 +37,8 @@ public class PowerPlantServiceTest {
     public void shuffleDeck(
             boolean thirteen,
             String description) {
-        // Given
+
+        // Arrange
         List<PowerPlant> plantsToShuffle = ImmutableList.of(
                 new PowerPlant().withValue(10),
                 new PowerPlant().withValue(11),
@@ -59,7 +57,7 @@ public class PowerPlantServiceTest {
 
     @Test
     public void flipNewCard() {
-        // Given
+        // Arrange
         State game = new State()
                 .withDeckPlants(new LinkedList<>(Arrays.asList(
                         new PowerPlant().withValue(13),
@@ -75,11 +73,8 @@ public class PowerPlantServiceTest {
                         new PowerPlant().withValue(9),
                         new PowerPlant().withValue(10))));
 
-        when(gameState.getById(any()))
-                .thenReturn(game);
-
         // Act
-        target.flipNewCard(1, new PowerPlant().withValue(3));
+        target.flipNewCard(game, new PowerPlant().withValue(3));
 
         // Assert
         assertThat(game.getDeckPlants()).isEqualTo(ImmutableList.of(
@@ -98,7 +93,7 @@ public class PowerPlantServiceTest {
 
     @Test
     public void setupCurrentMarket() {
-        // Given
+        // Arrange
         State state = new State()
                 .withDeckPlants(new LinkedList<>(Arrays.asList(
                         new PowerPlant().withValue(3),
@@ -109,11 +104,8 @@ public class PowerPlantServiceTest {
                         new PowerPlant().withValue(8)
                 )));
 
-        // When
-        when(gameState.getById(any()))
-                .thenReturn(state);
-
-        target.setupCurrentMarket(1);
+        // Act
+        target.setupCurrentMarket(state);
 
         // Assert
         assertThat(state.getCurrentMarketPlants()).isEqualTo(ImmutableList.of(
@@ -130,7 +122,7 @@ public class PowerPlantServiceTest {
 
     @Test
     public void setupFutureMarket() {
-        // Given
+        // Arrange
         State state = new State()
                 .withDeckPlants(new LinkedList<>(Arrays.asList(
                         new PowerPlant().withValue(7),
@@ -141,11 +133,8 @@ public class PowerPlantServiceTest {
                         new PowerPlant().withValue(12)
                 )));
 
-        // When
-        when(gameState.getById(any()))
-                .thenReturn(state);
-
-        target.setupFutureMarket(1);
+        // Act
+        target.setupFutureMarket(state);
 
         // Assert
         assertThat(state.getFutureMarketPlants()).isEqualTo(ImmutableList.of(

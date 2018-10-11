@@ -4,9 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import ea.data.PowerPlant;
 import ea.data.Resource;
 import ea.data.ResourceEnum;
-import ea.engine.GameState;
 import ea.engine.State;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -14,13 +12,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class PowerPlantService {
-
-  private final GameState gameState;
-
-  @Autowired
-  public PowerPlantService(GameState gameState) {
-    this.gameState = gameState;
-  }
 
   private List<PowerPlant> discardPlants;
 
@@ -346,8 +337,7 @@ public class PowerPlantService {
     return shuffled;
   }
 
-  public void flipNewCard(Integer gameId, PowerPlant removedCard) {
-    State game = gameState.getById(gameId);
+  public void flipNewCard(State game, PowerPlant removedCard) {
     game.getCurrentMarketPlants().remove(removedCard);
 
     PowerPlant topPlant = game.getDeckPlants().remove(0);
@@ -359,8 +349,7 @@ public class PowerPlantService {
     sortPlants(game.getCurrentMarketPlants());
   }
 
-  public void setupCurrentMarket(Integer gameId) {
-    State game = gameState.getById(gameId);
+  public void setupCurrentMarket(State game) {
     List<PowerPlant> plants = game.getDeckPlants().stream()
             .limit(4)
             .collect(Collectors.toList());
@@ -369,8 +358,7 @@ public class PowerPlantService {
     game.getDeckPlants().removeAll(plants);
   }
 
-  public void setupFutureMarket(Integer gameId) {
-    State game = gameState.getById(gameId);
+  public void setupFutureMarket(State game) {
     List<PowerPlant> plants = game.getDeckPlants().stream()
             .limit(4)
             .collect(Collectors.toList());

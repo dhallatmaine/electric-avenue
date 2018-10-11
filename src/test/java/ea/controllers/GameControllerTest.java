@@ -1,6 +1,6 @@
 package ea.controllers;
 
-import ea.engine.GameState;
+import ea.services.GameService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,20 +10,20 @@ import static org.mockito.Mockito.when;
 
 public class GameControllerTest {
 
-    private GameState gameState;
+    private GameService gameService;
     private GameController target;
 
     @Before
     public void setup() {
-        gameState = mock(GameState.class);
+        gameService = mock(GameService.class);
 
-        target = new GameController(gameState);
+        target = new GameController(gameService);
     }
 
     @Test
     public void createNewGame() {
         // Arrange
-        when(gameState.createNewGame())
+        when(gameService.createGame())
                 .thenReturn(0);
 
         // Act

@@ -41,7 +41,8 @@ public class ResourceServiceTest {
             Integer amount,
             Integer expectedPrice,
             String description) {
-        // Given
+
+        // Arrange
         ResourceEnum resourceType = ResourceEnum.valueOf(type);
 
         // Act
@@ -64,7 +65,8 @@ public class ResourceServiceTest {
             Integer amount,
             String expected,
             String description) {
-        // Given
+
+        // Arrange
         ResourceEnum resourceType = ResourceEnum.valueOf(type);
         List<Integer> expectedMarket = Arrays.stream(expected.split(";"))
                 .map(Integer::valueOf)

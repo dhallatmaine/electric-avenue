@@ -47,6 +47,7 @@ public class PlayerServiceTest {
             Integer expectedPurchaseAmount,
             String description) {
 
+        // Arrange
         PowerPlant plant = new PowerPlant()
                 .withResources(plantResourcesCapacity)
                 .withResourceEnums(
@@ -59,14 +60,16 @@ public class PlayerServiceTest {
                 player.setResources(ImmutableMap.of(
                         plant, ImmutableList.of(ResourceEnum.valueOf(playerResources)))));
 
+        // Act
         int actual = target.getMaxResourcesAllowedForPurchase(player, ResourceEnum.valueOf(typeBeingPurchased));
 
+        // Assert
         assertThat(actual).isEqualTo(expectedPurchaseAmount);
     }
 
     @Test
     public void addToPlayerResources() {
-        // Given
+        // Arrange
         PowerPlant plant = new PowerPlant()
                 .withValue(1)
                 .withResources(2)
