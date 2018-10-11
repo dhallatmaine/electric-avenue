@@ -9,19 +9,7 @@ public class Player {
     private Integer money;
     private List<PowerPlant> powerPlants;
     private List<City> cities;
-    private List<Resource> coal;
-    private List<Resource> oil;
-    private List<Resource> trash;
-    private List<Resource> uranium;
     private Map<PowerPlant, List<ResourceEnum>> resources;
-
-    public Map<PowerPlant, List<ResourceEnum>> getResources() {
-        return resources;
-    }
-
-    public void setResources(Map<PowerPlant, List<ResourceEnum>> resources) {
-        this.resources = resources;
-    }
 
     public String getName() {
         return name;
@@ -55,36 +43,12 @@ public class Player {
         this.cities = cities;
     }
 
-    public List<Resource> getCoal() {
-        return coal;
+    public Map<PowerPlant, List<ResourceEnum>> getResources() {
+        return resources;
     }
 
-    public void setCoal(List<Resource> coal) {
-        this.coal = coal;
-    }
-
-    public List<Resource> getOil() {
-        return oil;
-    }
-
-    public void setOil(List<Resource> oil) {
-        this.oil = oil;
-    }
-
-    public List<Resource> getTrash() {
-        return trash;
-    }
-
-    public void setTrash(List<Resource> trash) {
-        this.trash = trash;
-    }
-
-    public List<Resource> getUranium() {
-        return uranium;
-    }
-
-    public void setUranium(List<Resource> uranium) {
-        this.uranium = uranium;
+    public void setResources(Map<PowerPlant, List<ResourceEnum>> resources) {
+        this.resources = resources;
     }
 
 }

@@ -20,10 +20,6 @@ public class PlayerService {
     List<City> cities = new LinkedList<>();
     player1.setCities(cities);
     player1.setPowerPlants(new LinkedList<>());
-    player1.setCoal(new LinkedList<>());
-    player1.setOil(new LinkedList<>());
-    player1.setTrash(new LinkedList<>());
-    player1.setUranium(new LinkedList<>());
     player1.setResources(new HashMap<>());
     playerList.add(player1);
 
@@ -32,10 +28,6 @@ public class PlayerService {
     player2.setName("Player 2");
     player2.setCities(new LinkedList<>());
     player2.setPowerPlants(new LinkedList<>());
-    player2.setCoal(new LinkedList<>());
-    player2.setOil(new LinkedList<>());
-    player2.setTrash(new LinkedList<>());
-    player2.setUranium(new LinkedList<>());
     player2.setResources(new HashMap<>());
     playerList.add(player2);
 
@@ -44,10 +36,6 @@ public class PlayerService {
     player3.setName("Player 3");
     player3.setCities(new LinkedList<>());
     player3.setPowerPlants(new LinkedList<>());
-    player3.setCoal(new LinkedList<>());
-    player3.setOil(new LinkedList<>());
-    player3.setTrash(new LinkedList<>());
-    player3.setUranium(new LinkedList<>());
     player3.setResources(new HashMap<>());
     playerList.add(player3);
 
@@ -93,16 +81,6 @@ public class PlayerService {
                               }
                             })
             );
-  }
-
-  public void removeFromPlayerResources(Player player, List<Resource> resources, int amount) {
-    if (resources.size() >= amount) {
-      Iterator itr = resources.iterator();
-      while (itr.hasNext() && amount > 0) {
-        itr.remove();
-        amount--;
-      }
-    }
   }
 
   public void addToPlayerCities(Player player, City city) {
