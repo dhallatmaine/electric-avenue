@@ -68,4 +68,9 @@ public class Player {
     public void setColor(Color color) {
         this.color = color;
     }
+
+    public Player withColor(Color color) {
+        this.color = color;
+        return this;
+    }
 }
