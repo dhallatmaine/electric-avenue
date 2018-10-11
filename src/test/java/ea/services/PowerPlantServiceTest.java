@@ -10,20 +10,25 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(JUnitParamsRunner.class)
 public class PowerPlantServiceTest {
 
-    private PowerPlantService target;
+    ShuffleService shuffleService;
+    PowerPlantService target;
 
     @Before
     public void setup() {
-        target = new PowerPlantService();
+        shuffleService = mock(ShuffleService.class);
+        target = new PowerPlantService(shuffleService);
     }
 
     @Test
@@ -43,13 +48,22 @@ public class PowerPlantServiceTest {
                 new PowerPlant().withValue(12),
                 new PowerPlant().withValue(13));
 
+        List<PowerPlant> shuffled = new ArrayList<>(Arrays.asList(
+                new PowerPlant().withValue(12),
+                new PowerPlant().withValue(11),
+                new PowerPlant().withValue(13),
+                new PowerPlant().withValue(10)));
+
+        when(shuffleService.shuffle(plantsToShuffle))
+                .thenReturn(shuffled);
+
         // Act
-        List<PowerPlant> shuffled = target.shuffleDeck(plantsToShuffle, thirteen);
+        List<PowerPlant> actual = target.shuffleDeck(plantsToShuffle, thirteen);
 
         // Assert
-        assertThat(shuffled.size()).isEqualTo(5);
+        assertThat(actual.size()).isEqualTo(5);
         if (thirteen) {
-            assertThat(shuffled.get(0).getValue()).isEqualTo(13);
+            assertThat(actual.get(0).getValue()).isEqualTo(13);
         }
     }
 

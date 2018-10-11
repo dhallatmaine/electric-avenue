@@ -1,5 +1,6 @@
 package ea.services;
 
+import ea.data.Color;
 import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.maps.America;
@@ -16,15 +17,18 @@ public class GameService {
     private GameState gameState;
     private PlayerService playerService;
     private PowerPlantService powerPlantService;
+    private TurnOrderService turnOrderService;
 
     @Autowired
     public GameService(
             GameState gameState,
             PlayerService playerService,
-            PowerPlantService powerPlantService) {
+            PowerPlantService powerPlantService,
+            TurnOrderService turnOrderService) {
         this.gameState = gameState;
         this.playerService = playerService;
         this.powerPlantService = powerPlantService;
+        this.turnOrderService = turnOrderService;
     }
 
     public State getGame(Integer id) {
@@ -41,10 +45,12 @@ public class GameService {
         List<PowerPlant> shuffledDeck = powerPlantService.shuffleDeck(deck, true);
 
         List<Player> players = playerService.setupPlayers();
+        List<Color> turnOrder = turnOrderService.determineInitialTurnOrder(players);
 
         return gameState.createNewGame(
                 America.initializeResources(),
                 players,
+                turnOrder,
                 shuffledDeck,
                 currentMarket,
                 futureMarket);

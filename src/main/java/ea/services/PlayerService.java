@@ -16,6 +16,7 @@ public class PlayerService {
 
     Player player1 = new Player();
     player1.setId(1L);
+    player1.setColor(Color.BLACK);
     player1.setMoney(BaseRules.START_MONEY);
     player1.setName("Player 1");
     player1.setCities(new LinkedList<>());
@@ -25,6 +26,7 @@ public class PlayerService {
 
     Player player2 = new Player();
     player2.setId(2L);
+    player2.setColor(Color.BLUE);
     player2.setMoney(BaseRules.START_MONEY);
     player2.setName("Player 2");
     player2.setCities(new LinkedList<>());
@@ -34,6 +36,7 @@ public class PlayerService {
 
     Player player3 = new Player();
     player3.setId(3L);
+    player3.setColor(Color.GREEN);
     player3.setMoney(BaseRules.START_MONEY);
     player3.setName("Player 3");
     player3.setCities(new LinkedList<>());

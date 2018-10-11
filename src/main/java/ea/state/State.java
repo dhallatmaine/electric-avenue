@@ -1,5 +1,6 @@
 package ea.state;
 
+import ea.data.Color;
 import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.data.Resource;
@@ -13,10 +14,9 @@ public class State {
     private List<PowerPlant> deckPlants;
     private List<PowerPlant> currentMarketPlants;
     private List<PowerPlant> futureMarketPlants;
-
     private Map<Resource, List<Integer>> resources;
-
     private List<Player> players;
+    private List<Color> turnOrder;
 
     public State() {
         round = 1;
@@ -86,4 +86,12 @@ public class State {
         return this;
     }
 
+    public List<Color> getTurnOrder() {
+        return turnOrder;
+    }
+
+    public State withTurnOrder(List<Color> turnOrder) {
+        this.turnOrder = turnOrder;
+        return this;
+    }
 }

@@ -11,6 +11,7 @@ public class Player {
     private List<PowerPlant> powerPlants;
     private List<City> cities;
     private Map<PowerPlant, List<Resource>> resources;
+    private Color color;
 
     public Long getId() {
         return id;
@@ -60,4 +61,11 @@ public class Player {
         this.resources = resources;
     }
 
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
 }

@@ -1,5 +1,6 @@
 package ea.state;
 
+import ea.data.Color;
 import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.data.Resource;
@@ -29,6 +30,7 @@ public class GameState {
     public Integer createNewGame(
             Map<Resource, List<Integer>> resources,
             List<Player> players,
+            List<Color> turnOrder,
             List<PowerPlant> deck,
             List<PowerPlant> currentMarket,
             List<PowerPlant> futureMarket) {
@@ -37,6 +39,7 @@ public class GameState {
                 new State()
                         .withResources(resources)
                         .withPlayers(players)
+                        .withTurnOrder(turnOrder)
                         .withDeckPlants(deck)
                         .withCurrentMarketPlants(currentMarket)
                         .withFutureMarketPlants(futureMarket));
