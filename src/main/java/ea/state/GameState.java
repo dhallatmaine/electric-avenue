@@ -19,10 +19,6 @@ public class GameState {
     private AtomicInteger currentId = new AtomicInteger();
     private Map<Integer, State> stateMap = new HashMap<>();
 
-    public Map<Integer, State> getStateMap() {
-        return stateMap;
-    }
-
     public State getById(Integer id) {
         return stateMap.get(id);
     }
@@ -42,7 +38,8 @@ public class GameState {
                         .withTurnOrder(turnOrder)
                         .withDeckPlants(deck)
                         .withCurrentMarketPlants(currentMarket)
-                        .withFutureMarketPlants(futureMarket));
+                        .withFutureMarketPlants(futureMarket)
+                        .withCurrentTurn(turnOrder.get(0)));
         return currentId.getAndIncrement();
     }
 

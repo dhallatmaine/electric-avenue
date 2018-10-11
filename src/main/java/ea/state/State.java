@@ -17,6 +17,7 @@ public class State {
     private Map<Resource, List<Integer>> resources;
     private List<Player> players;
     private List<Color> turnOrder;
+    private Color currentTurn;
 
     public State() {
         round = 1;
@@ -37,8 +38,9 @@ public class State {
         return round;
     }
 
-    public void setRound(Integer round) {
+    public State withRound(Integer round) {
         this.round = round;
+        return this;
     }
 
     public List<PowerPlant> getDeckPlants() {
@@ -92,6 +94,15 @@ public class State {
 
     public State withTurnOrder(List<Color> turnOrder) {
         this.turnOrder = turnOrder;
+        return this;
+    }
+
+    public Color getCurrentTurn() {
+        return currentTurn;
+    }
+
+    public State withCurrentTurn(Color currentTurn) {
+        this.currentTurn = currentTurn;
         return this;
     }
 }
