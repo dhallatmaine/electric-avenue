@@ -1,5 +1,6 @@
 package ea.services;
 
+import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.maps.America;
 import ea.state.GameState;
@@ -39,9 +40,11 @@ public class GameService {
 
         List<PowerPlant> shuffledDeck = powerPlantService.shuffleDeck(deck, true);
 
+        List<Player> players = playerService.setupPlayers();
+
         return gameState.createNewGame(
                 America.initializeResources(),
-                playerService.setupPlayers(),
+                players,
                 shuffledDeck,
                 currentMarket,
                 futureMarket);
