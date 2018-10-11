@@ -2,8 +2,12 @@ package ea.controllers;
 
 import ea.services.GameService;
 import ea.state.State;
+import junitparams.Parameters;
+import junitparams.naming.TestCaseName;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -28,7 +32,7 @@ public class GameControllerTest {
         State state = mock(State.class);
 
         when(gameService.getGame(id))
-                .thenReturn(state);
+                .thenReturn(Optional.of(state));
 
         // Act
         State actual = target.getGame(id);

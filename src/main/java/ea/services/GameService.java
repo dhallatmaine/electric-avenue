@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class GameService {
@@ -31,8 +32,8 @@ public class GameService {
         this.turnOrderService = turnOrderService;
     }
 
-    public State getGame(Integer id) {
-        return gameState.getById(id);
+    public Optional<State> getGame(Integer id) {
+        return Optional.ofNullable(gameState.getById(id));
     }
 
     public Integer createGame() {

@@ -1,5 +1,6 @@
 package ea.controllers;
 
+import ea.exceptions.GameNotFoundException;
 import ea.services.GameService;
 import ea.state.State;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,8 @@ public class GameController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping("/{id}")
     public State getGame(@PathVariable("id") Integer id) {
-        return gameService.getGame(id);
+        return gameService.getGame(id)
+                .orElseThrow(GameNotFoundException::new);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
