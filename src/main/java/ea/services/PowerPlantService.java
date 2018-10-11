@@ -279,16 +279,23 @@ public class PowerPlantService {
         return plants;
     }
 
+    public PowerPlant createThirteenPlant() {
+        return new PowerPlant()
+                .withValue(13)
+                .withPoweredCities(1)
+                .withResources(1)
+                .withResourceEnums(ImmutableSet.of(Resource.GREEN));
+    }
+
     public List<PowerPlant> shuffleDeck(List<PowerPlant> plants, boolean thirteenPlant) {
         List<PowerPlant> shuffled = shuffleService.shuffle(plants);
 
-        // not all maps place 13 on the top of the shuffled deck
         if (thirteenPlant) {
-            Optional<PowerPlant> thirteenPowerPlant = getPowerPlantInDeckByValue(shuffled, 13);
-            thirteenPowerPlant.ifPresent(thirteen -> {
-                shuffled.remove(thirteen);
-                shuffled.add(0, thirteen);
-            });
+            shuffled = shuffled.stream()
+                    .filter(plant -> !plant.getValue().equals(13))
+                    .collect(Collectors.toList());
+            shuffled = Stream.concat(Stream.of(createThirteenPlant()), shuffled.stream())
+                        .collect(Collectors.toList());
         }
 
         // phase 3 card

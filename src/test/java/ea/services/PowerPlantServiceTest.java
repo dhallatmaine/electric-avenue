@@ -48,11 +48,11 @@ public class PowerPlantServiceTest {
                 new PowerPlant().withValue(12),
                 new PowerPlant().withValue(13));
 
-        List<PowerPlant> shuffled = new ArrayList<>(Arrays.asList(
+        List<PowerPlant> shuffled = ImmutableList.of(
                 new PowerPlant().withValue(12),
                 new PowerPlant().withValue(11),
                 new PowerPlant().withValue(13),
-                new PowerPlant().withValue(10)));
+                new PowerPlant().withValue(10));
 
         when(shuffleService.shuffle(plantsToShuffle))
                 .thenReturn(shuffled);
@@ -63,7 +63,21 @@ public class PowerPlantServiceTest {
         // Assert
         assertThat(actual.size()).isEqualTo(5);
         if (thirteen) {
-            assertThat(actual.get(0).getValue()).isEqualTo(13);
+            assertThat(actual).isEqualTo(
+                    ImmutableList.of(
+                            new PowerPlant().withValue(13),
+                            new PowerPlant().withValue(12),
+                            new PowerPlant().withValue(11),
+                            new PowerPlant().withValue(10),
+                            new PowerPlant().withValue(0)));
+        } else {
+            assertThat(actual).isEqualTo(
+                    ImmutableList.of(
+                            new PowerPlant().withValue(12),
+                            new PowerPlant().withValue(11),
+                            new PowerPlant().withValue(13),
+                            new PowerPlant().withValue(10),
+                            new PowerPlant().withValue(0)));
         }
     }
 
