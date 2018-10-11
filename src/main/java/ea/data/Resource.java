@@ -1,6 +1,6 @@
 package ea.data;
 
-public enum ResourceEnum {
+public enum Resource {
 
     COAL, OIL, TRASH, URANIUM, GREEN
 

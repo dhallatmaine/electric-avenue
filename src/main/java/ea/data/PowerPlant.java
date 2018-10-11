@@ -6,9 +6,9 @@ public class PowerPlant implements Comparable<PowerPlant> {
 
     private Integer value;
     private Integer poweredCities;
-    private Integer resources;
+    private Integer resourceCapacity;
     private Integer type;
-    private Set<ResourceEnum> resourceEnums;
+    private Set<Resource> resources;
 
     public Integer getValue() {
         return value;
@@ -19,12 +19,12 @@ public class PowerPlant implements Comparable<PowerPlant> {
         return this;
     }
 
-    public Integer getResources() {
-        return resources;
+    public Integer getResourceCapacity() {
+        return resourceCapacity;
     }
 
     public PowerPlant withResources(Integer resources) {
-        this.resources = resources;
+        this.resourceCapacity = resources;
         return this;
     }
 
@@ -46,12 +46,12 @@ public class PowerPlant implements Comparable<PowerPlant> {
         return this;
     }
 
-    public Set<ResourceEnum> getResourceEnums() {
-        return resourceEnums;
+    public Set<Resource> getResources() {
+        return resources;
     }
 
-    public PowerPlant withResourceEnums(Set<ResourceEnum> resourceEnums) {
-        this.resourceEnums = resourceEnums;
+    public PowerPlant withResourceEnums(Set<Resource> resources) {
+        this.resources = resources;
         return this;
     }
 

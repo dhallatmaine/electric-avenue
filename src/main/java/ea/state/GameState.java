@@ -2,8 +2,7 @@ package ea.state;
 
 import ea.data.Player;
 import ea.data.PowerPlant;
-import ea.data.ResourceEnum;
-import ea.maps.America;
+import ea.data.Resource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +27,7 @@ public class GameState {
     }
 
     public Integer createNewGame(
-            Map<ResourceEnum, List<Integer>> resources,
+            Map<Resource, List<Integer>> resources,
             List<Player> players,
             List<PowerPlant> deck,
             List<PowerPlant> currentMarket,

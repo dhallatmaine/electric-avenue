@@ -2,7 +2,7 @@ package ea.state;
 
 import ea.data.Player;
 import ea.data.PowerPlant;
-import ea.data.ResourceEnum;
+import ea.data.Resource;
 
 import java.util.*;
 
@@ -14,7 +14,7 @@ public class State {
     private List<PowerPlant> currentMarketPlants;
     private List<PowerPlant> futureMarketPlants;
 
-    private Map<ResourceEnum, List<Integer>> resources;
+    private Map<Resource, List<Integer>> resources;
 
     private List<Player> players;
 
@@ -77,11 +77,11 @@ public class State {
         return this;
     }
 
-    public Map<ResourceEnum, List<Integer>> getResources() {
+    public Map<Resource, List<Integer>> getResources() {
         return resources;
     }
 
-    public State withResources(Map<ResourceEnum, List<Integer>> resources) {
+    public State withResources(Map<Resource, List<Integer>> resources) {
         this.resources = resources;
         return this;
     }

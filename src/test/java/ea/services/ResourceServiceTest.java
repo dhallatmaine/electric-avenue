@@ -1,6 +1,6 @@
 package ea.services;
 
-import ea.data.ResourceEnum;
+import ea.data.Resource;
 import ea.state.State;
 import ea.maps.America;
 import junitparams.JUnitParamsRunner;
@@ -43,7 +43,7 @@ public class ResourceServiceTest {
             String description) {
 
         // Arrange
-        ResourceEnum resourceType = ResourceEnum.valueOf(type);
+        Resource resourceType = Resource.valueOf(type);
 
         // Act
         Integer actual = target.getPrice(state.getResources().get(resourceType), amount);
@@ -67,7 +67,7 @@ public class ResourceServiceTest {
             String description) {
 
         // Arrange
-        ResourceEnum resourceType = ResourceEnum.valueOf(type);
+        Resource resourceType = Resource.valueOf(type);
         List<Integer> expectedMarket = Arrays.stream(expected.split(";"))
                 .map(Integer::valueOf)
                 .collect(Collectors.toList());

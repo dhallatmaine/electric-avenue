@@ -48,10 +48,10 @@ public class PlayerService {
     player.setMoney(money);
   }
 
-  public int getMaxResourcesAllowedForPurchase(Player player, ResourceEnum resource) {
+  public int getMaxResourcesAllowedForPurchase(Player player, Resource resource) {
     int capacity = player.getPowerPlants().stream()
-            .filter(plant -> plant.getResourceEnums().contains(resource))
-            .map(PowerPlant::getResources)
+            .filter(plant -> plant.getResources().contains(resource))
+            .map(PowerPlant::getResourceCapacity)
             .mapToInt(Integer::intValue)
             .sum();
 
@@ -68,15 +68,15 @@ public class PlayerService {
 
   public void addToPlayerResources(
           Player player,
-          ResourceEnum type,
+          Resource type,
           int amountToAdd) {
 
     IntStream.range(0, amountToAdd)
             .forEach(i ->
                     player.getResources().entrySet().stream()
                             .forEach(entry -> {
-                              if (!entry.getKey().getResources().equals(entry.getValue().size())
-                                      && entry.getKey().getResourceEnums().contains(type)) {
+                              if (!entry.getKey().getResourceCapacity().equals(entry.getValue().size())
+                                      && entry.getKey().getResources().contains(type)) {
                                 entry.getValue().add(type);
                               }
                             })

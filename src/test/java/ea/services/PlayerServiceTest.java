@@ -6,7 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import ea.data.Player;
 import ea.data.PowerPlant;
-import ea.data.ResourceEnum;
+import ea.data.Resource;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import junitparams.naming.TestCaseName;
@@ -52,16 +52,16 @@ public class PlayerServiceTest {
                 .withResources(plantResourcesCapacity)
                 .withResourceEnums(
                         Arrays.stream(plantResourcesStr.split(";"))
-                                .map(ResourceEnum::valueOf)
+                                .map(Resource::valueOf)
                                 .collect(Collectors.toSet()));
 
         player.setPowerPlants(ImmutableList.of(plant));
         Optional.ofNullable(Strings.emptyToNull(playerResources)).ifPresent(playerResource ->
                 player.setResources(ImmutableMap.of(
-                        plant, ImmutableList.of(ResourceEnum.valueOf(playerResources)))));
+                        plant, ImmutableList.of(Resource.valueOf(playerResources)))));
 
         // Act
-        int actual = target.getMaxResourcesAllowedForPurchase(player, ResourceEnum.valueOf(typeBeingPurchased));
+        int actual = target.getMaxResourcesAllowedForPurchase(player, Resource.valueOf(typeBeingPurchased));
 
         // Assert
         assertThat(actual).isEqualTo(expectedPurchaseAmount);
@@ -73,13 +73,13 @@ public class PlayerServiceTest {
         PowerPlant plant = new PowerPlant()
                 .withValue(1)
                 .withResources(2)
-                .withResourceEnums(ImmutableSet.of(ResourceEnum.COAL));
+                .withResourceEnums(ImmutableSet.of(Resource.COAL));
 
         player.setPowerPlants(ImmutableList.of(plant));
         player.setResources(ImmutableMap.of(plant, new ArrayList<>()));
 
         // Act
-        target.addToPlayerResources(player, ResourceEnum.COAL, 2);
+        target.addToPlayerResources(player, Resource.COAL, 2);
 
         // Assert
         assertThat(player.getResources().get(plant).size()).isEqualTo(2);

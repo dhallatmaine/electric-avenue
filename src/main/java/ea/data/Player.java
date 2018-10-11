@@ -9,7 +9,7 @@ public class Player {
     private Integer money;
     private List<PowerPlant> powerPlants;
     private List<City> cities;
-    private Map<PowerPlant, List<ResourceEnum>> resources;
+    private Map<PowerPlant, List<Resource>> resources;
 
     public String getName() {
         return name;
@@ -43,11 +43,11 @@ public class Player {
         this.cities = cities;
     }
 
-    public Map<PowerPlant, List<ResourceEnum>> getResources() {
+    public Map<PowerPlant, List<Resource>> getResources() {
         return resources;
     }
 
-    public void setResources(Map<PowerPlant, List<ResourceEnum>> resources) {
+    public void setResources(Map<PowerPlant, List<Resource>> resources) {
         this.resources = resources;
     }
 

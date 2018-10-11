@@ -2,7 +2,7 @@ package ea.maps;
 
 import com.google.common.collect.ImmutableList;
 import ea.data.City;
-import ea.data.ResourceEnum;
+import ea.data.Resource;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -92,10 +92,10 @@ public class America extends BaseMap {
     setCities(Arrays.asList(miami, tampa, jacksonville, savannah, atlanta, raleigh, birmingham, knoxville));
   }
 
-  public static Map<ResourceEnum, List<Integer>> initializeResources() {
-    Map<ResourceEnum, List<Integer>> built = new HashMap<>();
+  public static Map<Resource, List<Integer>> initializeResources() {
+    Map<Resource, List<Integer>> built = new HashMap<>();
 
-    built.put(ResourceEnum.COAL, ImmutableList.of(
+    built.put(Resource.COAL, ImmutableList.of(
             1, 1, 1,
             2, 2, 2,
             3, 3, 3,
@@ -105,7 +105,7 @@ public class America extends BaseMap {
             7, 7, 7,
             8, 8, 8));
 
-    built.put(ResourceEnum.OIL, ImmutableList.of(
+    built.put(Resource.OIL, ImmutableList.of(
             0, 0, 0,
             0, 0, 0,
             3, 3, 3,
@@ -115,7 +115,7 @@ public class America extends BaseMap {
             7, 7, 7,
             8, 8, 8));
 
-    built.put(ResourceEnum.TRASH, ImmutableList.of(
+    built.put(Resource.TRASH, ImmutableList.of(
             0, 0, 0,
             0, 0, 0,
             0, 0, 0,
@@ -125,7 +125,7 @@ public class America extends BaseMap {
             7, 7, 7,
             8, 8, 8));
 
-    built.put(ResourceEnum.URANIUM, ImmutableList.of(
+    built.put(Resource.URANIUM, ImmutableList.of(
             0,
             0,
             0,
