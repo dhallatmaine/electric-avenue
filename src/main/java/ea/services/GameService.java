@@ -1,7 +1,7 @@
 package ea.services;
 
-import ea.engine.GameState;
-import ea.engine.State;
+import ea.state.GameState;
+import ea.state.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

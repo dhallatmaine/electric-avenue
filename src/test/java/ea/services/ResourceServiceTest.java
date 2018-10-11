@@ -1,7 +1,7 @@
 package ea.services;
 
 import ea.data.ResourceEnum;
-import ea.engine.State;
+import ea.state.State;
 import ea.maps.America;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;

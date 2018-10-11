@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import ea.data.PowerPlant;
 import ea.data.Resource;
 import ea.data.ResourceEnum;
-import ea.engine.State;
+import ea.state.State;
 import org.springframework.stereotype.Component;
 
 import java.util.*;

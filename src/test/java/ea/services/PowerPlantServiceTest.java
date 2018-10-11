@@ -2,8 +2,7 @@ package ea.services;
 
 import com.google.common.collect.ImmutableList;
 import ea.data.PowerPlant;
-import ea.engine.GameState;
-import ea.engine.State;
+import ea.state.State;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import junitparams.naming.TestCaseName;
@@ -16,7 +15,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
 
 @RunWith(JUnitParamsRunner.class)
 public class PowerPlantServiceTest {

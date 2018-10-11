@@ -1,4 +1,4 @@
-package ea.engine;
+package ea.state;
 
 import ea.data.Player;
 import ea.data.PowerPlant;

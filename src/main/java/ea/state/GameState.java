@@ -1,4 +1,4 @@
-package ea.engine;
+package ea.state;
 
 import ea.maps.America;
 import org.springframework.context.annotation.Scope;
