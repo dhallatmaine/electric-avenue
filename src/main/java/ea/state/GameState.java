@@ -1,10 +1,12 @@
 package ea.state;
 
+import ea.data.Player;
 import ea.maps.America;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -23,10 +25,12 @@ public class GameState {
         return stateMap.get(id);
     }
 
-    public Integer createNewGame() {
+    public Integer createNewGame(List<Player> players) {
         stateMap.put(
                 currentId.get(),
-                new State().withResources(America.initializeResources()));
+                new State()
+                        .withResources(America.initializeResources())
+                        .withPlayers(players));
         return currentId.getAndIncrement();
     }
 

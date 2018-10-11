@@ -9,10 +9,14 @@ import org.springframework.stereotype.Component;
 public class GameService {
 
     private GameState gameState;
+    private PlayerService playerService;
 
     @Autowired
-    public GameService(GameState gameState) {
+    public GameService(
+            GameState gameState,
+            PlayerService playerService) {
         this.gameState = gameState;
+        this.playerService = playerService;
     }
 
     public State getGame(Integer id) {
@@ -20,7 +24,7 @@ public class GameService {
     }
 
     public Integer createGame() {
-        return gameState.createNewGame();
+        return gameState.createNewGame(playerService.setupPlayers());
     }
 
 }

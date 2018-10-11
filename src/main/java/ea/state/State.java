@@ -72,8 +72,9 @@ public class State {
         return players;
     }
 
-    public void setPlayers(List<Player> players) {
+    public State withPlayers(List<Player> players) {
         this.players = players;
+        return this;
     }
 
     public Map<ResourceEnum, List<Integer>> getResources() {
