@@ -92,58 +92,46 @@ public class PowerPlantServiceTest {
     @Test
     public void setupCurrentMarket() {
         // Arrange
-        State state = new State()
-                .withDeckPlants(new LinkedList<>(Arrays.asList(
-                        new PowerPlant().withValue(3),
-                        new PowerPlant().withValue(4),
-                        new PowerPlant().withValue(5),
-                        new PowerPlant().withValue(6),
-                        new PowerPlant().withValue(7),
-                        new PowerPlant().withValue(8)
-                )));
+        List<PowerPlant> deck = ImmutableList.of(
+                new PowerPlant().withValue(3),
+                new PowerPlant().withValue(4),
+                new PowerPlant().withValue(5),
+                new PowerPlant().withValue(6),
+                new PowerPlant().withValue(7),
+                new PowerPlant().withValue(8));
 
         // Act
-        target.setupCurrentMarket(state);
+        List<PowerPlant> actual = target.setupCurrentMarket(deck);
 
         // Assert
-        assertThat(state.getCurrentMarketPlants()).isEqualTo(ImmutableList.of(
+        assertThat(actual).isEqualTo(ImmutableList.of(
                 new PowerPlant().withValue(3),
                 new PowerPlant().withValue(4),
                 new PowerPlant().withValue(5),
                 new PowerPlant().withValue(6)
-        ));
-        assertThat(state.getDeckPlants()).isEqualTo(ImmutableList.of(
-                new PowerPlant().withValue(7),
-                new PowerPlant().withValue(8)
         ));
     }
 
     @Test
     public void setupFutureMarket() {
         // Arrange
-        State state = new State()
-                .withDeckPlants(new LinkedList<>(Arrays.asList(
-                        new PowerPlant().withValue(7),
-                        new PowerPlant().withValue(8),
-                        new PowerPlant().withValue(9),
-                        new PowerPlant().withValue(10),
-                        new PowerPlant().withValue(11),
-                        new PowerPlant().withValue(12)
-                )));
+        List<PowerPlant> deck = ImmutableList.of(
+                new PowerPlant().withValue(7),
+                new PowerPlant().withValue(8),
+                new PowerPlant().withValue(9),
+                new PowerPlant().withValue(10),
+                new PowerPlant().withValue(11),
+                new PowerPlant().withValue(12));
 
         // Act
-        target.setupFutureMarket(state);
+        List<PowerPlant> actual = target.setupFutureMarket(deck);
 
         // Assert
-        assertThat(state.getFutureMarketPlants()).isEqualTo(ImmutableList.of(
+        assertThat(actual).isEqualTo(ImmutableList.of(
                 new PowerPlant().withValue(7),
                 new PowerPlant().withValue(8),
                 new PowerPlant().withValue(9),
                 new PowerPlant().withValue(10)
-        ));
-        assertThat(state.getDeckPlants()).isEqualTo(ImmutableList.of(
-                new PowerPlant().withValue(11),
-                new PowerPlant().withValue(12)
         ));
     }
 

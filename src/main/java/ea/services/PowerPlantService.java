@@ -349,22 +349,16 @@ public class PowerPlantService {
     sortPlants(game.getCurrentMarketPlants());
   }
 
-  public void setupCurrentMarket(State game) {
-    List<PowerPlant> plants = game.getDeckPlants().stream()
+  public List<PowerPlant> setupCurrentMarket(List<PowerPlant> deck) {
+    return deck.stream()
             .limit(4)
             .collect(Collectors.toList());
-
-    game.withCurrentMarketPlants(plants);
-    game.getDeckPlants().removeAll(plants);
   }
 
-  public void setupFutureMarket(State game) {
-    List<PowerPlant> plants = game.getDeckPlants().stream()
+  public List<PowerPlant> setupFutureMarket(List<PowerPlant> deck) {
+    return deck.stream()
             .limit(4)
             .collect(Collectors.toList());
-
-    game.withFutureMarketPlants(plants);
-    game.getDeckPlants().removeAll(plants);
   }
 
   private void sortPlants(List<PowerPlant> plants) {
