@@ -17,56 +17,58 @@ public class Player {
         return id;
     }
 
-    public void setId(Long id) {
+    public Player withId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Player withName(String name) {
         this.name = name;
+        return this;
     }
 
     public Integer getMoney() {
         return money;
     }
 
-    public void setMoney(Integer money) {
+    public Player withMoney(Integer money) {
         this.money = money;
+        return this;
     }
 
     public List<PowerPlant> getPowerPlants() {
         return powerPlants;
     }
 
-    public void setPowerPlants(List<PowerPlant> powerPlants) {
+    public Player withPowerPlants(List<PowerPlant> powerPlants) {
         this.powerPlants = powerPlants;
+        return this;
     }
 
     public List<City> getCities() {
         return cities;
     }
 
-    public void setCities(List<City> cities) {
+    public Player withCities(List<City> cities) {
         this.cities = cities;
+        return this;
     }
 
     public Map<PowerPlant, List<Resource>> getResources() {
         return resources;
     }
 
-    public void setResources(Map<PowerPlant, List<Resource>> resources) {
+    public Player withResources(Map<PowerPlant, List<Resource>> resources) {
         this.resources = resources;
+        return this;
     }
 
     public Color getColor() {
         return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
     }
 
     public Player withColor(Color color) {

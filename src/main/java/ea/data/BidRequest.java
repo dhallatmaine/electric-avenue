@@ -4,6 +4,7 @@ public class BidRequest {
 
     private Color player;
     private Integer plantValue;
+    private Integer plantToRemoveValue;
     private Integer bidAmount;
 
     public Color getPlayer() {
@@ -20,6 +21,14 @@ public class BidRequest {
 
     public void setPlantValue(Integer plantValue) {
         this.plantValue = plantValue;
+    }
+
+    public Integer getPlantToRemoveValue() {
+        return plantToRemoveValue;
+    }
+
+    public void setPlantToRemoveValue(Integer plantToRemoveValue) {
+        this.plantToRemoveValue = plantToRemoveValue;
     }
 
     public Integer getBidAmount() {

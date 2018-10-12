@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -55,9 +56,9 @@ public class PlayerServiceTest {
                                 .map(Resource::valueOf)
                                 .collect(Collectors.toSet()));
 
-        player.setPowerPlants(ImmutableList.of(plant));
+        player.withPowerPlants(ImmutableList.of(plant));
         Optional.ofNullable(Strings.emptyToNull(playerResources)).ifPresent(playerResource ->
-                player.setResources(ImmutableMap.of(
+                player.withResources(ImmutableMap.of(
                         plant, ImmutableList.of(Resource.valueOf(playerResources)))));
 
         // Act
@@ -75,14 +76,52 @@ public class PlayerServiceTest {
                 .withResources(2)
                 .withResourceEnums(ImmutableSet.of(Resource.COAL));
 
-        player.setPowerPlants(ImmutableList.of(plant));
-        player.setResources(ImmutableMap.of(plant, new ArrayList<>()));
+        player.withPowerPlants(ImmutableList.of(plant));
+        player.withResources(ImmutableMap.of(plant, new ArrayList<>()));
 
         // Act
         target.addToPlayerResources(player, Resource.COAL, 2);
 
         // Assert
         assertThat(player.getResources().get(plant).size()).isEqualTo(2);
+    }
+
+    @Test
+    @Parameters({
+            "       | 5 |   | 5     | Add when player not violating max plant capacity",
+            " 1;2;3 | 5 | 1 | 2;3;5 | Add when player violating max plant capacity"
+    })
+    @TestCaseName("{4}")
+    public void addPlantToPlayer(
+            String playerPlantValuesStr,
+            String plantValueToAdd,
+            String plantValueToRemove,
+            String expectedPlants,
+            String description) {
+        // Arrange
+        PowerPlant plant = new PowerPlant()
+                .withValue(Integer.valueOf(plantValueToAdd));
+
+        List<PowerPlant> playerPlants = Arrays.stream(playerPlantValuesStr.split(";"))
+                .filter(str -> !str.isEmpty())
+                .map(value -> new PowerPlant().withValue(Integer.valueOf(value)))
+                .collect(Collectors.toList());
+
+        List<PowerPlant> expected = Arrays.stream(expectedPlants.split(";"))
+                .map(value -> new PowerPlant().withValue(Integer.valueOf(value)))
+                .collect(Collectors.toList());
+
+        player.withPowerPlants(playerPlants);
+
+        // Act
+        target.addPlantToPlayer(
+                player,
+                plant,
+                Optional.ofNullable(Strings.emptyToNull(plantValueToRemove))
+                        .map(value -> new PowerPlant().withValue(Integer.valueOf(value))));
+
+        // Assert
+        assertThat(player.getPowerPlants()).isEqualTo(expected);
     }
 
 }

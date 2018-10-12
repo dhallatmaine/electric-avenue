@@ -18,6 +18,8 @@ public class State {
     private List<Player> players;
     private List<Color> turnOrder;
     private Color currentTurn;
+    private List<Color> bidOrder;
+    private Integer currentBid;
 
     public State() {
         round = 1;
@@ -103,6 +105,24 @@ public class State {
 
     public State withCurrentTurn(Color currentTurn) {
         this.currentTurn = currentTurn;
+        return this;
+    }
+
+    public List<Color> getBidOrder() {
+        return bidOrder;
+    }
+
+    public State withBidOrder(List<Color> bidOrder) {
+        this.bidOrder = bidOrder;
+        return this;
+    }
+
+    public Integer getCurrentBid() {
+        return currentBid;
+    }
+
+    public State withCurrentBid(Integer currentBid) {
+        this.currentBid = currentBid;
         return this;
     }
 }

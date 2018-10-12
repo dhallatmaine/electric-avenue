@@ -1,56 +1,55 @@
 package ea.services;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import ea.data.*;
 import ea.rules.BaseRules;
+import ea.state.State;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Component
 public class PlayerService {
 
   public List<Player> setupPlayers() {
-    List<Player> playerList = new LinkedList<>();
+    Player player1 = new Player()
+            .withId(1L)
+            .withColor(Color.BLACK)
+            .withMoney(BaseRules.START_MONEY)
+            .withName("Player 1")
+            .withCities(new LinkedList<>())
+            .withPowerPlants(new LinkedList<>())
+            .withResources(new HashMap<>());
 
-    Player player1 = new Player();
-    player1.setId(1L);
-    player1.setColor(Color.BLACK);
-    player1.setMoney(BaseRules.START_MONEY);
-    player1.setName("Player 1");
-    player1.setCities(new LinkedList<>());
-    player1.setPowerPlants(new LinkedList<>());
-    player1.setResources(new HashMap<>());
-    playerList.add(player1);
+    Player player2 = new Player()
+            .withId(2L)
+            .withColor(Color.BLUE)
+            .withMoney(BaseRules.START_MONEY)
+            .withName("Player 2")
+            .withCities(new LinkedList<>())
+            .withPowerPlants(new LinkedList<>())
+            .withResources(new HashMap<>());
 
-    Player player2 = new Player();
-    player2.setId(2L);
-    player2.setColor(Color.BLUE);
-    player2.setMoney(BaseRules.START_MONEY);
-    player2.setName("Player 2");
-    player2.setCities(new LinkedList<>());
-    player2.setPowerPlants(new LinkedList<>());
-    player2.setResources(new HashMap<>());
-    playerList.add(player2);
+    Player player3 = new Player()
+            .withId(3L)
+            .withColor(Color.GREEN)
+            .withMoney(BaseRules.START_MONEY)
+            .withName("Player 3")
+            .withCities(new LinkedList<>())
+            .withPowerPlants(new LinkedList<>())
+            .withResources(new HashMap<>());
 
-    Player player3 = new Player();
-    player3.setId(3L);
-    player3.setColor(Color.GREEN);
-    player3.setMoney(BaseRules.START_MONEY);
-    player3.setName("Player 3");
-    player3.setCities(new LinkedList<>());
-    player3.setPowerPlants(new LinkedList<>());
-    player3.setResources(new HashMap<>());
-    playerList.add(player3);
-
-    return playerList;
+    return ImmutableList.of(player1, player2, player3);
   }
 
   public void subtractMoneyFromPlayer(Player player, int amount) {
     int money = player.getMoney();
     money = money - amount;
-    player.setMoney(money);
+    player.withMoney(money);
   }
 
   public int getMaxResourcesAllowedForPurchase(Player player, Resource resource) {
@@ -86,6 +85,24 @@ public class PlayerService {
                               }
                             })
             );
+  }
+
+  public Player findPlayerByColor(State game, Color color) {
+    return game.getPlayers().stream()
+            .filter(player -> player.getColor().equals(color))
+            .findFirst()
+            .get();
+  }
+
+  public void addPlantToPlayer(Player player, PowerPlant plant, Optional<PowerPlant> plantToRemove) {
+    plantToRemove.ifPresent(remove ->
+            player.withPowerPlants(
+                    player.getPowerPlants().stream()
+                    .filter(p -> !p.getValue().equals(plantToRemove.get().getValue()))
+                    .collect(Collectors.toList())));
+
+    player.withPowerPlants(Stream.concat(player.getPowerPlants().stream(), Stream.of(plant))
+            .collect(Collectors.toList()));
   }
 
   public void addToPlayerCities(Player player, City city) {
