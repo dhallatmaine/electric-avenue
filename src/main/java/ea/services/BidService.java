@@ -1,15 +1,15 @@
 package ea.services;
 
-import ea.data.BidResponse;
-import ea.data.Color;
-import ea.data.Player;
-import ea.data.PowerPlant;
+import com.google.common.collect.ImmutableList;
+import ea.data.*;
 import ea.state.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Component
 public class BidService {
@@ -25,28 +25,51 @@ public class BidService {
 
     public BidResponse createBid(
             State game,
-            Color playerColor,
-            Integer plantValue,
-            Integer plantToRemoveValue,
-            Integer bid) {
-        Player player = playerService.findPlayerByColor(game, playerColor);
-        PowerPlant plant = powerPlantService.findPowerPlantInDeckByValue(game.getDeckPlants(), plantValue);
+            BidRequest bid) {
+        Player player = playerService.findPlayerByColor(game, bid.getPlayer());
+        PowerPlant plant = powerPlantService.findPowerPlantInDeckByValue(game.getDeckPlants(), bid.getPlantValue());
 
         if (bid.equals(0)) {
-            game.withBidOrder(game.getBidOrder().stream()
-                    .filter(color -> !color.equals(playerColor))
-                    .collect(Collectors.toList()));
+            if (game.getBidOrder().size() > 2) {
+                int currentPlayerIndex = IntStream.range(0, game.getBidOrder().size())
+                        .filter(i -> bid.getPlayer().equals(game.getBidOrder().get(i)))
+                        .findFirst()
+                        .getAsInt();
+                Color nextPlayer = (currentPlayerIndex == (game.getBidOrder().size() - 1)) ?
+                        game.getBidOrder().get(0) : game.getBidOrder().get(currentPlayerIndex + 1);
+                game.withBidOrder(game.getBidOrder().stream()
+                        .filter(color -> !color.equals(bid.getPlayer()))
+                        .collect(Collectors.toList()));
+                return new BidResponse().withBid(bid).withBiddingEnded(false).withNextPlayer(nextPlayer);
+            } else {
+                capturePlant(game, plant, player, bid.getPlantToRemoveValue());
+                return new BidResponse().withBid(bid).withBiddingEnded(true);
+            }
         }
+        throw new RuntimeException("Unexpected branch reached during bidding");
+    }
 
-        if (bid.compareTo(player.getMoney()) > 0) throw new RuntimeException("Insufficient funds");
+    public void validateBid(State game, BidRequest bid) {
+        Player player = playerService.findPlayerByColor(game, bid.getPlayer());
 
-        if (bid.compareTo(game.getCurrentBid()) > 0) throw new RuntimeException("Bid is less than current bid");
+        if (bid.getBidAmount() > player.getMoney())
+            throw new RuntimeException("Insufficient funds");
 
-        PowerPlant plantToRemove = player.getPowerPlants().stream()
+        if (bid.getBidAmount() < game.getCurrentBid() && !bid.equals(0))
+            throw new RuntimeException("Bid is less than current bid");
+    }
+
+    private void capturePlant(State game, PowerPlant plant, Player player, Integer plantToRemoveValue) {
+        Optional<PowerPlant> plantToRemove = player.getPowerPlants().stream()
                 .filter(p -> p.getValue().equals(plantToRemoveValue))
-                .findFirst().get();
-        playerService.addPlantToPlayer(player, plant, Optional.of(plantToRemove));
-        return null;
+                .findFirst();
+        playerService.addPlantToPlayer(player, plant, plantToRemove);
+        playerService.subtractMoneyFromPlayer(player, game.getCurrentBid());
+
+        powerPlantService.flipNewCard(game, plant);
+
+        game.withCurrentBid(0);
+        game.withBidOrder(ImmutableList.of());
     }
 
 }

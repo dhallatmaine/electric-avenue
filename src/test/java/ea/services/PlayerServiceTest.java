@@ -14,10 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,8 +22,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(JUnitParamsRunner.class)
 public class PlayerServiceTest {
 
-    private Player player;
-    private PlayerService target;
+    Player player;
+    PlayerService target;
 
     @Before
     public void setup() {
@@ -88,8 +85,8 @@ public class PlayerServiceTest {
 
     @Test
     @Parameters({
-            "       | 5 |   | 5     | Add when player not violating max plant capacity",
-            " 1;2;3 | 5 | 1 | 2;3;5 | Add when player violating max plant capacity"
+            " 1;2   | 5 |   | 1;2;5 | Add when player not violating max plant capacity ",
+            " 1;2;3 | 5 | 1 | 2;3;5 | Add when player violating max plant capacity     "
     })
     @TestCaseName("{4}")
     public void addPlantToPlayer(

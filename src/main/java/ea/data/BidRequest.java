@@ -15,12 +15,22 @@ public class BidRequest {
         this.player = player;
     }
 
+    public BidRequest withPlayer(Color color) {
+        this.player = player;
+        return this;
+    }
+
     public Integer getPlantValue() {
         return plantValue;
     }
 
     public void setPlantValue(Integer plantValue) {
         this.plantValue = plantValue;
+    }
+
+    public BidRequest withPlantValue(Integer plantValue) {
+        this.plantValue = plantValue;
+        return this;
     }
 
     public Integer getPlantToRemoveValue() {
@@ -31,11 +41,21 @@ public class BidRequest {
         this.plantToRemoveValue = plantToRemoveValue;
     }
 
+    public BidRequest withPlantToRemoveValue(Integer plantToRemoveValue) {
+        this.plantToRemoveValue = plantToRemoveValue;
+        return this;
+    }
+
     public Integer getBidAmount() {
         return bidAmount;
     }
 
     public void setBidAmount(Integer bidAmount) {
         this.bidAmount = bidAmount;
+    }
+
+    public BidRequest withBidAmount(Integer bidAmount) {
+        this.bidAmount = bidAmount;
+        return this;
     }
 }

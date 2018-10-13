@@ -19,7 +19,7 @@ public class State {
     private List<Color> turnOrder;
     private Color currentTurn;
     private List<Color> bidOrder;
-    private Integer currentBid;
+    private Integer currentBid = 0;
 
     public State() {
         round = 1;

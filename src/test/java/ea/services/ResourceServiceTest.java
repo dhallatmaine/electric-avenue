@@ -19,8 +19,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(JUnitParamsRunner.class)
 public class ResourceServiceTest {
 
-    private State state;
-    private ResourceService target;
+    State state;
+    ResourceService target;
 
     @Before
     public void setup() {
