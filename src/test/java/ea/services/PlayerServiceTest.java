@@ -18,17 +18,20 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 @RunWith(JUnitParamsRunner.class)
 public class PlayerServiceTest {
 
     Player player;
+    PowerPlantService powerPlantService;
     PlayerService target;
 
     @Before
     public void setup() {
         player = new Player();
-        target = new PlayerService();
+        powerPlantService = mock(PowerPlantService.class);
+        target = new PlayerService(powerPlantService);
     }
 
     @Test

@@ -5,6 +5,7 @@ public class BidResponse {
     private BidRequest bid;
     private Color nextPlayer;
     private boolean biddingEnded;
+    private Integer currentBid;
 
     public BidRequest getBid() {
         return bid;
@@ -30,6 +31,15 @@ public class BidResponse {
 
     public BidResponse withBiddingEnded(boolean biddingEnded) {
         this.biddingEnded = biddingEnded;
+        return this;
+    }
+
+    public Integer getCurrentBid() {
+        return currentBid;
+    }
+
+    public BidResponse withCurrentBid(Integer currentBid) {
+        this.currentBid = currentBid;
         return this;
     }
 }

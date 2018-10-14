@@ -27,26 +27,40 @@ public class BidService {
             State game,
             BidRequest bid) {
         Player player = playerService.findPlayerByColor(game, bid.getPlayer());
-        PowerPlant plant = powerPlantService.findPowerPlantInDeckByValue(game.getDeckPlants(), bid.getPlantValue());
+        Color nextPlayer = getNextPlayer(game, player.getColor());
 
-        if (bid.equals(0)) {
+        // player passed
+        if (bid.getBidAmount().equals(0)) {
+            //bidding continues
             if (game.getBidOrder().size() > 2) {
-                int currentPlayerIndex = IntStream.range(0, game.getBidOrder().size())
-                        .filter(i -> bid.getPlayer().equals(game.getBidOrder().get(i)))
-                        .findFirst()
-                        .getAsInt();
-                Color nextPlayer = (currentPlayerIndex == (game.getBidOrder().size() - 1)) ?
-                        game.getBidOrder().get(0) : game.getBidOrder().get(currentPlayerIndex + 1);
                 game.withBidOrder(game.getBidOrder().stream()
-                        .filter(color -> !color.equals(bid.getPlayer()))
+                        .filter(color -> !color.equals(player.getColor()))
                         .collect(Collectors.toList()));
-                return new BidResponse().withBid(bid).withBiddingEnded(false).withNextPlayer(nextPlayer);
+                return new BidResponse()
+                        .withBid(bid)
+                        .withBiddingEnded(false)
+                        .withNextPlayer(nextPlayer)
+                        .withCurrentBid(game.getCurrentBid());
+
+            //bidding ends
             } else {
-                capturePlant(game, plant, player, bid.getPlantToRemoveValue());
-                return new BidResponse().withBid(bid).withBiddingEnded(true);
+                PowerPlant plant = powerPlantService.findPowerPlantInDeckByValue(game.getDeckPlants(), bid.getPlantValue());
+                game.withBidOrder(ImmutableList.of()).withCurrentBid(0);
+                playerService.capturePlant(game, plant, player, bid.getPlantToRemoveValue());
+                return new BidResponse()
+                        .withBid(bid)
+                        .withBiddingEnded(true)
+                        .withNextPlayer(nextPlayer)
+                        .withCurrentBid(game.getCurrentBid());
             }
         }
-        throw new RuntimeException("Unexpected branch reached during bidding");
+
+        game.withCurrentBid(bid.getBidAmount());
+        return new BidResponse()
+                .withBid(bid)
+                .withBiddingEnded(false)
+                .withNextPlayer(nextPlayer)
+                .withCurrentBid(game.getCurrentBid());
     }
 
     public void validateBid(State game, BidRequest bid) {
@@ -59,17 +73,13 @@ public class BidService {
             throw new RuntimeException("Bid is less than current bid");
     }
 
-    private void capturePlant(State game, PowerPlant plant, Player player, Integer plantToRemoveValue) {
-        Optional<PowerPlant> plantToRemove = player.getPowerPlants().stream()
-                .filter(p -> p.getValue().equals(plantToRemoveValue))
-                .findFirst();
-        playerService.addPlantToPlayer(player, plant, plantToRemove);
-        playerService.subtractMoneyFromPlayer(player, game.getCurrentBid());
-
-        powerPlantService.flipNewCard(game, plant);
-
-        game.withCurrentBid(0);
-        game.withBidOrder(ImmutableList.of());
+    private Color getNextPlayer(State game, Color player) {
+        int currentPlayerIndex = IntStream.range(0, game.getBidOrder().size())
+                .filter(i -> player.equals(game.getBidOrder().get(i)))
+                .findFirst()
+                .getAsInt();
+        return (currentPlayerIndex == (game.getBidOrder().size() - 1)) ?
+                game.getBidOrder().get(0) : game.getBidOrder().get(currentPlayerIndex + 1);
     }
 
 }
