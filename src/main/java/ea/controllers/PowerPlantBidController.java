@@ -32,7 +32,7 @@ public class PowerPlantBidController {
                 .orElseThrow(GameNotFoundException::new);
 
         bidService.validateBid(game, bid);
-        return bidService.createBid(game, bid);
+        return bidService.bid(game, bid);
     }
 
 }

@@ -23,6 +23,10 @@ public class GameState {
         return stateMap.get(id);
     }
 
+    public Map<Integer, State> getStateMap() {
+        return stateMap;
+    }
+
     public Integer createNewGame(
             Map<Resource, List<Integer>> resources,
             List<Player> players,

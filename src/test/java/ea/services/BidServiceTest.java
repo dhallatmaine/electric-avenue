@@ -1,7 +1,10 @@
 package ea.services;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import ea.data.*;
+import ea.state.AuctionRound;
+import ea.state.BidRound;
 import ea.state.State;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -10,16 +13,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnitParamsRunner.class)
@@ -27,6 +26,7 @@ public class BidServiceTest {
 
     PlayerService playerService;
     PowerPlantService powerPlantService;
+    TurnOrderService turnOrderService;
     BidService target;
     Player player;
     State game;
@@ -35,80 +35,87 @@ public class BidServiceTest {
     public void setup() {
         playerService = mock(PlayerService.class);
         powerPlantService = mock(PowerPlantService.class);
-        target = new BidService(playerService, powerPlantService);
+        turnOrderService = mock(TurnOrderService.class);
+        target = new BidService(playerService, powerPlantService, turnOrderService);
 
         player = new Player();
-        game = new State();
+        game = new State()
+                .withRound(1);
     }
 
     @Test
     @Parameters({
-            " 5 | BLUE;PURPLE;BLACK | BLUE;PURPLE;BLACK | false | Non passing bid amount    ",
-            " 0 | BLUE;PURPLE;BLACK | PURPLE;BLACK      | false | Pass and continue bidding ",
-            " 0 | BLUE;PURPLE       | PURPLE            | true  | Pass and end bidding      "
+            " 5 | Non passing bid ",
+            " 0 | Passing bid     "
     })
-    @TestCaseName("{4}")
-    public void createBid(
-            Integer bidAmount,
-            String bidOrderStr,
-            String expectedBidOrderStr,
-            boolean biddingEnded,
-            String description) {
+    @TestCaseName("{1}")
+    public void bid(Integer bidAmount, String description) {
         // Arrange
         BidRequest request = new BidRequest()
+                .withPlayer(Color.BLUE)
                 .withBidAmount(bidAmount)
-                .withPlayer(Color.BLUE);
+                .withPlantValue(5);
 
-        List<Color> bidOrder = Arrays.stream(bidOrderStr.split(";"))
-                .map(Color::valueOf)
-                .collect(Collectors.toList());
-        game.withBidOrder(bidOrder);
+        BidRound bidRound = new BidRound()
+                .withBidOrder(ImmutableList.of(Color.BLACK, Color.BLUE, Color.GREEN));
+        game.withBidRounds(ImmutableMap.of(1, bidRound));
 
-        List<Color> expectedBidOrder = Arrays.stream(expectedBidOrderStr.split(";"))
-                .map(Color::valueOf)
-                .collect(Collectors.toList());
+        PowerPlant plant = new PowerPlant().withValue(5);
+        when(powerPlantService.findPowerPlantInDeckByValue(any(), any()))
+                .thenReturn(plant);
 
-        when(playerService.findPlayerByColor(any(), any()))
-                .thenReturn(player.withMoney(50).withColor(Color.BLUE));
-
-        //when(powerPlantService.findPowerPlantInDeckByValue(game.getDeckPlants(), bid.getPlantValue()))
+        when(turnOrderService.determineOrderStartingAtPlayer(any(), any()))
+                .thenReturn(ImmutableList.of(Color.BLUE, Color.GREEN, Color.BLACK));
 
         // Act
-        BidResponse actual = target.createBid(game, request);
+        BidResponse actual = target.bid(game, request);
 
         // Assert
-        assertThat(actual).isEqualToComparingFieldByFieldRecursively(
-                new BidResponse()
-                        .withBid(request)
-                        .withBiddingEnded(biddingEnded)
-                        .withNextPlayer(Color.PURPLE)
-                        .withCurrentBid(bidAmount));
-
-        if (!biddingEnded)
-            assertThat(game.getBidOrder()).isEqualTo(expectedBidOrder);
-        //else
-            //verify(playerService).capturePlant(game, );
+        if (bidAmount > 0) {
+            assertThat(actual).isEqualToComparingFieldByFieldRecursively(
+                    new BidResponse()
+                            .withPlant(plant)
+                            .withAuctionStarted(true));
+            assertThat(bidRound).isEqualToComparingFieldByFieldRecursively(
+                    new BidRound()
+                            .withBidOrder(bidRound.getBidOrder())
+                            .withPlantPurchased(true)
+                            .withAuctionRounds(ImmutableList.of(
+                                    new AuctionRound()
+                                            .withBid(5)
+                                            .withHighBidder(Color.BLUE)
+                                            .withPlant(new PowerPlant().withValue(5))
+                                            .withAuctionOrder(ImmutableList.of(Color.BLUE, Color.GREEN, Color.BLACK)))));
+        } else {
+            assertThat(actual).isEqualToComparingFieldByFieldRecursively(
+                    new BidResponse().withAuctionStarted(false));
+            assertThat(bidRound).isEqualToComparingFieldByFieldRecursively(
+                    new BidRound()
+                            .withBidOrder(ImmutableList.of(Color.BLACK, Color.GREEN))
+                            .withPlantPurchased(false));
+        }
     }
 
     @Test
     @Parameters({
-            " 5 | 0  | 0 | Insufficient funds           ",
-            " 5 | 50 | 6 | Bid is less than current bid "
+            " 5 | 0  | 5 | Insufficient funds                                   ",
+            " 5 | 50 | 6 | Bid must be greater than or equal to the plant value "
     })
     @TestCaseName("{2}")
     public void validateBid(
             Integer bidAmount,
             Integer playerMoney,
-            Integer currentBidAmount,
+            Integer plantValue,
             String description) {
         // Arrange
         BidRequest request = new BidRequest()
                 .withBidAmount(bidAmount);
 
-        game.withCurrentBid(currentBidAmount);
-
-        when(playerService.findPlayerByColor(eq(game), any()))
+        when(playerService.findPlayerByColor(any(), any()))
                 .thenReturn(player.withMoney(playerMoney));
+
+        when(powerPlantService.findPowerPlantInDeckByValue(any(), any()))
+                .thenReturn(new PowerPlant().withValue(plantValue));
 
         // Act
         Throwable thrown = catchThrowable(() -> target.validateBid(game, request));
