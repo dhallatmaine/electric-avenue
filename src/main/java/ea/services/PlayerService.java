@@ -120,11 +120,6 @@ public class PlayerService {
                 .collect(Collectors.toList()));
     }
 
-    public void addToPlayerCities(Player player, City city) {
-        List<City> playersCities = player.getCities();
-        playersCities.add(city);
-    }
-
     private void subtractMoneyFromPlayer(Player player, int amount) {
         int money = player.getMoney();
         money = money - amount;

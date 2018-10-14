@@ -20,6 +20,7 @@ public class State {
     private Color currentTurn;
     private List<Color> bidOrder;
     private Integer currentBid = 0;
+    private Map<Integer, BidRound> bidRounds;
 
     public State() {
         round = 1;
@@ -123,6 +124,15 @@ public class State {
 
     public State withCurrentBid(Integer currentBid) {
         this.currentBid = currentBid;
+        return this;
+    }
+
+    public Map<Integer, BidRound> getBidRounds() {
+        return bidRounds;
+    }
+
+    public State withBidRounds(Map<Integer, BidRound> bidRounds) {
+        this.bidRounds = bidRounds;
         return this;
     }
 }

@@ -10,21 +10,6 @@ import java.util.stream.Stream;
 @Component
 public class ResourceService {
 
-  public String getResourceNameByConst(int choice) {
-    switch (choice) {
-      case 1:
-        return "Coal";
-      case 2:
-        return "Oil";
-      case 3:
-        return "Trash";
-      case 4:
-        return "Uranium";
-      default:
-        return "";
-    }
-  }
-
   public Integer getPrice(List<Integer> resources, int amount) {
     return resources.stream()
             .filter(i -> i > 0)
