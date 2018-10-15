@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -29,7 +30,11 @@ public class BidService {
 
     public BidResponse bid(State game, BidRequest bidRequest) {
         int round = game.getRound();
-        BidRound bidRound = game.getBidRounds().get(round);
+        BidRound bidRound = game.getBidRounds().getOrDefault(
+                round,
+                new BidRound()
+                        .withBidOrder(game.getTurnOrder()));
+
         if (bidRequest.getBidAmount() > 0) {
             bidRound.withPlantPurchased(true);
 
@@ -47,6 +52,8 @@ public class BidService {
                     .withAuctionOrder(auctionOrder);
             bidRound.getAuctionRounds().putIfAbsent(plant, auction);
 
+            game.getBidRounds().put(round, bidRound);
+
             return new BidResponse()
                     .withPlant(plant)
                     .withAuctionStarted(true);
@@ -55,6 +62,9 @@ public class BidService {
                     .filter(color -> !color.equals(bidRequest.getPlayer()))
                     .collect(Collectors.toList());
             bidRound.withBidOrder(order);
+
+            game.getBidRounds().put(round, bidRound);
+
             return new BidResponse()
                     .withAuctionStarted(false)
                     .withPhaseOver(order.size() == 0);
@@ -69,14 +79,41 @@ public class BidService {
 
         AuctionRound auctionRound = game.getBidRounds().get(round).getAuctionRounds().get(plant);
 
+        Color nextBidder = turnOrderService.getNextPlayer(
+                auctionRound.getAuctionOrder(),
+                auctionRequest.getPlayer());
+
         if (auctionRequest.getBidAmount() > 0) {
             auctionRound
                     .withHighBidder(auctionRequest.getPlayer())
                     .withBid(auctionRequest.getBidAmount());
 
-
+            return new AuctionResponse()
+                    .withHighBid(auctionRequest.getBidAmount())
+                    .withHighBidder(auctionRequest.getPlayer())
+                    .withPlant(plant)
+                    .withNextBidder(nextBidder);
+        } else {
+            List<Color> order = auctionRound.getAuctionOrder().stream()
+                    .filter(color -> !color.equals(auctionRequest.getPlayer()))
+                    .collect(Collectors.toList());
+            auctionRound
+                    .withAuctionOrder(order);
+            if (order.size() == 1) {
+                playerService.capturePlant(
+                        game,
+                        plant,
+                        auctionRequest.getPlayer(),
+                        auctionRequest.getPlantToRemove());
+                auctionRound.withAuctionFinished(true);
+            }
+            return new AuctionResponse()
+                    .withHighBid(auctionRound.getBid())
+                    .withHighBidder(auctionRound.getHighBidder())
+                    .withPlant(plant)
+                    .withNextBidder(nextBidder)
+                    .withAuctionFinished(auctionRound.getAuctionFinished());
         }
-        return new AuctionResponse();
     }
 
     public void validateBid(State game, BidRequest bidRequest) {

@@ -20,7 +20,7 @@ public class State {
     private Color currentTurn;
     private List<Color> bidOrder;
     private Integer currentBid = 0;
-    private Map<Integer, BidRound> bidRounds;
+    private Map<Integer, BidRound> bidRounds = new HashMap<>();
 
     public State() {
         round = 1;

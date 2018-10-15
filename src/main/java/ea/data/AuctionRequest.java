@@ -4,6 +4,7 @@ public class AuctionRequest {
 
     private Integer bidAmount;
     private Integer plant;
+    private Integer plantToRemove;
     private Color player;
 
     public Integer getBidAmount() {
@@ -21,6 +22,15 @@ public class AuctionRequest {
 
     public AuctionRequest withPlant(Integer plant) {
         this.plant = plant;
+        return this;
+    }
+
+    public Integer getPlantToRemove() {
+        return plantToRemove;
+    }
+
+    public AuctionRequest withPlantToRemove(Integer plantToRemove) {
+        this.plantToRemove = plantToRemove;
         return this;
     }
 

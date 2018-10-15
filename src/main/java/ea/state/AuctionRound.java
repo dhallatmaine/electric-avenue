@@ -11,6 +11,7 @@ public class AuctionRound {
     private PowerPlant plant;
     private Color highBidder;
     private Integer bid;
+    private boolean auctionFinished = false;
 
     public List<Color> getAuctionOrder() {
         return auctionOrder;
@@ -45,6 +46,15 @@ public class AuctionRound {
 
     public AuctionRound withBid(Integer bid) {
         this.bid = bid;
+        return this;
+    }
+
+    public boolean getAuctionFinished() {
+        return auctionFinished;
+    }
+
+    public AuctionRound withAuctionFinished(boolean auctionFinished) {
+        this.auctionFinished = auctionFinished;
         return this;
     }
 }

@@ -7,7 +7,6 @@ public class PowerPlant implements Comparable<PowerPlant> {
     private Integer value;
     private Integer poweredCities;
     private Integer resourceCapacity;
-    private Integer type;
     private Set<Resource> resources;
 
     public Integer getValue() {
@@ -25,15 +24,6 @@ public class PowerPlant implements Comparable<PowerPlant> {
 
     public PowerPlant withResources(Integer resources) {
         this.resourceCapacity = resources;
-        return this;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public PowerPlant withType(Integer type) {
-        this.type = type;
         return this;
     }
 

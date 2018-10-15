@@ -6,6 +6,7 @@ public class AuctionResponse {
     private Color highBidder;
     private Color nextBidder;
     private Integer highBid;
+    private boolean auctionFinished = false;
 
     public PowerPlant getPlant() {
         return plant;
@@ -40,6 +41,15 @@ public class AuctionResponse {
 
     public AuctionResponse withHighBid(Integer highBid) {
         this.highBid = highBid;
+        return this;
+    }
+
+    public boolean getAuctionFinished() {
+        return auctionFinished;
+    }
+
+    public AuctionResponse withAuctionFinished(boolean auctionFinished) {
+        this.auctionFinished = auctionFinished;
         return this;
     }
 }

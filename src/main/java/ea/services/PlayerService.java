@@ -96,7 +96,8 @@ public class PlayerService {
                 .get();
     }
 
-    public void capturePlant(State game, PowerPlant plant, Player player, Integer plantToRemoveValue) {
+    public void capturePlant(State game, PowerPlant plant, Color playerColor, Integer plantToRemoveValue) {
+        Player player = findPlayerByColor(game, playerColor);
         Optional<PowerPlant> plantToRemove = player.getPowerPlants().stream()
                 .filter(p -> p.getValue().equals(plantToRemoveValue))
                 .findFirst();

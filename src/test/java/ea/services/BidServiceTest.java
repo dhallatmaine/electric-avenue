@@ -51,7 +51,7 @@ public class BidServiceTest {
             " 0 | BLACK;BLUE;GREEN | BLACK;GREEN | false | Passing bid           ",
             " 0 | BLUE             |             | true  | Passing bid end phase "
     })
-    @TestCaseName("{3}")
+    @TestCaseName("{4}")
     public void bid(
             Integer bidAmount,
             String orderStr,
@@ -74,7 +74,6 @@ public class BidServiceTest {
                 .collect(Collectors.toList());
         BidRound bidRound = new BidRound()
                 .withBidOrder(order);
-        game.withBidRounds(ImmutableMap.of(1, bidRound));
 
         PowerPlant plant = new PowerPlant().withValue(5);
         when(powerPlantService.findPowerPlantInDeckByValue(any(), any()))

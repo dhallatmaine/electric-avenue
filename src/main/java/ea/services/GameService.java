@@ -9,6 +9,7 @@ import ea.state.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +38,7 @@ public class GameService {
     }
 
     public Integer createGame() {
-        List<PowerPlant> deck = powerPlantService.createInitialPowerPlants();
+        List<PowerPlant> deck = new ArrayList<>(powerPlantService.createInitialPowerPlants());
         List<PowerPlant> currentMarket = powerPlantService.setupCurrentMarket(deck);
         deck.removeAll(currentMarket);
         List<PowerPlant> futureMarket = powerPlantService.setupFutureMarket(deck);
