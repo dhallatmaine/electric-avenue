@@ -1,6 +1,5 @@
 package ea.services;
 
-import com.google.common.collect.ImmutableList;
 import ea.data.*;
 import ea.state.AuctionRound;
 import ea.state.BidRound;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class BidService {
@@ -47,8 +45,7 @@ public class BidService {
                     .withHighBidder(bidRequest.getPlayer())
                     .withPlant(plant)
                     .withAuctionOrder(auctionOrder);
-            bidRound.withAuctionRounds(Stream.concat(Stream.of(auction), bidRound.getAuctionRounds().stream())
-                    .collect(Collectors.toList()));
+            bidRound.getAuctionRounds().putIfAbsent(plant, auction);
 
             return new BidResponse()
                     .withPlant(plant)
@@ -59,11 +56,26 @@ public class BidService {
                     .collect(Collectors.toList());
             bidRound.withBidOrder(order);
             return new BidResponse()
-                    .withAuctionStarted(false);
+                    .withAuctionStarted(false)
+                    .withPhaseOver(order.size() == 0);
         }
     }
 
     public AuctionResponse auction(State game, AuctionRequest auctionRequest) {
+        int round = game.getRound();
+        PowerPlant plant = powerPlantService.findPowerPlantInDeckByValue(
+                game.getCurrentMarketPlants(),
+                auctionRequest.getPlant());
+
+        AuctionRound auctionRound = game.getBidRounds().get(round).getAuctionRounds().get(plant);
+
+        if (auctionRequest.getBidAmount() > 0) {
+            auctionRound
+                    .withHighBidder(auctionRequest.getPlayer())
+                    .withBid(auctionRequest.getBidAmount());
+
+
+        }
         return new AuctionResponse();
     }
 

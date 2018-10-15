@@ -13,7 +13,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -45,19 +47,33 @@ public class BidServiceTest {
 
     @Test
     @Parameters({
-            " 5 | Non passing bid ",
-            " 0 | Passing bid     "
+            " 5 | BLACK;BLUE;GREEN |             | false | Non passing bid       ",
+            " 0 | BLACK;BLUE;GREEN | BLACK;GREEN | false | Passing bid           ",
+            " 0 | BLUE             |             | true  | Passing bid end phase "
     })
-    @TestCaseName("{1}")
-    public void bid(Integer bidAmount, String description) {
+    @TestCaseName("{3}")
+    public void bid(
+            Integer bidAmount,
+            String orderStr,
+            String passExpectedBidOrderStr,
+            boolean phaseOver,
+            String description) {
         // Arrange
         BidRequest request = new BidRequest()
                 .withPlayer(Color.BLUE)
                 .withBidAmount(bidAmount)
                 .withPlantValue(5);
 
+        List<Color> passExpectedBidOrder = Arrays.stream(passExpectedBidOrderStr.split(";"))
+                .filter(str -> !str.isEmpty())
+                .map(Color::valueOf)
+                .collect(Collectors.toList());
+
+        List<Color> order = Arrays.stream(orderStr.split(";"))
+                .map(Color::valueOf)
+                .collect(Collectors.toList());
         BidRound bidRound = new BidRound()
-                .withBidOrder(ImmutableList.of(Color.BLACK, Color.BLUE, Color.GREEN));
+                .withBidOrder(order);
         game.withBidRounds(ImmutableMap.of(1, bidRound));
 
         PowerPlant plant = new PowerPlant().withValue(5);
@@ -80,7 +96,8 @@ public class BidServiceTest {
                     new BidRound()
                             .withBidOrder(bidRound.getBidOrder())
                             .withPlantPurchased(true)
-                            .withAuctionRounds(ImmutableList.of(
+                            .withAuctionRounds(ImmutableMap.of(
+                                    plant,
                                     new AuctionRound()
                                             .withBid(5)
                                             .withHighBidder(Color.BLUE)
@@ -88,10 +105,12 @@ public class BidServiceTest {
                                             .withAuctionOrder(ImmutableList.of(Color.BLUE, Color.GREEN, Color.BLACK)))));
         } else {
             assertThat(actual).isEqualToComparingFieldByFieldRecursively(
-                    new BidResponse().withAuctionStarted(false));
+                    new BidResponse()
+                            .withAuctionStarted(false)
+                            .withPhaseOver(phaseOver));
             assertThat(bidRound).isEqualToComparingFieldByFieldRecursively(
                     new BidRound()
-                            .withBidOrder(ImmutableList.of(Color.BLACK, Color.GREEN))
+                            .withBidOrder(passExpectedBidOrder)
                             .withPlantPurchased(false));
         }
     }

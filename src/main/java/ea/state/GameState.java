@@ -37,6 +37,7 @@ public class GameState {
         stateMap.put(
                 currentId.get(),
                 new State()
+                        .withPhase("PowerPlant")
                         .withResources(resources)
                         .withPlayers(players)
                         .withTurnOrder(turnOrder)

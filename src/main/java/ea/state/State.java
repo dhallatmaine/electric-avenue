@@ -30,11 +30,9 @@ public class State {
         return phase;
     }
 
-    public void setPhase(String phase) {
+    public State withPhase(String phase) {
         this.phase = phase;
-        if ("BureaucracyPhase".equalsIgnoreCase(this.phase)) {
-            round++;
-        }
+        return this;
     }
 
     public Integer getRound() {

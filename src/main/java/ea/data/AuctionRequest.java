@@ -2,25 +2,25 @@ package ea.data;
 
 public class AuctionRequest {
 
-    private boolean pass;
-    private Integer bid;
+    private Integer bidAmount;
+    private Integer plant;
     private Color player;
 
-    public boolean isPass() {
-        return pass;
-    }
-
-    public AuctionRequest withPass(boolean pass) {
-        this.pass = pass;
-        return this;
-    }
-
-    public Integer getBid() {
-        return bid;
+    public Integer getBidAmount() {
+        return bidAmount;
     }
 
     public AuctionRequest withBid(Integer bid) {
-        this.bid = bid;
+        this.bidAmount = bid;
+        return this;
+    }
+
+    public Integer getPlant() {
+        return plant;
+    }
+
+    public AuctionRequest withPlant(Integer plant) {
+        this.plant = plant;
         return this;
     }
 

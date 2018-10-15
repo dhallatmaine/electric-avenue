@@ -1,15 +1,17 @@
 package ea.state;
 
-import com.google.common.collect.ImmutableList;
 import ea.data.Color;
+import ea.data.PowerPlant;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BidRound {
 
     private List<Color> bidOrder;
     private boolean plantPurchased = false;
-    private List<AuctionRound> auctionRounds = ImmutableList.of();
+    private Map<PowerPlant, AuctionRound> auctionRounds = new HashMap<>();
 
     public List<Color> getBidOrder() {
         return bidOrder;
@@ -29,11 +31,11 @@ public class BidRound {
         return this;
     }
 
-    public List<AuctionRound> getAuctionRounds() {
+    public Map<PowerPlant, AuctionRound> getAuctionRounds() {
         return auctionRounds;
     }
 
-    public BidRound withAuctionRounds(List<AuctionRound> auctionRounds) {
+    public BidRound withAuctionRounds(Map<PowerPlant, AuctionRound> auctionRounds) {
         this.auctionRounds = auctionRounds;
         return this;
     }
