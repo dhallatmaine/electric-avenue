@@ -72,8 +72,7 @@ public class BidServiceTest {
         List<Color> order = Arrays.stream(orderStr.split(";"))
                 .map(Color::valueOf)
                 .collect(Collectors.toList());
-        BidRound bidRound = new BidRound()
-                .withBidOrder(order);
+        game.withTurnOrder(order);
 
         PowerPlant plant = new PowerPlant().withValue(5);
         when(powerPlantService.findPowerPlantInDeckByValue(any(), any()))
@@ -86,6 +85,7 @@ public class BidServiceTest {
         BidResponse actual = target.bid(game, request);
 
         // Assert
+        BidRound bidRound = game.getBidRounds().get(game.getRound());
         if (bidAmount > 0) {
             assertThat(actual).isEqualToComparingFieldByFieldRecursively(
                     new BidResponse()

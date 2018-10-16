@@ -105,9 +105,6 @@ public class PlayerService {
         subtractMoneyFromPlayer(player, game.getCurrentBid());
 
         powerPlantService.flipNewCard(game, plant);
-
-        game.withCurrentBid(0);
-        game.withBidOrder(ImmutableList.of());
     }
 
     public void addPlantToPlayer(Player player, PowerPlant plant, Optional<PowerPlant> plantToRemove) {

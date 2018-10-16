@@ -18,7 +18,6 @@ public class State {
     private List<Player> players;
     private List<Color> turnOrder;
     private Color currentTurn;
-    private List<Color> bidOrder;
     private Integer currentBid = 0;
     private Map<Integer, BidRound> bidRounds = new HashMap<>();
 
@@ -104,15 +103,6 @@ public class State {
 
     public State withCurrentTurn(Color currentTurn) {
         this.currentTurn = currentTurn;
-        return this;
-    }
-
-    public List<Color> getBidOrder() {
-        return bidOrder;
-    }
-
-    public State withBidOrder(List<Color> bidOrder) {
-        this.bidOrder = bidOrder;
         return this;
     }
 
