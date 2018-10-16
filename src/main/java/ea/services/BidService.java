@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -53,6 +52,7 @@ public class BidService {
                     .withHighBidder(bidRequest.getPlayer())
                     .withPlant(plant)
                     .withAuctionOrder(auctionOrder);
+            auction.getPlantToRemove().putIfAbsent(bidRequest.getPlayer(), bidRequest.getPlantValueToRemove());
             bidRound.getAuctionRounds().putIfAbsent(plant, auction);
 
             game.getBidRounds().put(round, bidRound);
@@ -60,6 +60,7 @@ public class BidService {
             return new BidResponse()
                     .withPlant(plant)
                     .withAuctionStarted(true)
+                    .withOrder(game.getTurnOrder())
                     .withPlayerToStartAuction(auctionStartingPayer);
         } else {
             List<Color> order = bidRound.getBidOrder().stream()
@@ -71,51 +72,57 @@ public class BidService {
 
             return new BidResponse()
                     .withAuctionStarted(false)
+                    .withOrder(order)
                     .withPhaseOver(order.size() == 0);
         }
     }
 
-    public AuctionResponse auction(State game, AuctionRequest auctionRequest) {
+    public AuctionResponse auction(State game, BidRequest bidRequest) {
         int round = game.getRound();
         PowerPlant plant = powerPlantService.findPowerPlantInDeckByValue(
                 game.getCurrentMarketPlants(),
-                auctionRequest.getPlantValue());
+                bidRequest.getPlantValue());
 
         AuctionRound auctionRound = game.getBidRounds().get(round).getAuctionRounds().get(plant);
+        auctionRound.getPlantToRemove().putIfAbsent(bidRequest.getPlayer(), bidRequest.getPlantValueToRemove());
 
         Color nextBidder = turnOrderService.getNextPlayer(
                 auctionRound.getAuctionOrder(),
-                auctionRequest.getPlayer());
+                bidRequest.getPlayer());
 
-        if (auctionRequest.getBidAmount() > 0) {
+        if (bidRequest.getBidAmount() > 0) {
             auctionRound
-                    .withHighBidder(auctionRequest.getPlayer())
-                    .withBid(auctionRequest.getBidAmount());
+                    .withHighBidder(bidRequest.getPlayer())
+                    .withBid(bidRequest.getBidAmount());
 
             return new AuctionResponse()
-                    .withHighBid(auctionRequest.getBidAmount())
-                    .withHighBidder(auctionRequest.getPlayer())
+                    .withHighBid(bidRequest.getBidAmount())
+                    .withHighBidder(bidRequest.getPlayer())
                     .withPlant(plant)
+                    .withOrder(auctionRound.getAuctionOrder())
                     .withNextBidder(nextBidder);
         } else {
             List<Color> order = auctionRound.getAuctionOrder().stream()
-                    .filter(color -> !color.equals(auctionRequest.getPlayer()))
+                    .filter(color -> !color.equals(bidRequest.getPlayer()))
                     .collect(Collectors.toList());
-            auctionRound
-                    .withAuctionOrder(order);
+
+            auctionRound.withAuctionOrder(order);
+
             if (order.size() == 1) {
+                auctionRound.withAuctionFinished(true);
                 playerService.capturePlant(
                         game,
                         plant,
-                        auctionRequest.getPlayer(),
-                        auctionRequest.getplantValueToRemove());
-                auctionRound.withAuctionFinished(true);
+                        auctionRound.getHighBidder(),
+                        auctionRound.getPlantToRemove().get(auctionRound.getHighBidder()));
             }
+
             return new AuctionResponse()
                     .withHighBid(auctionRound.getBid())
                     .withHighBidder(auctionRound.getHighBidder())
                     .withPlant(plant)
-                    .withNextBidder(nextBidder)
+                    .withOrder(order)
+                    .withNextBidder(auctionRound.getAuctionFinished() ? null : nextBidder)
                     .withAuctionFinished(auctionRound.getAuctionFinished());
         }
     }

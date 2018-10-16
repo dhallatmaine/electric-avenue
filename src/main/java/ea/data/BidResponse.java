@@ -1,11 +1,14 @@
 package ea.data;
 
+import java.util.List;
+
 public class BidResponse {
 
     private boolean auctionStarted = false;
     private PowerPlant plant;
     private boolean phaseOver = false;
     private Color playerToStartAuction;
+    private List<Color> order;
 
     public boolean getAuctionStarted() {
         return auctionStarted;
@@ -40,6 +43,15 @@ public class BidResponse {
 
     public BidResponse withPlayerToStartAuction(Color playerToStartAuction) {
         this.playerToStartAuction = playerToStartAuction;
+        return this;
+    }
+
+    public List<Color> getOrder() {
+        return order;
+    }
+
+    public BidResponse withOrder(List<Color> order) {
+        this.order = order;
         return this;
     }
 }

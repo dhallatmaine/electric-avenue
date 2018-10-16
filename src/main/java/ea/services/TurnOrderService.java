@@ -5,6 +5,7 @@ import ea.data.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -21,7 +22,8 @@ public class TurnOrderService {
     }
 
     public List<Color> determineInitialTurnOrder(List<Player> players) {
-        List<Player> random = shuffleService.shuffle(players);
+        //List<Player> random = shuffleService.shuffle(players);
+        List<Player> random = new ArrayList<>(players);
         return random.stream()
                 .map(Player::getColor)
                 .collect(Collectors.toList());

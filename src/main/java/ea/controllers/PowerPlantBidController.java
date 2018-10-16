@@ -1,6 +1,5 @@
 package ea.controllers;
 
-import ea.data.AuctionRequest;
 import ea.data.AuctionResponse;
 import ea.data.BidRequest;
 import ea.data.BidResponse;
@@ -41,11 +40,11 @@ public class PowerPlantBidController {
     @RequestMapping("/auction/{id}")
     public AuctionResponse auction(
             @PathVariable("id") Integer gameId,
-            @RequestBody AuctionRequest auction) {
+            @RequestBody BidRequest bid) {
         State game = gameService.getGame(gameId)
                 .orElseThrow(GameNotFoundException::new);
 
-        return bidService.auction(game, auction);
+        return bidService.auction(game, bid);
     }
 
 }

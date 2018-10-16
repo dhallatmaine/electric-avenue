@@ -1,11 +1,14 @@
 package ea.data;
 
+import java.util.List;
+
 public class AuctionResponse {
 
     private PowerPlant plant;
     private Color highBidder;
     private Color nextBidder;
     private Integer highBid;
+    private List<Color> order;
     private boolean auctionFinished = false;
 
     public PowerPlant getPlant() {
@@ -41,6 +44,15 @@ public class AuctionResponse {
 
     public AuctionResponse withHighBid(Integer highBid) {
         this.highBid = highBid;
+        return this;
+    }
+
+    public List<Color> getOrder() {
+        return order;
+    }
+
+    public AuctionResponse withOrder(List<Color> order) {
+        this.order = order;
         return this;
     }
 
