@@ -3,8 +3,8 @@ package ea.data;
 public class AuctionRequest {
 
     private Integer bidAmount;
-    private Integer plant;
-    private Integer plantToRemove;
+    private Integer plantValue;
+    private Integer plantValueToRemove;
     private Color player;
 
     public Integer getBidAmount() {
@@ -16,21 +16,21 @@ public class AuctionRequest {
         return this;
     }
 
-    public Integer getPlant() {
-        return plant;
+    public Integer getPlantValue() {
+        return plantValue;
     }
 
-    public AuctionRequest withPlant(Integer plant) {
-        this.plant = plant;
+    public AuctionRequest withplantValue(Integer plantValue) {
+        this.plantValue = plantValue;
         return this;
     }
 
-    public Integer getPlantToRemove() {
-        return plantToRemove;
+    public Integer getplantValueToRemove() {
+        return plantValueToRemove;
     }
 
-    public AuctionRequest withPlantToRemove(Integer plantToRemove) {
-        this.plantToRemove = plantToRemove;
+    public AuctionRequest withplantValueToRemove(Integer plantValueToRemove) {
+        this.plantValueToRemove = plantValueToRemove;
         return this;
     }
 

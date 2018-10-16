@@ -47,17 +47,19 @@ public class BidServiceTest {
 
     @Test
     @Parameters({
-            " 5 | BLACK;BLUE;GREEN |             | false | Non passing bid       ",
-            " 0 | BLACK;BLUE;GREEN | BLACK;GREEN | false | Passing bid           ",
-            " 0 | BLUE             |             | true  | Passing bid end phase "
+            " 5 | BLACK;BLUE;GREEN | GREEN;BLACK;BLUE |             | false | Non passing bid       ",
+            " 0 | BLACK;BLUE;GREEN | GREEN;BLACK;BLUE | BLACK;GREEN | false | Passing bid           ",
+            " 0 | BLUE             | BLUE             |             | true  | Passing bid end phase "
     })
-    @TestCaseName("{4}")
+    @TestCaseName("{5}")
     public void bid(
             Integer bidAmount,
             String orderStr,
+            String auctionOrderStr,
             String passExpectedBidOrderStr,
             boolean phaseOver,
             String description) {
+
         // Arrange
         BidRequest request = new BidRequest()
                 .withPlayer(Color.BLUE)
@@ -78,8 +80,13 @@ public class BidServiceTest {
         when(powerPlantService.findPowerPlantInDeckByValue(any(), any()))
                 .thenReturn(plant);
 
+        when(turnOrderService.getNextPlayer(any(), any()))
+                .thenReturn(Color.GREEN);
+        List<Color> auctionOrder = Arrays.stream(auctionOrderStr.split(";"))
+                .map(Color::valueOf)
+                .collect(Collectors.toList());
         when(turnOrderService.determineOrderStartingAtPlayer(any(), any()))
-                .thenReturn(ImmutableList.of(Color.BLUE, Color.GREEN, Color.BLACK));
+                .thenReturn(auctionOrder);
 
         // Act
         BidResponse actual = target.bid(game, request);
@@ -90,6 +97,7 @@ public class BidServiceTest {
             assertThat(actual).isEqualToComparingFieldByFieldRecursively(
                     new BidResponse()
                             .withPlant(plant)
+                            .withPlayerToStartAuction(Color.GREEN)
                             .withAuctionStarted(true));
             assertThat(bidRound).isEqualToComparingFieldByFieldRecursively(
                     new BidRound()
@@ -101,7 +109,8 @@ public class BidServiceTest {
                                             .withBid(5)
                                             .withHighBidder(Color.BLUE)
                                             .withPlant(new PowerPlant().withValue(5))
-                                            .withAuctionOrder(ImmutableList.of(Color.BLUE, Color.GREEN, Color.BLACK)))));
+                                            .withAuctionOrder(ImmutableList.of(
+                                                    Color.GREEN, Color.BLACK, Color.BLUE)))));
         } else {
             assertThat(actual).isEqualToComparingFieldByFieldRecursively(
                     new BidResponse()

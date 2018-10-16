@@ -41,9 +41,12 @@ public class BidService {
             PowerPlant plant = powerPlantService.findPowerPlantInDeckByValue(
                     game.getCurrentMarketPlants(),
                     bidRequest.getPlantValue());
-            List<Color> auctionOrder = turnOrderService.determineOrderStartingAtPlayer(
+            Color auctionStartingPayer = turnOrderService.getNextPlayer(
                     bidRound.getBidOrder(),
                     bidRequest.getPlayer());
+            List<Color> auctionOrder = turnOrderService.determineOrderStartingAtPlayer(
+                    bidRound.getBidOrder(),
+                    auctionStartingPayer);
 
             AuctionRound auction = new AuctionRound()
                     .withBid(bidRequest.getBidAmount())
@@ -56,7 +59,8 @@ public class BidService {
 
             return new BidResponse()
                     .withPlant(plant)
-                    .withAuctionStarted(true);
+                    .withAuctionStarted(true)
+                    .withPlayerToStartAuction(auctionStartingPayer);
         } else {
             List<Color> order = bidRound.getBidOrder().stream()
                     .filter(color -> !color.equals(bidRequest.getPlayer()))
@@ -75,7 +79,7 @@ public class BidService {
         int round = game.getRound();
         PowerPlant plant = powerPlantService.findPowerPlantInDeckByValue(
                 game.getCurrentMarketPlants(),
-                auctionRequest.getPlant());
+                auctionRequest.getPlantValue());
 
         AuctionRound auctionRound = game.getBidRounds().get(round).getAuctionRounds().get(plant);
 
@@ -104,7 +108,7 @@ public class BidService {
                         game,
                         plant,
                         auctionRequest.getPlayer(),
-                        auctionRequest.getPlantToRemove());
+                        auctionRequest.getplantValueToRemove());
                 auctionRound.withAuctionFinished(true);
             }
             return new AuctionResponse()

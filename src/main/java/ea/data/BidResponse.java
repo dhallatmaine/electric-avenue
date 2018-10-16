@@ -5,6 +5,7 @@ public class BidResponse {
     private boolean auctionStarted = false;
     private PowerPlant plant;
     private boolean phaseOver = false;
+    private Color playerToStartAuction;
 
     public boolean getAuctionStarted() {
         return auctionStarted;
@@ -30,6 +31,15 @@ public class BidResponse {
 
     public BidResponse withPhaseOver(boolean phaseOver) {
         this.phaseOver = phaseOver;
+        return this;
+    }
+
+    public Color getPlayerToStartAuction() {
+        return playerToStartAuction;
+    }
+
+    public BidResponse withPlayerToStartAuction(Color playerToStartAuction) {
+        this.playerToStartAuction = playerToStartAuction;
         return this;
     }
 }
