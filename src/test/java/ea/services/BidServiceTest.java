@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.OptionalInt;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -96,18 +97,22 @@ public class BidServiceTest {
         if (bidAmount > 0) {
             assertThat(actual).isEqualToComparingFieldByFieldRecursively(
                     new BidResponse()
-                            .withPlant(plant)
+                            .withPlant(new PowerPlant().withValue(5))
                             .withPlayerToStartAuction(Color.GREEN)
+                            .withPhaseOver(false)
+                            .withOrder(order)
                             .withAuctionStarted(true));
             assertThat(bidRound).isEqualToComparingFieldByFieldRecursively(
                     new BidRound()
-                            .withBidOrder(bidRound.getBidOrder())
+                            .withBidOrder(order)
                             .withPlantPurchased(true)
                             .withAuctionRounds(ImmutableMap.of(
-                                    plant,
+                                    new PowerPlant().withValue(5),
                                     new AuctionRound()
                                             .withBid(5)
                                             .withHighBidder(Color.BLUE)
+                                            .withAuctionFinished(false)
+                                            .withPlantToRemove(ImmutableMap.of(Color.BLUE, 0))
                                             .withPlant(new PowerPlant().withValue(5))
                                             .withAuctionOrder(ImmutableList.of(
                                                     Color.GREEN, Color.BLACK, Color.BLUE)))));
@@ -115,6 +120,7 @@ public class BidServiceTest {
             assertThat(actual).isEqualToComparingFieldByFieldRecursively(
                     new BidResponse()
                             .withAuctionStarted(false)
+                            .withOrder(passExpectedBidOrder)
                             .withPhaseOver(phaseOver));
             assertThat(bidRound).isEqualToComparingFieldByFieldRecursively(
                     new BidRound()

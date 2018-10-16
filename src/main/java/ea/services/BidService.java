@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -52,7 +53,9 @@ public class BidService {
                     .withHighBidder(bidRequest.getPlayer())
                     .withPlant(plant)
                     .withAuctionOrder(auctionOrder);
-            auction.getPlantToRemove().putIfAbsent(bidRequest.getPlayer(), bidRequest.getPlantValueToRemove());
+            auction.getPlantToRemove().putIfAbsent(
+                    bidRequest.getPlayer(),
+                    Optional.ofNullable(bidRequest.getPlantValueToRemove()).orElse(0));
             bidRound.getAuctionRounds().putIfAbsent(plant, auction);
 
             game.getBidRounds().put(round, bidRound);
@@ -84,7 +87,9 @@ public class BidService {
                 bidRequest.getPlantValue());
 
         AuctionRound auctionRound = game.getBidRounds().get(round).getAuctionRounds().get(plant);
-        auctionRound.getPlantToRemove().putIfAbsent(bidRequest.getPlayer(), bidRequest.getPlantValueToRemove());
+        auctionRound.getPlantToRemove().putIfAbsent(
+                bidRequest.getPlayer(),
+                Optional.ofNullable(bidRequest.getPlantValueToRemove()).orElse(0));
 
         Color nextBidder = turnOrderService.getNextPlayer(
                 auctionRound.getAuctionOrder(),
