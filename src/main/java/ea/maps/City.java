@@ -51,5 +51,4 @@ public class City {
     public void setConnectedCities(Map<City, Integer> connectedCities) {
         this.connectedCities = connectedCities;
     }
-
 }
