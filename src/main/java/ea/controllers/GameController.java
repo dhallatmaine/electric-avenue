@@ -26,7 +26,7 @@ public class GameController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Integer createNewGame() {
+    public State createNewGame() {
         return gameService.createGame();
     }
 

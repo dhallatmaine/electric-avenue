@@ -45,13 +45,13 @@ public class GameControllerTest {
     public void createNewGame() {
         // Arrange
         when(gameService.createGame())
-                .thenReturn(0);
+                .thenReturn(new State().withGameId(1));
 
         // Act
-        Integer gameId = target.createNewGame();
+        State actual = target.createNewGame();
 
         // Assert
-        assertThat(gameId).isEqualTo(0);
+        assertThat(actual).isEqualTo(new State().withGameId(1));
     }
 
 }

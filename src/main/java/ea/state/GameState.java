@@ -27,7 +27,7 @@ public class GameState {
         return stateMap;
     }
 
-    public Integer createNewGame(
+    public State createNewGame(
             Map<Resource, List<Integer>> resources,
             List<Player> players,
             List<Color> turnOrder,
@@ -37,6 +37,7 @@ public class GameState {
         stateMap.put(
                 currentId.get(),
                 new State()
+                        .withGameId(currentId.get())
                         .withPhase("PowerPlant")
                         .withResources(resources)
                         .withPlayers(players)
@@ -45,7 +46,7 @@ public class GameState {
                         .withCurrentMarketPlants(currentMarket)
                         .withFutureMarketPlants(futureMarket)
                         .withCurrentTurn(turnOrder.get(0)));
-        return currentId.getAndIncrement();
+        return stateMap.get(currentId.getAndIncrement());
     }
 
 }

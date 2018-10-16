@@ -37,7 +37,7 @@ public class GameService {
         return Optional.ofNullable(gameState.getById(id));
     }
 
-    public Integer createGame() {
+    public State createGame() {
         List<PowerPlant> deck = new ArrayList<>(powerPlantService.createInitialPowerPlants());
         List<PowerPlant> currentMarket = powerPlantService.setupCurrentMarket(deck);
         deck.removeAll(currentMarket);
