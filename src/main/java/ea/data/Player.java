@@ -1,5 +1,7 @@
 package ea.data;
 
+import ea.maps.City;
+
 import java.util.List;
 import java.util.Map;
 
