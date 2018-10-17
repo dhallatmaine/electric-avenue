@@ -35,46 +35,50 @@ public class BidService {
                 new BidRound()
                         .withBidOrder(game.getTurnOrder()));
 
-        if (bidRequest.getBidAmount() > 0) {
-            bidRound.withPlantPurchased(true);
+        bidRound.withPlantPurchased(true);
 
-            PowerPlant plant = powerPlantService.findPowerPlantInDeckByValue(
-                    game.getCurrentMarketPlants(),
-                    bidRequest.getPlantValue());
-            Color auctionStartingPayer = turnOrderService.getNextPlayer(
-                    bidRound.getBidOrder(),
-                    bidRequest.getPlayer());
-            List<Color> auctionOrder = turnOrderService.determineOrderStartingAtPlayer(
-                    bidRound.getBidOrder(),
-                    auctionStartingPayer);
+        PowerPlant plant = powerPlantService.findPowerPlantInDeckByValue(
+                game.getCurrentMarketPlants(),
+                bidRequest.getPlantValue());
+        Color auctionStartingPayer = turnOrderService.getNextPlayer(
+                bidRound.getBidOrder(),
+                bidRequest.getPlayer());
+        List<Color> auctionOrder = turnOrderService.determineOrderStartingAtPlayer(
+                bidRound.getBidOrder(),
+                auctionStartingPayer);
 
-            AuctionRound auction = new AuctionRound()
-                    .withBid(bidRequest.getBidAmount())
-                    .withHighBidder(bidRequest.getPlayer())
-                    .withPlant(plant)
-                    .withAuctionOrder(auctionOrder);
-            bidRound.getAuctionRounds().putIfAbsent(plant, auction);
+        AuctionRound auction = new AuctionRound()
+                .withBid(bidRequest.getBidAmount())
+                .withHighBidder(bidRequest.getPlayer())
+                .withPlant(plant)
+                .withAuctionOrder(auctionOrder);
+        bidRound.getAuctionRounds().putIfAbsent(plant, auction);
 
-            game.getBidRounds().put(round, bidRound);
+        game.getBidRounds().put(round, bidRound);
 
-            return new BidResponse()
-                    .withPlant(plant)
-                    .withAuctionStarted(true)
-                    .withOrder(game.getTurnOrder())
-                    .withPlayerToStartAuction(auctionStartingPayer);
-        } else {
-            List<Color> order = bidRound.getBidOrder().stream()
-                    .filter(color -> !color.equals(bidRequest.getPlayer()))
-                    .collect(Collectors.toList());
-            bidRound.withBidOrder(order);
+        return new BidResponse()
+                .withPlant(plant)
+                .withAuctionStarted(true)
+                .withOrder(game.getTurnOrder())
+                .withPlayerToStartAuction(auctionStartingPayer);
+    }
 
-            game.getBidRounds().put(round, bidRound);
+    public BidResponse pass(State game, PassRequest bid) {
+        BidRound bidRound = game.getBidRounds().getOrDefault(
+                game.getRound(),
+                new BidRound()
+                        .withBidOrder(game.getTurnOrder()));
+        List<Color> order = bidRound.getBidOrder().stream()
+                .filter(color -> !color.equals(bid.getPlayer()))
+                .collect(Collectors.toList());
+        bidRound.withBidOrder(order);
 
-            return new BidResponse()
-                    .withAuctionStarted(false)
-                    .withOrder(order)
-                    .withPhaseOver(order.size() == 0);
-        }
+        game.getBidRounds().put(game.getRound(), bidRound);
+
+        return new BidResponse()
+                .withAuctionStarted(false)
+                .withOrder(order)
+                .withPhaseOver(order.size() == 0);
     }
 
     public AuctionResponse auction(State game, BidRequest bidRequest) {

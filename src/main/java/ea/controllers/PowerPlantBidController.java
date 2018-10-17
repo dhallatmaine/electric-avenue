@@ -35,6 +35,17 @@ public class PowerPlantBidController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping("/pass/{id}")
+    public BidResponse pass(
+            @PathVariable("id") Integer gameId,
+            @RequestBody PassRequest pass) {
+        State game = gameService.getGame(gameId)
+                .orElseThrow(GameNotFoundException::new);
+
+        return bidService.pass(game, pass);
+    }
+
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping("/auction/{id}")
     public AuctionResponse auction(
             @PathVariable("id") Integer gameId,

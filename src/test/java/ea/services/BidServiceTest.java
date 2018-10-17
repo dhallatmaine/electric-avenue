@@ -47,17 +47,13 @@ public class BidServiceTest {
 
     @Test
     @Parameters({
-            " 5 | BLACK;BLUE;GREEN | GREEN;BLACK;BLUE |             | false | Non passing bid       ",
-            " 0 | BLACK;BLUE;GREEN | GREEN;BLACK;BLUE | BLACK;GREEN | false | Passing bid           ",
-            " 0 | BLUE             | BLUE             |             | true  | Passing bid end phase "
+            " 5 | BLACK;BLUE;GREEN | GREEN;BLACK;BLUE | Bid starts auction round "
     })
-    @TestCaseName("{5}")
+    @TestCaseName("{3}")
     public void bid(
             Integer bidAmount,
             String orderStr,
             String auctionOrderStr,
-            String passExpectedBidOrderStr,
-            boolean phaseOver,
             String description) {
 
         // Arrange
@@ -65,11 +61,6 @@ public class BidServiceTest {
                 .withPlayer(Color.BLUE)
                 .withBidAmount(bidAmount)
                 .withPlantValue(5);
-
-        List<Color> passExpectedBidOrder = Arrays.stream(passExpectedBidOrderStr.split(";"))
-                .filter(str -> !str.isEmpty())
-                .map(Color::valueOf)
-                .collect(Collectors.toList());
 
         List<Color> order = Arrays.stream(orderStr.split(";"))
                 .map(Color::valueOf)
@@ -93,39 +84,70 @@ public class BidServiceTest {
 
         // Assert
         BidRound bidRound = game.getBidRounds().get(game.getRound());
-        if (bidAmount > 0) {
-            assertThat(actual).isEqualToComparingFieldByFieldRecursively(
-                    new BidResponse()
-                            .withPlant(new PowerPlant().withValue(5))
-                            .withPlayerToStartAuction(Color.GREEN)
-                            .withPhaseOver(false)
-                            .withOrder(order)
-                            .withAuctionStarted(true));
-            assertThat(bidRound).isEqualToComparingFieldByFieldRecursively(
-                    new BidRound()
-                            .withBidOrder(order)
-                            .withPlantPurchased(true)
-                            .withAuctionRounds(ImmutableMap.of(
-                                    new PowerPlant().withValue(5),
-                                    new AuctionRound()
-                                            .withBid(5)
-                                            .withHighBidder(Color.BLUE)
-                                            .withAuctionFinished(false)
-                                            .withPlant(new PowerPlant().withValue(5))
-                                            .withAuctionOrder(ImmutableList.of(
-                                                    Color.GREEN, Color.BLACK, Color.BLUE)))));
-        } else {
-            assertThat(actual).isEqualToComparingFieldByFieldRecursively(
-                    new BidResponse()
-                            .withAuctionStarted(false)
-                            .withOrder(passExpectedBidOrder)
-                            .withPhaseOver(phaseOver));
-            assertThat(bidRound).isEqualToComparingFieldByFieldRecursively(
-                    new BidRound()
-                            .withBidOrder(passExpectedBidOrder)
-                            .withPlantPurchased(false));
-        }
+        assertThat(actual).isEqualToComparingFieldByFieldRecursively(
+                new BidResponse()
+                        .withPlant(new PowerPlant().withValue(5))
+                        .withPlayerToStartAuction(Color.GREEN)
+                        .withPhaseOver(false)
+                        .withOrder(order)
+                        .withAuctionStarted(true));
+        assertThat(bidRound).isEqualToComparingFieldByFieldRecursively(
+                new BidRound()
+                        .withBidOrder(order)
+                        .withPlantPurchased(true)
+                        .withAuctionRounds(ImmutableMap.of(
+                                new PowerPlant().withValue(5),
+                                new AuctionRound()
+                                        .withBid(5)
+                                        .withHighBidder(Color.BLUE)
+                                        .withAuctionFinished(false)
+                                        .withPlant(new PowerPlant().withValue(5))
+                                        .withAuctionOrder(ImmutableList.of(
+                                                Color.GREEN, Color.BLACK, Color.BLUE)))));
     }
+
+    @Test
+    @Parameters({
+            " BLUE | BLACK;BLUE;GREEN | BLACK;GREEN | false | Passing bid           ",
+            " BLUE | BLUE             |             | true  | Passing bid end phase "
+    })
+    @TestCaseName("{4}")
+    public void pass(
+            Color player,
+            String orderStr,
+            String expectedOrder,
+            boolean phaseOver,
+            String description) {
+        // Arrange
+        PassRequest request = new PassRequest().withPlayer(player);
+
+        List<Color> order = Arrays.stream(orderStr.split(";"))
+                .map(Color::valueOf)
+                .collect(Collectors.toList());
+        game.withTurnOrder(order);
+
+        List<Color> passExpectedBidOrder = Arrays.stream(expectedOrder.split(";"))
+                .filter(str -> !str.isEmpty())
+                .map(Color::valueOf)
+                .collect(Collectors.toList());
+
+        // Act
+        BidResponse actual = target.pass(game, request);
+
+        // Assert
+        assertThat(actual).isEqualToComparingFieldByFieldRecursively(
+                new BidResponse()
+                        .withAuctionStarted(false)
+                        .withOrder(passExpectedBidOrder)
+                        .withPhaseOver(phaseOver));
+
+        BidRound bidRound = game.getBidRounds().get(game.getRound());
+        assertThat(bidRound).isEqualToComparingFieldByFieldRecursively(
+                new BidRound()
+                        .withBidOrder(passExpectedBidOrder)
+                        .withPlantPurchased(false));
+    }
+
 
     @Test
     @Parameters({
