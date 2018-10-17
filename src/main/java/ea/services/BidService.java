@@ -53,9 +53,6 @@ public class BidService {
                     .withHighBidder(bidRequest.getPlayer())
                     .withPlant(plant)
                     .withAuctionOrder(auctionOrder);
-            auction.getPlantToRemove().putIfAbsent(
-                    bidRequest.getPlayer(),
-                    Optional.ofNullable(bidRequest.getPlantValueToRemove()).orElse(0));
             bidRound.getAuctionRounds().putIfAbsent(plant, auction);
 
             game.getBidRounds().put(round, bidRound);
@@ -87,9 +84,6 @@ public class BidService {
                 bidRequest.getPlantValue());
 
         AuctionRound auctionRound = game.getBidRounds().get(round).getAuctionRounds().get(plant);
-        auctionRound.getPlantToRemove().putIfAbsent(
-                bidRequest.getPlayer(),
-                Optional.ofNullable(bidRequest.getPlantValueToRemove()).orElse(0));
 
         Color nextBidder = turnOrderService.getNextPlayer(
                 auctionRound.getAuctionOrder(),
@@ -115,11 +109,6 @@ public class BidService {
 
             if (order.size() == 1) {
                 auctionRound.withAuctionFinished(true);
-                playerService.capturePlant(
-                        game,
-                        plant,
-                        auctionRound.getHighBidder(),
-                        auctionRound.getPlantToRemove().get(auctionRound.getHighBidder()));
             }
 
             return new AuctionResponse()
@@ -130,6 +119,27 @@ public class BidService {
                     .withNextBidder(auctionRound.getAuctionFinished() ? null : nextBidder)
                     .withAuctionFinished(auctionRound.getAuctionFinished());
         }
+    }
+
+    public PlantCaptureResponse capture(State game, PlantCaptureRequest captureRequest) {
+        PowerPlant plant = powerPlantService.findPowerPlantInDeckByValue(
+                game.getCurrentMarketPlants(),
+                captureRequest.getPlant());
+
+        Player player = playerService.findPlayerByColor(game, captureRequest.getPlayer());
+
+        Optional<PowerPlant> plantToRemove = player.getPowerPlants().stream()
+                .filter(p -> p.getValue().equals(captureRequest.getPlantToRemove()))
+                .findFirst();
+
+        Integer price = game.getBidRounds().get(game.getRound()).getAuctionRounds().get(plant).getBid();
+
+        Player withPlant = playerService.capturePlant(game, plant, player, price, plantToRemove);
+
+        return new PlantCaptureResponse()
+                .withPlant(plant)
+                .withPlayer(withPlant)
+                .withPlantRemoved(plantToRemove.orElse(null));
     }
 
     public void validateBid(State game, BidRequest bidRequest) {

@@ -4,20 +4,11 @@ import java.util.List;
 
 public class BidResponse {
 
-    private boolean auctionStarted = false;
     private PowerPlant plant;
+    private boolean auctionStarted = false;
     private boolean phaseOver = false;
     private Color playerToStartAuction;
     private List<Color> order;
-
-    public boolean getAuctionStarted() {
-        return auctionStarted;
-    }
-
-    public BidResponse withAuctionStarted(boolean auctionStarted) {
-        this.auctionStarted = auctionStarted;
-        return this;
-    }
 
     public PowerPlant getPlant() {
         return plant;
@@ -25,6 +16,15 @@ public class BidResponse {
 
     public BidResponse withPlant(PowerPlant plant) {
         this.plant = plant;
+        return this;
+    }
+
+    public boolean getAuctionStarted() {
+        return auctionStarted;
+    }
+
+    public BidResponse withAuctionStarted(boolean auctionStarted) {
+        this.auctionStarted = auctionStarted;
         return this;
     }
 

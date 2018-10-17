@@ -3,9 +3,7 @@ package ea.state;
 import ea.data.Color;
 import ea.data.PowerPlant;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class AuctionRound {
 
@@ -14,7 +12,6 @@ public class AuctionRound {
     private Color highBidder;
     private Integer bid;
     private boolean auctionFinished = false;
-    private Map<Color, Integer> plantToRemove = new HashMap<>();
 
     public List<Color> getAuctionOrder() {
         return auctionOrder;
@@ -61,12 +58,4 @@ public class AuctionRound {
         return this;
     }
 
-    public Map<Color, Integer> getPlantToRemove() {
-        return plantToRemove;
-    }
-
-    public AuctionRound withPlantToRemove(Map<Color, Integer> plantToRemove) {
-        this.plantToRemove = plantToRemove;
-        return this;
-    }
 }

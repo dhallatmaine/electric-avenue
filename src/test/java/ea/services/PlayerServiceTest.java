@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableSet;
 import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.data.Resource;
+import ea.state.State;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import junitparams.naming.TestCaseName;
@@ -26,12 +27,14 @@ public class PlayerServiceTest {
     Player player;
     PowerPlantService powerPlantService;
     PlayerService target;
+    State game;
 
     @Before
     public void setup() {
         player = new Player();
         powerPlantService = mock(PowerPlantService.class);
         target = new PlayerService(powerPlantService);
+        game = new State();
     }
 
     @Test
@@ -92,7 +95,7 @@ public class PlayerServiceTest {
             " 1;2;3 | 5 | 1 | 2;3;5 | Add when player violating max plant capacity     "
     })
     @TestCaseName("{4}")
-    public void addPlantToPlayer(
+    public void capturePlant(
             String playerPlantValuesStr,
             String plantValueToAdd,
             String plantValueToRemove,
@@ -111,17 +114,20 @@ public class PlayerServiceTest {
                 .map(value -> new PowerPlant().withValue(Integer.valueOf(value)))
                 .collect(Collectors.toList());
 
-        player.withPowerPlants(playerPlants);
-
         // Act
-        target.addPlantToPlayer(
-                player,
+        Player actual = target.capturePlant(
+                game,
                 plant,
+                player.withPowerPlants(playerPlants).withMoney(50),
+                Integer.valueOf(plantValueToAdd),
                 Optional.ofNullable(Strings.emptyToNull(plantValueToRemove))
                         .map(value -> new PowerPlant().withValue(Integer.valueOf(value))));
 
         // Assert
-        assertThat(player.getPowerPlants()).isEqualTo(expected);
+        assertThat(actual).isEqualToComparingFieldByFieldRecursively(
+                new Player()
+                        .withPowerPlants(expected)
+                        .withMoney(45));
     }
 
 }

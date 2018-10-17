@@ -1,8 +1,6 @@
 package ea.controllers;
 
-import ea.data.AuctionResponse;
-import ea.data.BidRequest;
-import ea.data.BidResponse;
+import ea.data.*;
 import ea.exceptions.GameNotFoundException;
 import ea.services.BidService;
 import ea.services.GameService;
@@ -45,6 +43,17 @@ public class PowerPlantBidController {
                 .orElseThrow(GameNotFoundException::new);
 
         return bidService.auction(game, bid);
+    }
+
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping("/capture/{id}")
+    public PlantCaptureResponse capture(
+            @PathVariable("id") Integer gameId,
+            @RequestBody PlantCaptureRequest captureRequest) {
+        State game = gameService.getGame(gameId)
+                .orElseThrow(GameNotFoundException::new);
+
+        return bidService.capture(game, captureRequest);
     }
 
 }
