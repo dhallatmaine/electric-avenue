@@ -42,6 +42,7 @@ public class PowerPlantBidController {
         State game = gameService.getGame(gameId)
                 .orElseThrow(GameNotFoundException::new);
 
+        bidService.validateAuction(game, bid);
         return bidService.auction(game, bid);
     }
 

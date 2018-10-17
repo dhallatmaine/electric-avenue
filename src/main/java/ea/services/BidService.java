@@ -149,6 +149,27 @@ public class BidService {
 
         if (bidRequest.getBidAmount() < plant.getValue())
             throw new RuntimeException("Bid must be greater than or equal to the plant value");
+
+        if (!game.getBidRounds().get(game.getRound()).getBidOrder().contains(bidRequest.getPlayer()))
+            throw new RuntimeException("Player is not eligible to bid");
+    }
+
+    public void validateAuction(State game, BidRequest bidRequest) {
+        Player player = playerService.findPlayerByColor(game, bidRequest.getPlayer());
+        PowerPlant plant = powerPlantService.findPowerPlantInDeckByValue(
+                game.getCurrentMarketPlants(),
+                bidRequest.getPlantValue());
+
+        if (bidRequest.getBidAmount() > player.getMoney())
+            throw new RuntimeException("Insufficient funds");
+
+        if (bidRequest.getBidAmount() <= game.getBidRounds().get(game.getRound())
+                .getAuctionRounds().get(plant).getBid())
+            throw new RuntimeException("Bid must be greater than current high bid");
+
+        if (!game.getBidRounds().get(game.getRound())
+                .getAuctionRounds().get(plant).getAuctionOrder().contains(bidRequest.getPlayer()))
+            throw new RuntimeException("Player is not eligible to bid");
     }
 
 }

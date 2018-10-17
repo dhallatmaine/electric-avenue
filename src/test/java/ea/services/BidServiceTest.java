@@ -129,18 +129,22 @@ public class BidServiceTest {
 
     @Test
     @Parameters({
-            " 5 | 0  | 5 | Insufficient funds                                   ",
-            " 5 | 50 | 6 | Bid must be greater than or equal to the plant value "
+            " 5 | 0  | 5 | BLUE;GREEN | BLUE  | Insufficient funds                                   ",
+            " 5 | 50 | 6 | BLUE;GREEN | BLUE  | Bid must be greater than or equal to the plant value ",
+            " 5 | 50 | 5 | BLUE;GREEN | BLACK | Player is not eligible to bid                        "
     })
-    @TestCaseName("{2}")
+    @TestCaseName("{5}")
     public void validateBid(
             Integer bidAmount,
             Integer playerMoney,
             Integer plantValue,
+            String orderStr,
+            Color playerColor,
             String description) {
         // Arrange
         BidRequest request = new BidRequest()
-                .withBidAmount(bidAmount);
+                .withBidAmount(bidAmount)
+                .withPlayer(playerColor);
 
         when(playerService.findPlayerByColor(any(), any()))
                 .thenReturn(player.withMoney(playerMoney));
@@ -148,8 +152,59 @@ public class BidServiceTest {
         when(powerPlantService.findPowerPlantInDeckByValue(any(), any()))
                 .thenReturn(new PowerPlant().withValue(plantValue));
 
+        List<Color> order = Arrays.stream(orderStr.split(";"))
+                .map(Color::valueOf)
+                .collect(Collectors.toList());
+        game.withRound(1).withBidRounds(
+                ImmutableMap.of(1, new BidRound().withBidOrder(order)));
+
         // Act
         Throwable thrown = catchThrowable(() -> target.validateBid(game, request));
+
+        // Assert
+        assertThat(thrown)
+                .isInstanceOf(RuntimeException.class)
+                .hasNoCause()
+                .hasMessage(description);
+    }
+
+    @Test
+    @Parameters({
+            " 5 | 0  | 0 | BLUE;GREEN | BLUE  | Insufficient funds                        ",
+            " 5 | 50 | 6 | BLUE;GREEN | BLUE  | Bid must be greater than current high bid ",
+            " 5 | 50 | 0 | BLUE;GREEN | BLACK | Player is not eligible to bid             "
+    })
+    @TestCaseName("{5}")
+    public void validateAuction(
+            Integer bidAmount,
+            Integer playerMoney,
+            Integer currentBid,
+            String orderStr,
+            Color playerColor,
+            String description) {
+        // Arrange
+        BidRequest request = new BidRequest()
+                .withBidAmount(bidAmount)
+                .withPlayer(playerColor);
+
+        when(playerService.findPlayerByColor(any(), any()))
+                .thenReturn(player.withMoney(playerMoney));
+
+        PowerPlant plant = new PowerPlant().withValue(5);
+        when(powerPlantService.findPowerPlantInDeckByValue(any(), any()))
+                .thenReturn(plant);
+
+        List<Color> order = Arrays.stream(orderStr.split(";"))
+                .map(Color::valueOf)
+                .collect(Collectors.toList());
+
+        game.withRound(1).withBidRounds(
+                ImmutableMap.of(1, new BidRound().withAuctionRounds(ImmutableMap.of(
+                        plant,
+                        new AuctionRound().withAuctionOrder(order).withBid(currentBid)))));
+
+        // Act
+        Throwable thrown = catchThrowable(() -> target.validateAuction(game, request));
 
         // Assert
         assertThat(thrown)
