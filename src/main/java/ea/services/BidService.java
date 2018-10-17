@@ -105,11 +105,7 @@ public class BidService {
                     .filter(color -> !color.equals(bidRequest.getPlayer()))
                     .collect(Collectors.toList());
 
-            auctionRound.withAuctionOrder(order);
-
-            if (order.size() == 1) {
-                auctionRound.withAuctionFinished(true);
-            }
+            auctionRound.withAuctionOrder(order).withAuctionFinished(order.size() == 1);
 
             return new AuctionResponse()
                     .withHighBid(auctionRound.getBid())
