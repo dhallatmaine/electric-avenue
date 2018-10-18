@@ -93,32 +93,42 @@ public class BidService {
                 auctionRound.getAuctionOrder(),
                 bidRequest.getPlayer());
 
-        if (bidRequest.getBidAmount() > 0) {
-            auctionRound
-                    .withHighBidder(bidRequest.getPlayer())
-                    .withBid(bidRequest.getBidAmount());
+        auctionRound
+                .withHighBidder(bidRequest.getPlayer())
+                .withBid(bidRequest.getBidAmount());
 
-            return new AuctionResponse()
-                    .withHighBid(bidRequest.getBidAmount())
-                    .withHighBidder(bidRequest.getPlayer())
-                    .withPlant(plant)
-                    .withOrder(auctionRound.getAuctionOrder())
-                    .withNextBidder(nextBidder);
-        } else {
-            List<Color> order = auctionRound.getAuctionOrder().stream()
-                    .filter(color -> !color.equals(bidRequest.getPlayer()))
-                    .collect(Collectors.toList());
+        return new AuctionResponse()
+                .withHighBid(bidRequest.getBidAmount())
+                .withHighBidder(bidRequest.getPlayer())
+                .withPlant(plant)
+                .withOrder(auctionRound.getAuctionOrder())
+                .withNextBidder(nextBidder);
+    }
 
-            auctionRound.withAuctionOrder(order).withAuctionFinished(order.size() == 1);
+    public AuctionResponse pass(State game, PassRequest pass, Integer plantValue) {
+        PowerPlant plant = powerPlantService.findPowerPlantInDeckByValue(
+                game.getCurrentMarketPlants(),
+                plantValue);
 
-            return new AuctionResponse()
-                    .withHighBid(auctionRound.getBid())
-                    .withHighBidder(auctionRound.getHighBidder())
-                    .withPlant(plant)
-                    .withOrder(order)
-                    .withNextBidder(auctionRound.getAuctionFinished() ? null : nextBidder)
-                    .withAuctionFinished(auctionRound.getAuctionFinished());
-        }
+        AuctionRound auctionRound = game.getBidRounds().get(game.getRound())
+                .getAuctionRounds().get(plant);
+        List<Color> order = auctionRound.getAuctionOrder().stream()
+                .filter(color -> !color.equals(pass.getPlayer()))
+                .collect(Collectors.toList());
+
+        Color nextBidder = turnOrderService.getNextPlayer(
+                auctionRound.getAuctionOrder(),
+                pass.getPlayer());
+
+        auctionRound.withAuctionOrder(order).withAuctionFinished(order.size() == 1);
+
+        return new AuctionResponse()
+                .withHighBid(auctionRound.getBid())
+                .withHighBidder(auctionRound.getHighBidder())
+                .withPlant(plant)
+                .withOrder(order)
+                .withNextBidder(auctionRound.getAuctionFinished() ? null : nextBidder)
+                .withAuctionFinished(auctionRound.getAuctionFinished());
     }
 
     public PlantCaptureResponse capture(State game, PlantCaptureRequest captureRequest) {

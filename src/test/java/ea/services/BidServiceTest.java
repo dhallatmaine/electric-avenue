@@ -46,25 +46,14 @@ public class BidServiceTest {
     }
 
     @Test
-    @Parameters({
-            " 5 | BLACK;BLUE;GREEN | GREEN;BLACK;BLUE | Bid starts auction round "
-    })
-    @TestCaseName("{3}")
-    public void bid(
-            Integer bidAmount,
-            String orderStr,
-            String auctionOrderStr,
-            String description) {
-
+    public void bid() {
         // Arrange
         BidRequest request = new BidRequest()
                 .withPlayer(Color.BLUE)
-                .withBidAmount(bidAmount)
+                .withBidAmount(5)
                 .withPlantValue(5);
 
-        List<Color> order = Arrays.stream(orderStr.split(";"))
-                .map(Color::valueOf)
-                .collect(Collectors.toList());
+        List<Color> order = ImmutableList.of(Color.BLACK, Color.BLUE, Color.GREEN);
         game.withTurnOrder(order);
 
         PowerPlant plant = new PowerPlant().withValue(5);
@@ -73,9 +62,7 @@ public class BidServiceTest {
 
         when(turnOrderService.getNextPlayer(any(), any()))
                 .thenReturn(Color.GREEN);
-        List<Color> auctionOrder = Arrays.stream(auctionOrderStr.split(";"))
-                .map(Color::valueOf)
-                .collect(Collectors.toList());
+        List<Color> auctionOrder = ImmutableList.of(Color.GREEN, Color.BLACK, Color.BLUE);
         when(turnOrderService.determineOrderStartingAtPlayer(any(), any()))
                 .thenReturn(auctionOrder);
 
@@ -148,6 +135,43 @@ public class BidServiceTest {
                         .withPlantPurchased(false));
     }
 
+    @Test
+    public void auction() {
+        // Arrange
+        BidRequest bid = new BidRequest()
+                .withPlantValue(5)
+                .withPlayer(Color.BLUE)
+                .withBidAmount(6);
+
+        AuctionRound auctionRound = new AuctionRound()
+                .withAuctionOrder(ImmutableList.of(Color.BLUE, Color.BLACK, Color.GREEN))
+                .withBid(5)
+                .withHighBidder(Color.GREEN)
+                .withPlant(new PowerPlant().withValue(5));
+
+        game.withBidRounds(ImmutableMap.of(1, new BidRound()
+                .withAuctionRounds(ImmutableMap.of(
+                        new PowerPlant().withValue(5), auctionRound))));
+
+        when(powerPlantService.findPowerPlantInDeckByValue(any(), any()))
+                .thenReturn(new PowerPlant().withValue(5));
+
+        when(turnOrderService.getNextPlayer(any(), any()))
+                .thenReturn(Color.BLACK);
+
+        // Act
+        AuctionResponse actual = target.auction(game, bid);
+
+        // Assert
+        assertThat(actual).isEqualToComparingFieldByFieldRecursively(
+                new AuctionResponse()
+                    .withHighBidder(Color.BLUE)
+                    .withHighBid(6)
+                    .withNextBidder(Color.BLACK)
+                    .withOrder(ImmutableList.of(Color.BLUE, Color.BLACK, Color.GREEN))
+                    .withPlant(new PowerPlant().withValue(5))
+                    .withAuctionFinished(false));
+    }
 
     @Test
     @Parameters({
