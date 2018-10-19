@@ -1,37 +1,69 @@
 package ea.services;
 
 
+import ea.api.ResourcePurchaseRequest;
+import ea.data.Player;
+import ea.data.Resource;
+import ea.state.State;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
 public class ResourceService {
 
-  public Integer getPrice(List<Integer> resources, int amount) {
-    return resources.stream()
-            .filter(i -> i > 0)
-            .limit(amount)
-            .mapToInt(Integer::intValue)
-            .sum();
-  }
+    private final PlayerService playerService;
 
-  public List<Integer> removeFromMarket(List<Integer> resources, int amount) {
-    Stream<Integer> emptySpaces = resources.stream()
-            .filter(i -> i == 0);
+    @Autowired
+    public ResourceService(PlayerService playerService) {
+        this.playerService = playerService;
+    }
 
-    Stream<Integer> removed = Stream.iterate(0, i -> 0)
-            .limit(amount);
+    public Integer getPrice(List<Integer> resources, int amount) {
+        return resources.stream()
+                .filter(i -> i > 0)
+                .limit(amount)
+                .mapToInt(Integer::intValue)
+                .sum();
+    }
 
-    Stream<Integer> newEmptyArea = Stream.concat(emptySpaces, removed);
+    public List<Integer> removeFromMarket(List<Integer> resources, int amount) {
+        Stream<Integer> emptySpaces = resources.stream()
+                .filter(i -> i == 0);
 
-    Stream<Integer> remaining = resources.stream()
-            .filter(i -> i > 0)
-            .skip(amount);
+        Stream<Integer> removed = Stream.iterate(0, i -> 0)
+                .limit(amount);
 
-    return Stream.concat(newEmptyArea, remaining).collect(Collectors.toList());
-  }
+        Stream<Integer> newEmptyArea = Stream.concat(emptySpaces, removed);
+
+        Stream<Integer> remaining = resources.stream()
+                .filter(i -> i > 0)
+                .skip(amount);
+
+        return Stream.concat(newEmptyArea, remaining).collect(Collectors.toList());
+    }
+
+    public void validateResourcePurchase(State game, ResourcePurchaseRequest purchaseRequest) {
+        Player player = playerService.findPlayerByColor(game, purchaseRequest.getPlayer());
+
+        Map<Resource, Integer> resourcesToAmount = purchaseRequest.getResources().stream()
+                .collect(Collectors.groupingBy(
+                        Function.identity(),
+                        Collectors.collectingAndThen(
+                                Collectors.mapping(Resource::name, Collectors.toSet()),
+                                Set::size)));
+
+        resourcesToAmount.entrySet().forEach(entry -> {
+            int max = playerService.getMaxResourcesAllowedForPurchase(player, entry.getKey());
+            if (resourcesToAmount.get(entry.getKey()) > max)
+                throw new RuntimeException("Can not purchase this many " + entry.getKey() + " resources");
+        });
+    }
 
 }
