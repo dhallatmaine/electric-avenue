@@ -10,7 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/bid")
+@RequestMapping
 public class PowerPlantBidController {
 
     private GameService gameService;
@@ -23,9 +23,9 @@ public class PowerPlantBidController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @RequestMapping("/{id}")
+    @RequestMapping("/bid/{gameId}")
     public BidResponse bid(
-            @PathVariable("id") Integer gameId,
+            @PathVariable("gameId") Integer gameId,
             @RequestBody BidRequest bid) {
         State game = gameService.getGame(gameId)
                 .orElseThrow(GameNotFoundException::new);
@@ -35,9 +35,9 @@ public class PowerPlantBidController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @RequestMapping("/pass/{id}")
+    @RequestMapping("/bid/pass/{gameId}")
     public BidResponse pass(
-            @PathVariable("id") Integer gameId,
+            @PathVariable("gameId") Integer gameId,
             @RequestBody PassRequest pass) {
         State game = gameService.getGame(gameId)
                 .orElseThrow(GameNotFoundException::new);
@@ -46,9 +46,9 @@ public class PowerPlantBidController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @RequestMapping("/auction/{id}")
+    @RequestMapping("/auction/{gameId}")
     public AuctionResponse auction(
-            @PathVariable("id") Integer gameId,
+            @PathVariable("gameId") Integer gameId,
             @RequestBody BidRequest bid) {
         State game = gameService.getGame(gameId)
                 .orElseThrow(GameNotFoundException::new);
@@ -58,9 +58,22 @@ public class PowerPlantBidController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @RequestMapping("/capture/{id}")
+    @RequestMapping("/auction/pass/{gameId}/{plant}")
+    public AuctionResponse auctionPass(
+            @PathVariable("gameId") Integer gameId,
+            @PathVariable("plant") Integer plant,
+            @RequestBody PassRequest pass) {
+        State game = gameService.getGame(gameId)
+                .orElseThrow(GameNotFoundException::new);
+
+        return bidService.pass(game, pass, plant);
+    }
+
+
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping("/capture/{gameId}")
     public PlantCaptureResponse capture(
-            @PathVariable("id") Integer gameId,
+            @PathVariable("gameId") Integer gameId,
             @RequestBody PlantCaptureRequest captureRequest) {
         State game = gameService.getGame(gameId)
                 .orElseThrow(GameNotFoundException::new);
