@@ -1,4 +1,7 @@
-package ea.data;
+package ea.api;
+
+import ea.data.Color;
+import ea.data.PowerPlant;
 
 import java.util.List;
 

@@ -1,6 +1,8 @@
 package ea.controllers;
 
+import ea.api.*;
 import ea.data.*;
+import ea.services.AuctionService;
 import ea.services.BidService;
 import ea.services.GameService;
 import ea.state.State;
@@ -18,6 +20,7 @@ public class PowerPlantBidControllerTest {
 
     GameService gameService;
     BidService bidService;
+    AuctionService auctionService;
     PowerPlantBidController target;
 
     State game;
@@ -26,7 +29,11 @@ public class PowerPlantBidControllerTest {
     public void setup() {
         gameService = mock(GameService.class);
         bidService = mock(BidService.class);
-        target = new PowerPlantBidController(gameService, bidService);
+        auctionService = mock(AuctionService.class);
+        target = new PowerPlantBidController(
+                gameService,
+                bidService,
+                auctionService);
 
         game = new State().withRound(1);
     }
@@ -75,7 +82,7 @@ public class PowerPlantBidControllerTest {
 
         AuctionResponse auctionResponse = new AuctionResponse()
                 .withPlant(new PowerPlant().withValue(5));
-        when(bidService.auction(any(), any()))
+        when(auctionService.auction(any(), any()))
                 .thenReturn(auctionResponse);
 
         // Act
@@ -93,7 +100,7 @@ public class PowerPlantBidControllerTest {
 
         AuctionResponse auctionResponse = new AuctionResponse()
                 .withPlant(new PowerPlant().withValue(5));
-        when(bidService.pass(any(), any(), any()))
+        when(auctionService.pass(any(), any(), any()))
                 .thenReturn(auctionResponse);
 
         // Act

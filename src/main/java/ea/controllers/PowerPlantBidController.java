@@ -1,7 +1,8 @@
 package ea.controllers;
 
-import ea.data.*;
+import ea.api.*;
 import ea.exceptions.GameNotFoundException;
+import ea.services.AuctionService;
 import ea.services.BidService;
 import ea.services.GameService;
 import ea.state.State;
@@ -13,13 +14,18 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping
 public class PowerPlantBidController {
 
-    private GameService gameService;
-    private BidService bidService;
+    private final GameService gameService;
+    private final BidService bidService;
+    private final AuctionService auctionService;
 
     @Autowired
-    public PowerPlantBidController(GameService gameService, BidService bidService) {
+    public PowerPlantBidController(
+            GameService gameService,
+            BidService bidService,
+            AuctionService auctionService) {
         this.gameService = gameService;
         this.bidService = bidService;
+        this.auctionService = auctionService;
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -54,8 +60,8 @@ public class PowerPlantBidController {
         State game = gameService.getGame(gameId)
                 .orElseThrow(GameNotFoundException::new);
 
-        bidService.validateAuction(game, bid);
-        return bidService.auction(game, bid);
+        auctionService.validateAuction(game, bid);
+        return auctionService.auction(game, bid);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -67,7 +73,7 @@ public class PowerPlantBidController {
         State game = gameService.getGame(gameId)
                 .orElseThrow(GameNotFoundException::new);
 
-        return bidService.pass(game, pass, plant);
+        return auctionService.pass(game, pass, plant);
     }
 
 

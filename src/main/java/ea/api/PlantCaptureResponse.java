@@ -1,4 +1,7 @@
-package ea.data;
+package ea.api;
+
+import ea.data.Player;
+import ea.data.PowerPlant;
 
 public class PlantCaptureResponse {
 
