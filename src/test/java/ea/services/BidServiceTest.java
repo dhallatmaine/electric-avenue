@@ -175,6 +175,59 @@ public class BidServiceTest {
 
     @Test
     @Parameters({
+            " BLUE | BLUE;BLACK;GREEN | BLACK;GREEN | false | Passing auction ",
+            " BLUE | BLUE;BLACK       | BLACK       | true  | End auction     "
+    })
+    @TestCaseName("{4}")
+    public void auctionPass(
+            Color player,
+            String orderStr,
+            String expectedOrderStr,
+            boolean phaseOver,
+            String description) {
+        // Arrange
+        PassRequest pass = new PassRequest()
+                .withPlayer(player);
+
+        List<Color> order = Arrays.stream(orderStr.split(";"))
+                .map(Color::valueOf)
+                .collect(Collectors.toList());
+        AuctionRound auctionRound = new AuctionRound()
+                .withAuctionOrder(order)
+                .withBid(5)
+                .withHighBidder(Color.GREEN)
+                .withPlant(new PowerPlant().withValue(5));
+
+        game.withBidRounds(ImmutableMap.of(1, new BidRound()
+                .withAuctionRounds(ImmutableMap.of(
+                        new PowerPlant().withValue(5), auctionRound))));
+
+        when(powerPlantService.findPowerPlantInDeckByValue(any(), any()))
+                .thenReturn(new PowerPlant().withValue(5));
+
+        when(turnOrderService.getNextPlayer(any(), any()))
+                .thenReturn(Color.BLACK);
+
+        // Act
+        AuctionResponse actual = target.pass(game, pass, 5);
+
+        // Assert
+        List<Color> expectedOrder = Arrays.stream(expectedOrderStr.split(";"))
+                .map(Color::valueOf)
+                .collect(Collectors.toList());
+        assertThat(actual).isEqualToComparingFieldByFieldRecursively(
+                new AuctionResponse()
+                .withHighBidder(Color.GREEN)
+                .withHighBid(5)
+                .withAuctionFinished(false)
+                .withNextBidder(phaseOver ? null : Color.BLACK)
+                .withOrder(expectedOrder)
+                .withPlant(new PowerPlant().withValue(5))
+                .withAuctionFinished(phaseOver));
+    }
+
+    @Test
+    @Parameters({
             " 5 | 0  | 5 | BLUE;GREEN | BLUE  | Insufficient funds                                   ",
             " 5 | 50 | 6 | BLUE;GREEN | BLUE  | Bid must be greater than or equal to the plant value ",
             " 5 | 50 | 5 | BLUE;GREEN | BLACK | Player is not eligible to bid                        "
