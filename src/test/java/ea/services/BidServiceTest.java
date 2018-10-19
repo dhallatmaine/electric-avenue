@@ -268,6 +268,21 @@ public class BidServiceTest {
     }
 
     @Test
+    public void validatePass() {
+        // Arrange
+        game.withRound(0);
+
+        // Act
+        Throwable thrown = catchThrowable(() -> target.validatePass(game));
+
+        // Assert
+        assertThat(thrown)
+                .isInstanceOf(RuntimeException.class)
+                .hasNoCause()
+                .hasMessage("You must purchase a plant during the first round of the game");
+    }
+
+    @Test
     @Parameters({
             " 5 | 0  | 0 | BLUE;GREEN | BLUE  | Insufficient funds                        ",
             " 5 | 50 | 6 | BLUE;GREEN | BLUE  | Bid must be greater than current high bid ",

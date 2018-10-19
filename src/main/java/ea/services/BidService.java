@@ -168,6 +168,11 @@ public class BidService {
             throw new RuntimeException("Player is not eligible to bid");
     }
 
+    public void validatePass(State game) {
+        if (game.getRound().equals(0))
+            throw new RuntimeException("You must purchase a plant during the first round of the game");
+    }
+
     public void validateAuction(State game, BidRequest bidRequest) {
         Player player = playerService.findPlayerByColor(game, bidRequest.getPlayer());
         PowerPlant plant = powerPlantService.findPowerPlantInDeckByValue(
