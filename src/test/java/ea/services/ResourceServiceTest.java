@@ -1,5 +1,8 @@
 package ea.services;
 
+import com.google.common.collect.ImmutableList;
+import ea.api.ResourcePurchaseRequest;
+import ea.data.Color;
 import ea.data.Resource;
 import ea.state.State;
 import ea.maps.America;
@@ -15,17 +18,24 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(JUnitParamsRunner.class)
 public class ResourceServiceTest {
 
-    State state;
+    PlayerService playerService;
     ResourceService target;
+
+    State game;
 
     @Before
     public void setup() {
-        state = new State().withResources(America.initializeResources());
-        target = new ResourceService();
+        playerService = mock(PlayerService.class);
+        target = new ResourceService(playerService);
+        game = new State().withResources(America.initializeResources());
     }
 
     @Test
@@ -46,7 +56,7 @@ public class ResourceServiceTest {
         Resource resourceType = Resource.valueOf(type);
 
         // Act
-        Integer actual = target.getPrice(state.getResources().get(resourceType), amount);
+        Integer actual = target.getPrice(game.getResources().get(resourceType), amount);
 
         // Assert
         assertThat(actual).isEqualTo(expectedPrice);
@@ -73,10 +83,30 @@ public class ResourceServiceTest {
                 .collect(Collectors.toList());
 
         // Act
-        List<Integer> actual = target.removeFromMarket(state.getResources().get(resourceType), amount);
+        List<Integer> actual = target.removeFromMarket(game.getResources().get(resourceType), amount);
 
         // Assert
         assertThat(actual).isEqualTo(expectedMarket);
+    }
+
+    @Test
+    public void validateResourcePurchase() {
+        // Arrange
+        ResourcePurchaseRequest request = new ResourcePurchaseRequest()
+                .withPlayer(Color.BLUE)
+                .withResources(ImmutableList.of(Resource.COAL));
+
+        when(playerService.getMaxResourcesAllowedForPurchase(any(), any()))
+                .thenReturn(0);
+
+        // Act
+        Throwable thrown = catchThrowable(() -> target.validateResourcePurchase(game, request));
+
+        // Assert
+        assertThat(thrown)
+                .isInstanceOf(RuntimeException.class)
+                .hasNoCause()
+                .hasMessage("Can not purchase this many COAL resources");
     }
 
 }
