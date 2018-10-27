@@ -1,61 +1,80 @@
-{
-  "america": [
-    {
-      "savannah": {
-        "districts": [
-          10,
-          15,
-          20
-        ],
-        "connections": [
-          {
-            "city": "raleigh",
-            "cost": 12
-          },
-          {
-            "city": "atlanta",
-            "cost": 0
-          }
-        ]
+[
+  {
+    "name": "seattle",
+    "region": "PURPLE",
+    "districts": [
+      10,
+      15,
+      20
+    ],
+    "connections": [
+      {
+        "city": "portland",
+        "cost": 3
+      },
+      {
+        "city": "billings",
+        "cost": 9
+      },
+      {
+        "city": "boise",
+        "cost": 12
       }
-    },
-    {
-      "atlanta": {
-        "districts": [
-          10,
-          15,
-          20
-        ],
-        "connections": [
-          {
-            "city": "savannah",
-            "cost": 0
-          },
-          {
-            "city": "raleigh",
-            "cost": 15
-          }
-        ]
+    ]
+  },
+  {
+    "name": "portland",
+    "region": "PURPLE",
+    "districts": [
+      10,
+      15,
+      20
+    ],
+    "connections": [
+      {
+        "city": "seattle",
+        "cost": 3
+      },
+      {
+        "city": "boise",
+        "cost": 13
+      },
+      {
+        "city": "san francisco",
+        "cost": 24
       }
-    },
-    {
-      "raleigh": {
-        "districts": [
-          10,
-          15,
-          20
-        ],
-        "connections": [
-          {
-            "city": "atlanta",
-            "cost": 15
-          },
-          {
-            "city": "savannah",
-            "cost": 12
-          }
-        ]
+    ]
+  },
+  {
+    "name": "billings",
+    "region": "PURPLE",
+    "districts": [
+      10,
+      15,
+      20
+    ],
+    "connections": [
+      {
+        "city": "seattle",
+        "cost": 9
+      },
+      {
+        "city": "boise",
+        "cost": 12
+      },
+      {
+        "city": "cheyenne",
+        "cost": 9
+      },
+      {
+        "city": "minneapolis",
+        "cost": 18
+      },
+      {
+        "city": "fargo",
+        "cost": 17
       }
-    }
-  ]
-}
+    ]
+  }
+
+]
