@@ -4,7 +4,7 @@ import java.util.List;
 
 public class BaseMap {
 
-    private List<City> cities;
+    List<City> cities;
 
     public List<City> getCities() {
         return cities;

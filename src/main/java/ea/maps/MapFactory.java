@@ -9,7 +9,7 @@ import java.util.List;
 
 class MapFactory {
 
-    private static List<City> getCityListFromJson(String jsonFilePath)
+    static List<City> getCityListFromJson(String jsonFilePath)
         throws IOException {
 
         ObjectMapper mapper = new ObjectMapper();
@@ -19,14 +19,4 @@ class MapFactory {
             new TypeReference<List<City>>() { });
     }
 
-
-    public static void main(String[] args)
-        throws IOException {
-
-        List<City> americanCities = getCityListFromJson("src\\main\\resources\\america.json");
-
-        for (City city : americanCities) {
-            System.out.println(city);
-        }
-    }
 }

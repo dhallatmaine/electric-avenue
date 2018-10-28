@@ -1,17 +1,10 @@
 [
+
   {
     "name": "seattle",
     "region": "PURPLE",
-    "districts": [
-      10,
-      15,
-      20
-    ],
+    "districts":[10,15,20],
     "connections": [
-      {
-        "city": "portland",
-        "cost": 3
-      },
       {
         "city": "billings",
         "cost": 9
@@ -19,17 +12,17 @@
       {
         "city": "boise",
         "cost": 12
+      },
+      {
+        "city": "portland",
+        "cost": 3
       }
     ]
   },
   {
     "name": "portland",
     "region": "PURPLE",
-    "districts": [
-      10,
-      15,
-      20
-    ],
+    "districts":[10,15,20],
     "connections": [
       {
         "city": "seattle",
@@ -48,11 +41,7 @@
   {
     "name": "billings",
     "region": "PURPLE",
-    "districts": [
-      10,
-      15,
-      20
-    ],
+    "districts":[10,15,20],
     "connections": [
       {
         "city": "seattle",
@@ -73,6 +62,931 @@
       {
         "city": "fargo",
         "cost": 17
+      }
+    ]
+  },
+  {
+    "name": "boise",
+    "region": "PURPLE",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "portland",
+        "cost": 13
+      },
+      {
+        "city": "seattle",
+        "cost": 12
+      },
+      {
+        "city": "billings",
+        "cost": 12
+      },
+      {
+        "city": "cheyenne",
+        "cost": 24
+      },
+      {
+        "city": "salt lake city",
+        "cost": 8
+      },
+      {
+        "city": "san francisco",
+        "cost": 23
+      }
+    ]
+  },
+  {
+    "name": "cheyenne",
+    "region": "PURPLE",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "boise",
+        "cost": 24
+      },
+      {
+        "city": "billings",
+        "cost": 9
+      },
+      {
+        "city": "minneapolis",
+        "cost": 18
+      },
+      {
+        "city": "omaha",
+        "cost": 14
+      },
+      {
+        "city": "denver",
+        "cost": 0
+      }
+    ]
+  },
+  {
+    "name": "denver",
+    "region": "PURPLE",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "cheyenne",
+        "cost": 0
+      },
+      {
+        "city": "kansas city",
+        "cost": 16
+      },
+      {
+        "city": "santa fe",
+        "cost": 13
+      },
+      {
+        "city": "salt lake city",
+        "cost": 21
+      }
+    ]
+  },
+  {
+    "name": "omaha",
+    "region": "PURPLE",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "cheyenne",
+        "cost": 14
+      },
+      {
+        "city": "minneapolis",
+        "cost": 8
+      },
+      {
+        "city": "chicago",
+        "cost": 13
+      },
+      {
+        "city": "kansas city",
+        "cost": 5
+      }
+    ]
+  },
+  {
+    "name": "san francisco",
+    "region": "BLUE",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "portland",
+        "cost": 24
+      },
+      {
+        "city": "boise",
+        "cost": 23
+      },
+      {
+        "city": "salt lake city",
+        "cost": 27
+      },
+      {
+        "city": "las vegas",
+        "cost": 14
+      },
+      {
+        "city": "los angeles",
+        "cost": 9
+      }
+    ]
+  },
+  {
+    "name": "salt lake city",
+    "region": "BLUE",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "boise",
+        "cost": 8
+      },
+      {
+        "city": "denver",
+        "cost": 21
+      },
+      {
+        "city": "santa fe",
+        "cost": 28
+      },
+      {
+        "city": "las vegas",
+        "cost": 18
+      },
+      {
+        "city": "san francisco",
+        "cost": 27
+      }
+    ]
+  },
+  {
+    "name": "los angeles",
+    "region": "BLUE",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "san francisco",
+        "cost": 9
+      },
+      {
+        "city": "las vegas",
+        "cost": 9
+      },
+      {
+        "city": "san diego",
+        "cost": 3
+      }
+    ]
+  },
+  {
+    "name": "las vegas",
+    "region": "BLUE",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "san francisco",
+        "cost": 14
+      },
+      {
+        "city": "salt lake city",
+        "cost": 18
+      },
+      {
+        "city": "santa fe",
+        "cost": 27
+      },
+      {
+        "city": "phoenix",
+        "cost": 15
+      },
+      {
+        "city": "san diego",
+        "cost": 9
+      },
+      {
+        "city": "los angeles",
+        "cost": 9
+      }
+    ]
+  },
+  {
+    "name": "san diego",
+    "region": "BLUE",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "los angeles",
+        "cost": 3
+      },
+      {
+        "city": "las vegas",
+        "cost": 9
+      },
+      {
+        "city": "phoenix",
+        "cost": 14
+      }
+    ]
+  },
+  {
+    "name": "phoenix",
+    "region": "BLUE",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "san diego",
+        "cost": 14
+      },
+      {
+        "city": "las vegas",
+        "cost": 15
+      },
+      {
+        "city": "santa fe",
+        "cost": 18
+      }
+    ]
+  },
+  {
+    "name": "santa fe",
+    "region": "BLUE",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "phoenix",
+        "cost": 18
+      },
+      {
+        "city": "las vegas",
+        "cost": 27
+      },
+      {
+        "city": "salt lake city",
+        "cost": 28
+      },
+      {
+        "city": "denver",
+        "cost": 13
+      },
+      {
+        "city": "kansas city",
+        "cost": 16
+      },
+      {
+        "city": "oklahoma city",
+        "cost": 15
+      },
+      {
+        "city": "dallas",
+        "cost": 16
+      },
+      {
+        "city": "houston",
+        "cost": 21
+      }
+    ]
+  },
+  {
+    "name": "fargo",
+    "region": "YELLOW",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "billings",
+        "cost": 17
+      },
+      {
+        "city": "minneapolis",
+        "cost": 6
+      },
+      {
+        "city": "duluth",
+        "cost": 6
+      }
+    ]
+  },
+  {
+    "name": "duluth",
+    "region": "YELLOW",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "fargo",
+        "cost": 6
+      },
+      {
+        "city": "minneapolis",
+        "cost": 5
+      },
+      {
+        "city": "chicago",
+        "cost": 12
+      },
+      {
+        "city": "detroit",
+        "cost": 15
+      }
+    ]
+  },
+  {
+    "name": "minneapolis",
+    "region": "YELLOW",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "fargo",
+        "cost": 6
+      },
+      {
+        "city": "duluth",
+        "cost": 5
+      },
+      {
+        "city": "chicago",
+        "cost": 8
+      },
+      {
+        "city": "omaha",
+        "cost": 8
+      },
+      {
+        "city": "cheyenne",
+        "cost": 18
+      },
+      {
+        "city": "billings",
+        "cost": 18
+      }
+    ]
+  },
+  {
+    "name": "chicago",
+    "region": "YELLOW",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "minneapolis",
+        "cost": 8
+      },
+      {
+        "city": "duluth",
+        "cost": 12
+      },
+      {
+        "city": "detroit",
+        "cost": 7
+      },
+      {
+        "city": "cincinnati",
+        "cost": 7
+      },
+      {
+        "city": "st. louis",
+        "cost": 10
+      },
+      {
+        "city": "kansas city",
+        "cost": 8
+      },
+      {
+        "city": "omaha",
+        "cost": 13
+      }
+    ]
+  },
+  {
+    "name": "st. louis",
+    "region": "YELLOW",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "chicago",
+        "cost": 10
+      },
+      {
+        "city": "cincinnati",
+        "cost": 12
+      },
+      {
+        "city": "atlanta",
+        "cost": 12
+      },
+      {
+        "city": "memphis",
+        "cost": 7
+      },
+      {
+        "city": "kansas city",
+        "cost": 6
+      }
+    ]
+  },
+  {
+    "name": "cincinnati",
+    "region": "YELLOW",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "st. louis",
+        "cost": 12
+      },
+      {
+        "city": "chicago",
+        "cost": 7
+      },
+      {
+        "city": "detroit",
+        "cost": 4
+      },
+      {
+        "city": "pittsburgh",
+        "cost": 7
+      },
+      {
+        "city": "raleigh",
+        "cost": 15
+      },
+      {
+        "city": "knoxville",
+        "cost": 6
+      }
+    ]
+  },
+  {
+    "name": "knoxville",
+    "region": "YELLOW",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "cincinnati",
+        "cost": 6
+      },
+      {
+        "city": "atlanta",
+        "cost": 5
+      }
+    ]
+  },
+  {
+    "name": "kansas city",
+    "region": "RED",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "memphis",
+        "cost": 12
+      },
+      {
+        "city": "oklahoma city",
+        "cost": 8
+      },
+      {
+        "city": "santa fe",
+        "cost": 16
+      },
+      {
+        "city": "denver",
+        "cost": 16
+      },
+      {
+        "city": "omaha",
+        "cost": 5
+      },
+      {
+        "city": "chicago",
+        "cost": 8
+      },
+      {
+        "city": "st. louis",
+        "cost": 6
+      }
+    ]
+  },
+  {
+    "name": "oklahoma city",
+    "region": "RED",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "kansas city",
+        "cost": 8
+      },
+      {
+        "city": "memphis",
+        "cost": 14
+      },
+      {
+        "city": "dallas",
+        "cost": 3
+      },
+      {
+        "city": "santa fe",
+        "cost": 15
+      }
+    ]
+  },
+  {
+    "name": "dallas",
+    "region": "RED",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "oklahoma city",
+        "cost": 3
+      },
+      {
+        "city": "memphis",
+        "cost": 12
+      },
+      {
+        "city": "new orleans",
+        "cost": 12
+      },
+      {
+        "city": "houston",
+        "cost": 5
+      },
+      {
+        "city": "santa fe",
+        "cost": 16
+      }
+    ]
+  },
+  {
+    "name": "houston",
+    "region": "RED",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "dallas",
+        "cost": 5
+      },
+      {
+        "city": "new orleans",
+        "cost": 8
+      },
+      {
+        "city": "santa fe",
+        "cost": 21
+      }
+    ]
+  },
+  {
+    "name": "memphis",
+    "region": "RED",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "birmingham",
+        "cost": 6
+      },
+      {
+        "city": "new orleans",
+        "cost": 7
+      },
+      {
+        "city": "dallas",
+        "cost": 12
+      },
+      {
+        "city": "oklahoma city",
+        "cost": 14
+      },
+      {
+        "city": "kansas city",
+        "cost": 12
+      },
+      {
+        "city": "st. louis",
+        "cost": 7
+      }
+    ]
+  },
+  {
+    "name": "new orleans",
+    "region": "RED",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "houston",
+        "cost": 8
+      },
+      {
+        "city": "dallas",
+        "cost": 12
+      },
+      {
+        "city": "memphis",
+        "cost": 7
+      },
+      {
+        "city": "birmingham",
+        "cost": 11
+      },
+      {
+        "city": "jacksonville",
+        "cost": 16
+      }
+    ]
+  },
+  {
+    "name": "birmingham",
+    "region": "RED",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "new orleans",
+        "cost": 11
+      },
+      {
+        "city": "memphis",
+        "cost": 6
+      },
+      {
+        "city": "atlanta",
+        "cost": 3
+      },
+      {
+        "city": "jacksonville",
+        "cost": 9
+      }
+    ]
+  },
+  {
+    "name": "detroit",
+    "region": "BROWN",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "buffalo",
+        "cost": 7
+      },
+      {
+        "city": "pittsburgh",
+        "cost": 6
+      },
+      {
+        "city": "cincinnati",
+        "cost": 4
+      },
+      {
+        "city": "chicago",
+        "cost": 7
+      },
+      {
+        "city": "duluth",
+        "cost": 15
+      }
+    ]
+  },
+  {
+    "name": "buffalo",
+    "region": "BROWN",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "new york",
+        "cost": 8
+      },
+      {
+        "city": "pittsburgh",
+        "cost": 7
+      },
+      {
+        "city": "detroit",
+        "cost": 7
+      }
+    ]
+  },
+  {
+    "name": "boston",
+    "region": "BROWN",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "new york",
+        "cost": 3
+      }
+    ]
+  },
+  {
+    "name": "new york",
+    "region": "BROWN",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "boston",
+        "cost": 3
+      },
+      {
+        "city": "philadelphia",
+        "cost": 0
+      },
+      {
+        "city": "buffalo",
+        "cost": 8
+      }
+    ]
+  },
+  {
+    "name": "philadelphia",
+    "region": "BROWN",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "new york",
+        "cost": 0
+      },
+      {
+        "city": "washington d.c.",
+        "cost": 3
+      }
+    ]
+  },
+  {
+    "name": "washington d.c.",
+    "region": "BROWN",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "pittsburgh",
+        "cost": 6
+      },
+      {
+        "city": "philadelphia",
+        "cost": 3
+      },
+      {
+        "city": "norfolk",
+        "cost": 5
+      }
+    ]
+  },
+  {
+    "name": "pittsburgh",
+    "region": "BROWN",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "detroit",
+        "cost": 6
+      },
+      {
+        "city": "buffalo",
+        "cost": 7
+      },
+      {
+        "city": "washington d.c.",
+        "cost": 6
+      },
+      {
+        "city": "raleigh",
+        "cost": 7
+      },
+      {
+        "city": "cincinnati",
+        "cost": 7
+      }
+    ]
+  },
+  {
+    "name": "norfolk",
+    "region": "GREEN",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "washington d.c.",
+        "cost": 5
+      },
+      {
+        "city": "raleigh",
+        "cost": 3
+      }
+    ]
+  },
+  {
+    "name": "raleigh",
+    "region": "GREEN",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "norfolk",
+        "cost": 3
+      },
+      {
+        "city": "savannah",
+        "cost": 7
+      },
+      {
+        "city": "atlanta",
+        "cost": 7
+      },
+      {
+        "city": "cincinnati",
+        "cost": 15
+      },
+      {
+        "city": "pittsburgh",
+        "cost": 7
+      }
+    ]
+  },
+  {
+    "name": "atlanta",
+    "region": "GREEN",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "raleigh",
+        "cost": 7
+      },
+      {
+        "city": "savannah",
+        "cost": 7
+      },
+      {
+        "city": "birmingham",
+        "cost": 3
+      },
+      {
+        "city": "st. louis",
+        "cost": 12
+      },
+      {
+        "city": "knoxville",
+        "cost": 5
+      }
+    ]
+  },
+  {
+    "name": "savannah",
+    "region": "GREEN",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "raleigh",
+        "cost": 7
+      },
+      {
+        "city": "jacksonville",
+        "cost": 0
+      },
+      {
+        "city": "atlanta",
+        "cost": 7
+      }
+    ]
+  },
+  {
+    "name": "jacksonville",
+    "region": "GREEN",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "savannah",
+        "cost": 0
+      },
+      {
+        "city": "birmingham",
+        "cost": 9
+      },
+      {
+        "city": "new orleans",
+        "cost": 16
+      },
+      {
+        "city": "tampa",
+        "cost": 4
+      }
+    ]
+  },
+  {
+    "name": "tampa",
+    "region": "GREEN",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "jacksonville",
+        "cost": 4
+      },
+      {
+        "city": "miami",
+        "cost": 4
+      }
+    ]
+  },
+  {
+    "name": "miami",
+    "region": "GREEN",
+    "districts":[10,15,20],
+    "connections": [
+      {
+        "city": "tampa",
+        "cost": 4
       }
     ]
   }
