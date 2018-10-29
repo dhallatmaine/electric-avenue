@@ -1,5 +1,6 @@
 package ea.controllers;
 
+import ea.api.ResourcePlaceRequest;
 import ea.api.ResourcePurchaseRequest;
 import ea.exceptions.GameNotFoundException;
 import ea.services.GameService;
@@ -30,6 +31,17 @@ public class ResourceController {
                 .orElseThrow(GameNotFoundException::new);
 
         resourceService.validateResourcePurchase(game, purchaseRequest);
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping("/resource/place/{gameId}")
+    public void placeResources(
+            @PathVariable("gameId") Integer gameId,
+            @RequestBody ResourcePlaceRequest resourcePlaceRequest) {
+        State game = gameService.getGame(gameId)
+                .orElseThrow(GameNotFoundException::new);
+
+
     }
 
 }

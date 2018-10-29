@@ -3,12 +3,12 @@ package ea.api;
 import ea.data.Color;
 import ea.data.Resource;
 
-import java.util.List;
+import java.util.Map;
 
 public class ResourcePurchaseRequest {
 
     private Color player;
-    private List<Resource> resources;
+    private Map<Resource, Integer> resources;
 
     public Color getPlayer() {
         return player;
@@ -19,11 +19,11 @@ public class ResourcePurchaseRequest {
         return this;
     }
 
-    public List<Resource> getResources() {
+    public Map<Resource, Integer> getResources() {
         return resources;
     }
 
-    public ResourcePurchaseRequest withResources(List<Resource> resources) {
+    public ResourcePurchaseRequest withResources(Map<Resource, Integer> resources) {
         this.resources = resources;
         return this;
     }

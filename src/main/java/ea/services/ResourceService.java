@@ -52,16 +52,9 @@ public class ResourceService {
     public void validateResourcePurchase(State game, ResourcePurchaseRequest purchaseRequest) {
         Player player = playerService.findPlayerByColor(game, purchaseRequest.getPlayer());
 
-        Map<Resource, Integer> resourcesToAmount = purchaseRequest.getResources().stream()
-                .collect(Collectors.groupingBy(
-                        Function.identity(),
-                        Collectors.collectingAndThen(
-                                Collectors.mapping(Resource::name, Collectors.toSet()),
-                                Set::size)));
-
-        resourcesToAmount.entrySet().forEach(entry -> {
+        purchaseRequest.getResources().entrySet().forEach(entry -> {
             int max = playerService.getMaxResourcesAllowedForPurchase(player, entry.getKey());
-            if (resourcesToAmount.get(entry.getKey()) > max)
+            if (entry.getValue() > max)
                 throw new RuntimeException("Can not purchase this many " + entry.getKey() + " resources");
         });
     }

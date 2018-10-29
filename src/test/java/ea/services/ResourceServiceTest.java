@@ -1,6 +1,6 @@
 package ea.services;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import ea.api.ResourcePurchaseRequest;
 import ea.data.Color;
 import ea.data.Resource;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.ThrowableAssert.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -94,7 +94,7 @@ public class ResourceServiceTest {
         // Arrange
         ResourcePurchaseRequest request = new ResourcePurchaseRequest()
                 .withPlayer(Color.BLUE)
-                .withResources(ImmutableList.of(Resource.COAL));
+                .withResources(ImmutableMap.of(Resource.COAL, 1));
 
         when(playerService.getMaxResourcesAllowedForPurchase(any(), any()))
                 .thenReturn(0);
