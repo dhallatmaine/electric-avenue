@@ -2,6 +2,7 @@ package ea.services;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import ea.api.ResourcePlaceRequest;
 import ea.api.ResourcePurchaseRequest;
 import ea.data.Color;
@@ -123,20 +124,27 @@ public class ResourceServiceTest {
 
     @Test
     @Parameters({
-            " 1 | true  ",
-            " 2 | false "
+            " 1 | COAL | true  | Not enough room on this plant to place these resources ",
+            " 2 | COAL | false |                                                        ",
+            " 2 | OIL  | true  | This plant does not allow this resource type           "
     })
-    public void validateResourcePlace(Integer resources, boolean expectException) {
+    public void validateResourcePlace(
+            Integer resources,
+            Resource resource,
+            boolean expectException,
+            String exception) {
         // Arrange
         ResourcePlaceRequest request = new ResourcePlaceRequest()
                 .withPlayer(Color.BLUE)
                 .withResourcesToPlace(ImmutableMap.of(
-                        1, ImmutableList.of(Resource.COAL)
+                        1, ImmutableList.of(resource)
                 ));
 
         PowerPlant plant = new PowerPlant()
                 .withValue(1)
-                .withResources(resources);
+                .withResources(resources)
+                .withResourceEnums(ImmutableSet.of(Resource.COAL));
+
         when(playerService.findPlayerByColor(game, Color.BLUE))
                 .thenReturn(new Player()
                         .withPowerPlants(ImmutableList.of(plant))
@@ -150,7 +158,7 @@ public class ResourceServiceTest {
             assertThat(thrown)
                     .isInstanceOf(RuntimeException.class)
                     .hasNoCause()
-                    .hasMessage("Not enough room on this plant to place these resources");
+                    .hasMessage(exception);
         } else {
             assertThat(thrown).isNull();
         }

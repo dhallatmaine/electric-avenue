@@ -10,6 +10,7 @@ import ea.state.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -69,6 +70,11 @@ public class ResourceService {
 
         placeRequest.getResourcesToPlace().entrySet().forEach(entry -> {
             PowerPlant plant = playerPlants.get(entry.getKey());
+
+            Set<Resource> resources = new HashSet<>(entry.getValue());
+            if (!resources.containsAll(plant.getResources()))
+                throw new RuntimeException("This plant does not allow this resource type");
+
             if (plant.getResourceCapacity() - player.getResources().get(plant).size() < entry.getValue().size())
                 throw new RuntimeException("Not enough room on this plant to place these resources");
         });
