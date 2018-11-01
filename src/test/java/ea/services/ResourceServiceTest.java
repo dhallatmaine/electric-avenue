@@ -1,8 +1,12 @@
 package ea.services;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import ea.api.ResourcePlaceRequest;
 import ea.api.ResourcePurchaseRequest;
 import ea.data.Color;
+import ea.data.Player;
+import ea.data.PowerPlant;
 import ea.data.Resource;
 import ea.state.State;
 import ea.maps.America;
@@ -90,23 +94,66 @@ public class ResourceServiceTest {
     }
 
     @Test
-    public void validateResourcePurchase() {
+    @Parameters({
+            " 0 | true  ",
+            " 1 | false "
+    })
+    public void validateResourcePurchase(Integer allowed, boolean expectException) {
         // Arrange
         ResourcePurchaseRequest request = new ResourcePurchaseRequest()
                 .withPlayer(Color.BLUE)
                 .withResources(ImmutableMap.of(Resource.COAL, 1));
 
         when(playerService.getMaxResourcesAllowedForPurchase(any(), any()))
-                .thenReturn(0);
+                .thenReturn(allowed);
 
         // Act
         Throwable thrown = catchThrowable(() -> target.validateResourcePurchase(game, request));
 
         // Assert
-        assertThat(thrown)
-                .isInstanceOf(RuntimeException.class)
-                .hasNoCause()
-                .hasMessage("Can not purchase this many COAL resources");
+        if (expectException) {
+            assertThat(thrown)
+                    .isInstanceOf(RuntimeException.class)
+                    .hasNoCause()
+                    .hasMessage("Can not purchase this many COAL resources");
+        } else {
+            assertThat(thrown).isNull();
+        }
+    }
+
+    @Test
+    @Parameters({
+            " 1 | true  ",
+            " 2 | false "
+    })
+    public void validateResourcePlace(Integer resources, boolean expectException) {
+        // Arrange
+        ResourcePlaceRequest request = new ResourcePlaceRequest()
+                .withPlayer(Color.BLUE)
+                .withResourcesToPlace(ImmutableMap.of(
+                        1, ImmutableList.of(Resource.COAL)
+                ));
+
+        PowerPlant plant = new PowerPlant()
+                .withValue(1)
+                .withResources(resources);
+        when(playerService.findPlayerByColor(game, Color.BLUE))
+                .thenReturn(new Player()
+                        .withPowerPlants(ImmutableList.of(plant))
+                        .withResources(ImmutableMap.of(plant, ImmutableList.of(Resource.COAL))));
+
+        // Act
+        Throwable thrown = catchThrowable(() -> target.validateResourcePlace(game, request));
+
+        // Assert
+        if (expectException) {
+            assertThat(thrown)
+                    .isInstanceOf(RuntimeException.class)
+                    .hasNoCause()
+                    .hasMessage("Not enough room on this plant to place these resources");
+        } else {
+            assertThat(thrown).isNull();
+        }
     }
 
 }

@@ -1,8 +1,10 @@
 package ea.services;
 
 
+import ea.api.ResourcePlaceRequest;
 import ea.api.ResourcePurchaseRequest;
 import ea.data.Player;
+import ea.data.PowerPlant;
 import ea.data.Resource;
 import ea.state.State;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +58,19 @@ public class ResourceService {
             int max = playerService.getMaxResourcesAllowedForPurchase(player, entry.getKey());
             if (entry.getValue() > max)
                 throw new RuntimeException("Can not purchase this many " + entry.getKey() + " resources");
+        });
+    }
+
+    // must have room available on plant
+    public void validateResourcePlace(State game, ResourcePlaceRequest placeRequest) {
+        Player player = playerService.findPlayerByColor(game, placeRequest.getPlayer());
+        Map<Integer, PowerPlant> playerPlants = player.getPowerPlants().stream()
+                .collect(Collectors.toMap(PowerPlant::getValue, Function.identity()));
+
+        placeRequest.getResourcesToPlace().entrySet().forEach(entry -> {
+            PowerPlant plant = playerPlants.get(entry.getKey());
+            if (plant.getResourceCapacity() - player.getResources().get(plant).size() < entry.getValue().size())
+                throw new RuntimeException("Not enough room on this plant to place these resources");
         });
     }
 
