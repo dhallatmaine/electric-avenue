@@ -35,13 +35,13 @@ public class ResourceController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping("/resource/place/{gameId}")
-    public void placeResources(
+    public void place(
             @PathVariable("gameId") Integer gameId,
             @RequestBody ResourcePlaceRequest resourcePlaceRequest) {
         State game = gameService.getGame(gameId)
                 .orElseThrow(GameNotFoundException::new);
 
-
+        resourceService.validateResourcePlace(game, resourcePlaceRequest);
     }
 
 }
