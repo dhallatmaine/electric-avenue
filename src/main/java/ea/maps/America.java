@@ -10,9 +10,9 @@ import java.util.*;
 @Component
 public class America extends BaseMap {
 
-    private final static String AMERICA_JSON_FILE = "src\\main\\resources\\america.json";
+    final static String AMERICA_JSON_FILE = "src\\main\\resources\\america.json";
 
-    void initializeCityList(String countryJsonFilePath) throws IOException {
+    public void initializeCityList() throws IOException {
         cities = MapFactory.getCityListFromJson(AMERICA_JSON_FILE);
     }
 
