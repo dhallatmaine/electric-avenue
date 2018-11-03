@@ -21,17 +21,18 @@ import org.junit.runner.RunWith;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.ThrowableAssert.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(JUnitParamsRunner.class)
 public class ResourceServiceTest {
 
     PlayerService playerService;
+    GameService gameService;
     ResourceService target;
 
     State game;
@@ -39,7 +40,8 @@ public class ResourceServiceTest {
     @Before
     public void setup() {
         playerService = mock(PlayerService.class);
-        target = new ResourceService(playerService);
+        gameService = mock(GameService.class);
+        target = new ResourceService(playerService, gameService);
         game = new State().withResources(America.initializeResources());
     }
 
@@ -95,17 +97,67 @@ public class ResourceServiceTest {
     }
 
     @Test
+    public void purchaseResources() {
+        // Arrange
+        ResourcePurchaseRequest request = new ResourcePurchaseRequest()
+                .withPlayer(Color.BLUE)
+                .withResources(ImmutableMap.of(
+                        Resource.COAL, 1,
+                        Resource.OIL, 1));
+
+        Player player = new Player()
+                .withMoney(50);
+
+        when(playerService.findPlayerByColor(game, Color.BLUE))
+                .thenReturn(player);
+
+        // Act
+        target.purchaseResources(game, request);
+
+        // Assert
+        assertThat(player.getMoney()).isEqualTo(46);
+
+        List<Integer> coalMarket = Stream.concat(
+                Stream.of(0),
+                game.getResources().get(Resource.COAL).stream()
+                        .skip(1)
+                        .limit(game.getResources().get(Resource.COAL).size() - 1))
+                .collect(Collectors.toList());
+        verify(gameService, times(1)).setResourceMarket(game, Resource.COAL, coalMarket);
+
+        List<Integer> oilMarket = Stream.concat(
+                Stream.of(0, 0, 0, 0, 0, 0, 0),
+                game.getResources().get(Resource.OIL).stream()
+                        .skip(7)
+                        .limit(game.getResources().get(Resource.OIL).size() - 1))
+                .collect(Collectors.toList());
+        verify(gameService, times(1)).setResourceMarket(game, Resource.OIL, oilMarket);
+    }
+
+    @Test
     @Parameters({
-            " 0 | true  ",
-            " 1 | false "
+            " 0 | 1 | true  | Can not purchase this many COAL resources",
+            " 1 | 1 | false |                                          ",
+            " 1 | 0 | true  | Insufficient funds                       "
     })
-    public void validateResourcePurchase(Integer allowed, boolean expectException) {
+    public void validateResourcePurchase(
+            Integer allowed,
+            Integer money,
+            boolean expectException,
+            String exceptionMessage) {
         // Arrange
         ResourcePurchaseRequest request = new ResourcePurchaseRequest()
                 .withPlayer(Color.BLUE)
                 .withResources(ImmutableMap.of(Resource.COAL, 1));
 
-        when(playerService.getMaxResourcesAllowedForPurchase(any(), any()))
+        Player player = new Player()
+                .withColor(Color.BLUE)
+                .withMoney(money);
+
+        when(playerService.findPlayerByColor(game, Color.BLUE))
+                .thenReturn(player);
+
+        when(playerService.getMaxResourcesAllowedForPurchase(player, Resource.COAL))
                 .thenReturn(allowed);
 
         // Act
@@ -116,7 +168,7 @@ public class ResourceServiceTest {
             assertThat(thrown)
                     .isInstanceOf(RuntimeException.class)
                     .hasNoCause()
-                    .hasMessage("Can not purchase this many COAL resources");
+                    .hasMessage(exceptionMessage);
         } else {
             assertThat(thrown).isNull();
         }

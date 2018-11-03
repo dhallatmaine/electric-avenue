@@ -10,10 +10,7 @@ import ea.state.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -22,10 +19,12 @@ import java.util.stream.Stream;
 public class ResourceService {
 
     private final PlayerService playerService;
+    private final GameService gameService;
 
     @Autowired
-    public ResourceService(PlayerService playerService) {
+    public ResourceService(PlayerService playerService, GameService gameService) {
         this.playerService = playerService;
+        this.gameService = gameService;
     }
 
     public Integer getPrice(List<Integer> resources, int amount) {
@@ -52,14 +51,34 @@ public class ResourceService {
         return Stream.concat(newEmptyArea, remaining).collect(Collectors.toList());
     }
 
+    public void purchaseResources(State game, ResourcePurchaseRequest purchaseRequest) {
+        Player player = playerService.findPlayerByColor(game, purchaseRequest.getPlayer());
+
+        List<Integer> price = new ArrayList<>();
+        purchaseRequest.getResources().entrySet().forEach(entry -> {
+            List<Integer> newMarket = removeFromMarket(game.getResources().get(entry.getKey()), entry.getValue());
+            gameService.setResourceMarket(game, entry.getKey(), newMarket);
+            price.add(getPrice(game.getResources().get(entry.getKey()), entry.getValue()));
+        });
+
+        Integer totalPrice = price.stream().mapToInt(Integer::intValue).sum();
+        player.withMoney(player.getMoney() - totalPrice);
+    }
+
     public void validateResourcePurchase(State game, ResourcePurchaseRequest purchaseRequest) {
         Player player = playerService.findPlayerByColor(game, purchaseRequest.getPlayer());
 
+        List<Integer> price = new ArrayList<>();
         purchaseRequest.getResources().entrySet().forEach(entry -> {
+            price.add(getPrice(game.getResources().get(entry.getKey()), entry.getValue()));
             int max = playerService.getMaxResourcesAllowedForPurchase(player, entry.getKey());
             if (entry.getValue() > max)
                 throw new RuntimeException("Can not purchase this many " + entry.getKey() + " resources");
         });
+
+        Integer totalPrice = price.stream().mapToInt(Integer::intValue).sum();
+        if (totalPrice > player.getMoney())
+            throw new RuntimeException("Insufficient funds");
     }
 
     // must have room available on plant

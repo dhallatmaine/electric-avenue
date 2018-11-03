@@ -3,6 +3,7 @@ package ea.services;
 import ea.data.Color;
 import ea.data.Player;
 import ea.data.PowerPlant;
+import ea.data.Resource;
 import ea.maps.America;
 import ea.state.GameState;
 import ea.state.State;
@@ -12,8 +13,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class GameService {
@@ -58,6 +57,11 @@ public class GameService {
                 shuffledDeck,
                 currentMarket,
                 futureMarket);
+    }
+
+    public void setResourceMarket(State game, Resource resource, List<Integer> market) {
+        // TODO: Make this immutable
+        game.getResources().put(resource, market);
     }
 
 }

@@ -115,7 +115,11 @@ public class BidService {
         if (bidRequest.getBidAmount() < plant.getValue())
             throw new RuntimeException("Bid must be greater than or equal to the plant value");
 
-        if (!game.getBidRounds().get(game.getRound()).getBidOrder().contains(bidRequest.getPlayer()))
+        BidRound bidRound = game.getBidRounds().getOrDefault(
+                game.getRound(),
+                new BidRound()
+                        .withBidOrder(game.getTurnOrder()));
+        if (!bidRound.getBidOrder().contains(bidRequest.getPlayer()))
             throw new RuntimeException("Player is not eligible to bid");
     }
 
