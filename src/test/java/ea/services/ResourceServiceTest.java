@@ -135,6 +135,34 @@ public class ResourceServiceTest {
     }
 
     @Test
+    public void placeResources() {
+        // Arrange
+        ResourcePlaceRequest request = new ResourcePlaceRequest()
+                .withPlayer(Color.BLUE)
+                .withResourcesToPlace(ImmutableMap.of(
+                        1, ImmutableList.of(Resource.COAL)));
+
+        PowerPlant plant = new PowerPlant()
+                .withValue(1);
+
+        Player player = new Player()
+                .withColor(Color.BLUE)
+                .withPowerPlants(ImmutableList.of(plant))
+                .withResources(ImmutableMap.of(
+                        plant, ImmutableList.of(Resource.OIL)));
+
+        when(playerService.findPlayerByColor(game, Color.BLUE))
+                .thenReturn(player);
+
+        // Act
+        target.placeResources(game, request);
+
+        // Assert
+        List<Resource> resources = ImmutableList.of(Resource.OIL, Resource.COAL);
+        verify(gameService, times(1)).setPlayerResources(resources, player, plant);
+    }
+
+    @Test
     @Parameters({
             " 0 | 1 | true  | Can not purchase this many COAL resources",
             " 1 | 1 | false |                                          ",

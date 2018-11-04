@@ -65,6 +65,21 @@ public class ResourceService {
         player.withMoney(player.getMoney() - totalPrice);
     }
 
+    public void placeResources(State game, ResourcePlaceRequest placeRequest) {
+        Player player = playerService.findPlayerByColor(game, placeRequest.getPlayer());
+
+        placeRequest.getResourcesToPlace().entrySet().forEach(entry -> {
+            PowerPlant plant = player.getPowerPlants().stream()
+                    .filter(p -> p.getValue().equals(entry.getKey()))
+                    .findFirst()
+                    .get();
+            List<Resource> newResources =
+                    Stream.concat(player.getResources().get(plant).stream(), entry.getValue().stream())
+                            .collect(Collectors.toList());
+            gameService.setPlayerResources(newResources, player, plant);
+        });
+    }
+
     public void validateResourcePurchase(State game, ResourcePurchaseRequest purchaseRequest) {
         Player player = playerService.findPlayerByColor(game, purchaseRequest.getPlayer());
 
