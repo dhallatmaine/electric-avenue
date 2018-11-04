@@ -3,6 +3,7 @@ package ea.services;
 import ea.data.Color;
 import ea.data.Player;
 import ea.data.PowerPlant;
+import ea.data.Resource;
 import ea.maps.America;
 import ea.state.GameState;
 import ea.state.State;
@@ -37,7 +38,7 @@ public class GameService {
         return Optional.ofNullable(gameState.getById(id));
     }
 
-    public Integer createGame() {
+    public State createGame() {
         List<PowerPlant> deck = new ArrayList<>(powerPlantService.createInitialPowerPlants());
         List<PowerPlant> currentMarket = powerPlantService.setupCurrentMarket(deck);
         deck.removeAll(currentMarket);
@@ -56,6 +57,16 @@ public class GameService {
                 shuffledDeck,
                 currentMarket,
                 futureMarket);
+    }
+
+    public void setResourceMarket(State game, Resource resource, List<Integer> market) {
+        // TODO: Make this immutable
+        game.getResources().put(resource, market);
+    }
+
+    public void setPlayerResources(List<Resource> resources, Player player, PowerPlant plant) {
+        // TODO: Make this immutable
+        player.getResources().put(plant, resources);
     }
 
 }

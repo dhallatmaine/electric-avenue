@@ -96,31 +96,34 @@ public class PlayerService {
                 .get();
     }
 
-    public void capturePlant(State game, PowerPlant plant, Color playerColor, Integer plantToRemoveValue) {
-        Player player = findPlayerByColor(game, playerColor);
-        Optional<PowerPlant> plantToRemove = player.getPowerPlants().stream()
-                .filter(p -> p.getValue().equals(plantToRemoveValue))
-                .findFirst();
-        addPlantToPlayer(player, plant, plantToRemove);
-        subtractMoneyFromPlayer(player, game.getCurrentBid());
-
+    public Player capturePlant(
+            State game,
+            PowerPlant plant,
+            Player player,
+            Integer price,
+            Optional<PowerPlant> plantToRemove) {
+        Player playerWithPlant = addPlantToPlayer(player, plant, plantToRemove);
+        Player playerWithMoney = subtractMoneyFromPlayer(playerWithPlant, price);
         powerPlantService.flipNewCard(game, plant);
+        return playerWithMoney;
     }
 
-    public void addPlantToPlayer(Player player, PowerPlant plant, Optional<PowerPlant> plantToRemove) {
+    private Player addPlantToPlayer(Player player, PowerPlant plant, Optional<PowerPlant> plantToRemove) {
         plantToRemove.ifPresent(remove ->
                 player.withPowerPlants(
                         player.getPowerPlants().stream()
                                 .filter(p -> !p.getValue().equals(plantToRemove.get().getValue()))
                                 .collect(Collectors.toList())));
 
-        player.withPowerPlants(Stream.concat(player.getPowerPlants().stream(), Stream.of(plant))
-                .collect(Collectors.toList()));
+        return player
+                .withPowerPlants(
+                        Stream.concat(player.getPowerPlants().stream(), Stream.of(plant))
+                                .collect(Collectors.toList()));
     }
 
-    private void subtractMoneyFromPlayer(Player player, int amount) {
+    private Player subtractMoneyFromPlayer(Player player, int amount) {
         int money = player.getMoney();
         money = money - amount;
-        player.withMoney(money);
+        return player.withMoney(money);
     }
 }

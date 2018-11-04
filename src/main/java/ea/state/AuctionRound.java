@@ -57,4 +57,5 @@ public class AuctionRound {
         this.auctionFinished = auctionFinished;
         return this;
     }
+
 }

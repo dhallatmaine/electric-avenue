@@ -2,8 +2,6 @@ package ea.controllers;
 
 import ea.services.GameService;
 import ea.state.State;
-import junitparams.Parameters;
-import junitparams.naming.TestCaseName;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,13 +43,14 @@ public class GameControllerTest {
     public void createNewGame() {
         // Arrange
         when(gameService.createGame())
-                .thenReturn(0);
+                .thenReturn(new State().withGameId(1));
 
         // Act
-        Integer gameId = target.createNewGame();
+        State actual = target.createNewGame();
 
         // Assert
-        assertThat(gameId).isEqualTo(0);
+        assertThat(actual)
+                .isEqualToComparingFieldByFieldRecursively(new State().withGameId(1).withRound(1));
     }
 
 }

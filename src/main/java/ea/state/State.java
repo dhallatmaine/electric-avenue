@@ -9,6 +9,7 @@ import java.util.*;
 
 public class State {
 
+    private Integer gameId;
     private String phase;
     private Integer round;
     private List<PowerPlant> deckPlants;
@@ -23,6 +24,15 @@ public class State {
 
     public State() {
         round = 1;
+    }
+
+    public Integer getGameId() {
+        return gameId;
+    }
+
+    public State withGameId(Integer gameId) {
+        this.gameId = gameId;
+        return this;
     }
 
     public String getPhase() {
