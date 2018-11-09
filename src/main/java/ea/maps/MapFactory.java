@@ -28,7 +28,7 @@ class MapFactory {
 
         } catch (IOException ioe) {
             throw new IllegalStateException(
-                "IOException thrown: " + countryName + ".json cannot be found or read properly.");
+                "IOException caught: " + countryName + ".json cannot be found or read properly.");
         }
 
         return cityList;
