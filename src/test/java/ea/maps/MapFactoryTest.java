@@ -3,7 +3,6 @@ package ea.maps;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -17,8 +16,8 @@ public class MapFactoryTest {
     private List<City> americaCities;
 
     @Before
-    public void init() throws IOException {
-        americaCities = MapFactory.getCityListFromJson(America.AMERICA_JSON_FILE);
+    public void init() {
+        americaCities = MapFactory.getCityListFromJson("america");
     }
 
     @Test
