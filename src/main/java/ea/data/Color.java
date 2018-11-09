@@ -2,6 +2,6 @@ package ea.data;
 
 public enum Color {
 
-    GREEN, BLUE, YELLOW, BLACK, RED, PURPLE, BROWN
+    GREEN, BLUE, YELLOW, BLACK, RED, PURPLE
 
 }

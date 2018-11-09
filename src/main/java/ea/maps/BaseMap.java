@@ -4,9 +4,14 @@ import java.util.List;
 
 public class BaseMap {
 
-  private List<City> cities;
+    List<City> cities;
 
-  public List<City> getCities() { return cities; }
-  public void setCities(List<City> cities) { this.cities = cities; }
+    public List<City> getCities() {
+        return cities;
+    }
+
+    public void setCities(List<City> cities) {
+        this.cities = cities;
+    }
 
 }
