@@ -124,7 +124,7 @@ public class BidService {
     }
 
     public void validatePass(State game) {
-        if (game.getRound().equals(0))
+        if (game.getRound().equals(1))
             throw new RuntimeException("You must purchase a plant during the first round of the game");
     }
 

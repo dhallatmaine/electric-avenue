@@ -183,7 +183,7 @@ public class BidServiceTest {
     @Test
     public void validatePass() {
         // Arrange
-        game.withRound(0);
+        game.withRound(1);
 
         // Act
         Throwable thrown = catchThrowable(() -> target.validatePass(game));
