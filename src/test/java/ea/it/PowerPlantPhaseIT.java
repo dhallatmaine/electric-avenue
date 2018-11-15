@@ -3,7 +3,7 @@ package ea.it;
 import ea.api.PassRequest;
 import ea.controllers.PowerPlantBidController;
 import ea.services.GameService;
-import ea.state.State;
+import ea.state.Game;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +21,7 @@ public class PowerPlantPhaseIT {
     @Autowired
     GameService gameService;
 
-    State game;
+    Game game;
 
     @Before
     public void setup() {

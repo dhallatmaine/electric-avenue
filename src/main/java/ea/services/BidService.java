@@ -4,7 +4,7 @@ import ea.api.*;
 import ea.data.*;
 import ea.state.AuctionRound;
 import ea.state.BidRound;
-import ea.state.State;
+import ea.state.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +29,7 @@ public class BidService {
         this.turnOrderService = turnOrderService;
     }
 
-    public BidResponse bid(State game, BidRequest bidRequest) {
+    public BidResponse bid(Game game, BidRequest bidRequest) {
         int round = game.getRound();
         BidRound bidRound = game.getBidRounds().getOrDefault(
                 round,
@@ -64,7 +64,7 @@ public class BidService {
                 .withPlayerToStartAuction(auctionStartingPayer);
     }
 
-    public BidResponse pass(State game, PassRequest bid) {
+    public BidResponse pass(Game game, PassRequest bid) {
         BidRound bidRound = game.getBidRounds().getOrDefault(
                 game.getRound(),
                 new BidRound()
@@ -82,7 +82,7 @@ public class BidService {
                 .withPhaseOver(order.size() == 0);
     }
 
-    public PlantCaptureResponse capture(State game, PlantCaptureRequest captureRequest) {
+    public PlantCaptureResponse capture(Game game, PlantCaptureRequest captureRequest) {
         PowerPlant plant = powerPlantService.findPowerPlantInDeckByValue(
                 game.getCurrentMarketPlants(),
                 captureRequest.getPlant());
@@ -103,7 +103,7 @@ public class BidService {
                 .withPlantRemoved(plantToRemove.orElse(null));
     }
 
-    public void validateBid(State game, BidRequest bidRequest) {
+    public void validateBid(Game game, BidRequest bidRequest) {
         Player player = playerService.findPlayerByColor(game, bidRequest.getPlayer());
         PowerPlant plant = powerPlantService.findPowerPlantInDeckByValue(
                 game.getCurrentMarketPlants(),
@@ -123,7 +123,7 @@ public class BidService {
             throw new RuntimeException("Player is not eligible to bid");
     }
 
-    public void validatePass(State game) {
+    public void validatePass(Game game) {
         if (game.getRound().equals(1))
             throw new RuntimeException("You must purchase a plant during the first round of the game");
     }

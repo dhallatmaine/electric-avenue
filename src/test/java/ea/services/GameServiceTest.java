@@ -1,6 +1,6 @@
 package ea.services;
 
-import ea.state.GameState;
+import ea.state.GameDataStore;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,7 +12,7 @@ import static org.mockito.Mockito.verify;
 
 public class GameServiceTest {
 
-    GameState gameState;
+    GameDataStore gameDataStore;
     PlayerService playerService;
     PowerPlantService powerPlantService;
     TurnOrderService turnOrderService;
@@ -20,11 +20,11 @@ public class GameServiceTest {
 
     @Before
     public void setup() {
-        gameState = mock(GameState.class);
+        gameDataStore = mock(GameDataStore.class);
         playerService = mock(PlayerService.class);
         powerPlantService = mock(PowerPlantService.class);
         turnOrderService = mock(TurnOrderService.class);
-        target = new GameService(gameState, playerService, powerPlantService, turnOrderService);
+        target = new GameService(gameDataStore, playerService, powerPlantService, turnOrderService);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class GameServiceTest {
         verify(powerPlantService, times(1)).shuffleDeck(any(), anyBoolean());
         verify(playerService, times(1)).setupPlayers();
         verify(turnOrderService, times(1)).determineInitialTurnOrder(any());
-        verify(gameState, times(1)).createNewGame(any(), any(), any(), any(), any(), any());
+        verify(gameDataStore, times(1)).createNewGame(any(), any(), any(), any(), any(), any());
     }
 
 }

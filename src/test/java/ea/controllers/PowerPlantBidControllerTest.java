@@ -5,7 +5,7 @@ import ea.data.*;
 import ea.services.AuctionService;
 import ea.services.BidService;
 import ea.services.GameService;
-import ea.state.State;
+import ea.state.Game;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +23,7 @@ public class PowerPlantBidControllerTest {
     AuctionService auctionService;
     PowerPlantBidController target;
 
-    State game;
+    Game game;
 
     @Before
     public void setup() {
@@ -35,7 +35,7 @@ public class PowerPlantBidControllerTest {
                 bidService,
                 auctionService);
 
-        game = new State().withRound(1);
+        game = new Game().withRound(1);
     }
 
     @Test

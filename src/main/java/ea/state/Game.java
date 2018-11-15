@@ -7,7 +7,7 @@ import ea.data.Resource;
 
 import java.util.*;
 
-public class State {
+public class Game {
 
     private Integer gameId;
     private String phase;
@@ -19,10 +19,9 @@ public class State {
     private List<Player> players;
     private List<Color> turnOrder;
     private Color currentTurn;
-    private Integer currentBid = 0;
     private Map<Integer, BidRound> bidRounds = new HashMap<>();
 
-    public State() {
+    public Game() {
         round = 1;
     }
 
@@ -30,7 +29,7 @@ public class State {
         return gameId;
     }
 
-    public State withGameId(Integer gameId) {
+    public Game withGameId(Integer gameId) {
         this.gameId = gameId;
         return this;
     }
@@ -39,7 +38,7 @@ public class State {
         return phase;
     }
 
-    public State withPhase(String phase) {
+    public Game withPhase(String phase) {
         this.phase = phase;
         return this;
     }
@@ -48,7 +47,7 @@ public class State {
         return round;
     }
 
-    public State withRound(Integer round) {
+    public Game withRound(Integer round) {
         this.round = round;
         return this;
     }
@@ -57,7 +56,7 @@ public class State {
         return deckPlants;
     }
 
-    public State withDeckPlants(List<PowerPlant> deckPlants) {
+    public Game withDeckPlants(List<PowerPlant> deckPlants) {
         this.deckPlants = deckPlants;
         return this;
     }
@@ -66,7 +65,7 @@ public class State {
         return currentMarketPlants;
     }
 
-    public State withCurrentMarketPlants(List<PowerPlant> currentMarketPlants) {
+    public Game withCurrentMarketPlants(List<PowerPlant> currentMarketPlants) {
         this.currentMarketPlants = currentMarketPlants;
         return this;
     }
@@ -75,7 +74,7 @@ public class State {
         return futureMarketPlants;
     }
 
-    public State withFutureMarketPlants(List<PowerPlant> futureMarketPlants) {
+    public Game withFutureMarketPlants(List<PowerPlant> futureMarketPlants) {
         this.futureMarketPlants = futureMarketPlants;
         return this;
     }
@@ -84,7 +83,7 @@ public class State {
         return players;
     }
 
-    public State withPlayers(List<Player> players) {
+    public Game withPlayers(List<Player> players) {
         this.players = players;
         return this;
     }
@@ -93,7 +92,7 @@ public class State {
         return resources;
     }
 
-    public State withResources(Map<Resource, List<Integer>> resources) {
+    public Game withResources(Map<Resource, List<Integer>> resources) {
         this.resources = resources;
         return this;
     }
@@ -102,7 +101,7 @@ public class State {
         return turnOrder;
     }
 
-    public State withTurnOrder(List<Color> turnOrder) {
+    public Game withTurnOrder(List<Color> turnOrder) {
         this.turnOrder = turnOrder;
         return this;
     }
@@ -111,17 +110,8 @@ public class State {
         return currentTurn;
     }
 
-    public State withCurrentTurn(Color currentTurn) {
+    public Game withCurrentTurn(Color currentTurn) {
         this.currentTurn = currentTurn;
-        return this;
-    }
-
-    public Integer getCurrentBid() {
-        return currentBid;
-    }
-
-    public State withCurrentBid(Integer currentBid) {
-        this.currentBid = currentBid;
         return this;
     }
 
@@ -129,7 +119,7 @@ public class State {
         return bidRounds;
     }
 
-    public State withBidRounds(Map<Integer, BidRound> bidRounds) {
+    public Game withBidRounds(Map<Integer, BidRound> bidRounds) {
         this.bidRounds = bidRounds;
         return this;
     }

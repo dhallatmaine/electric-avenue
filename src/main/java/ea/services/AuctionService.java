@@ -7,7 +7,7 @@ import ea.data.Color;
 import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.state.AuctionRound;
-import ea.state.State;
+import ea.state.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +31,7 @@ public class AuctionService {
         this.playerService = playerService;
     }
 
-    public AuctionResponse auction(State game, BidRequest bidRequest) {
+    public AuctionResponse auction(Game game, BidRequest bidRequest) {
         int round = game.getRound();
         PowerPlant plant = powerPlantService.findPowerPlantInDeckByValue(
                 game.getCurrentMarketPlants(),
@@ -55,7 +55,7 @@ public class AuctionService {
                 .withNextBidder(nextBidder);
     }
 
-    public AuctionResponse pass(State game, PassRequest pass, Integer plantValue) {
+    public AuctionResponse pass(Game game, PassRequest pass, Integer plantValue) {
         PowerPlant plant = powerPlantService.findPowerPlantInDeckByValue(
                 game.getCurrentMarketPlants(),
                 plantValue);
@@ -81,7 +81,7 @@ public class AuctionService {
                 .withAuctionFinished(auctionRound.getAuctionFinished());
     }
 
-    public void validateAuction(State game, BidRequest bidRequest) {
+    public void validateAuction(Game game, BidRequest bidRequest) {
         Player player = playerService.findPlayerByColor(game, bidRequest.getPlayer());
         PowerPlant plant = powerPlantService.findPowerPlantInDeckByValue(
                 game.getCurrentMarketPlants(),

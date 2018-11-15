@@ -6,7 +6,7 @@ import ea.api.ResourcePurchaseRequest;
 import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.data.Resource;
-import ea.state.State;
+import ea.state.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -51,7 +51,7 @@ public class ResourceService {
         return Stream.concat(newEmptyArea, remaining).collect(Collectors.toList());
     }
 
-    public void purchaseResources(State game, ResourcePurchaseRequest purchaseRequest) {
+    public void purchaseResources(Game game, ResourcePurchaseRequest purchaseRequest) {
         Player player = playerService.findPlayerByColor(game, purchaseRequest.getPlayer());
 
         List<Integer> price = new ArrayList<>();
@@ -65,7 +65,7 @@ public class ResourceService {
         player.withMoney(player.getMoney() - totalPrice);
     }
 
-    public void placeResources(State game, ResourcePlaceRequest placeRequest) {
+    public void placeResources(Game game, ResourcePlaceRequest placeRequest) {
         Player player = playerService.findPlayerByColor(game, placeRequest.getPlayer());
 
         placeRequest.getResourcesToPlace().entrySet().forEach(entry -> {
@@ -80,7 +80,7 @@ public class ResourceService {
         });
     }
 
-    public void validateResourcePurchase(State game, ResourcePurchaseRequest purchaseRequest) {
+    public void validateResourcePurchase(Game game, ResourcePurchaseRequest purchaseRequest) {
         Player player = playerService.findPlayerByColor(game, purchaseRequest.getPlayer());
 
         List<Integer> price = new ArrayList<>();
@@ -97,7 +97,7 @@ public class ResourceService {
     }
 
     // must have room available on plant
-    public void validateResourcePlace(State game, ResourcePlaceRequest placeRequest) {
+    public void validateResourcePlace(Game game, ResourcePlaceRequest placeRequest) {
         Player player = playerService.findPlayerByColor(game, placeRequest.getPlayer());
         Map<Integer, PowerPlant> playerPlants = player.getPowerPlants().stream()
                 .collect(Collectors.toMap(PowerPlant::getValue, Function.identity()));

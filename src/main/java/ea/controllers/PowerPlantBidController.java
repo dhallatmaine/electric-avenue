@@ -5,7 +5,7 @@ import ea.exceptions.GameNotFoundException;
 import ea.services.AuctionService;
 import ea.services.BidService;
 import ea.services.GameService;
-import ea.state.State;
+import ea.state.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +32,7 @@ public class PowerPlantBidController {
     public BidResponse bid(
             @PathVariable("gameId") Integer gameId,
             @RequestBody BidRequest bid) {
-        State game = gameService.getGame(gameId)
+        Game game = gameService.getGame(gameId)
                 .orElseThrow(GameNotFoundException::new);
 
         bidService.validateBid(game, bid);
@@ -44,7 +44,7 @@ public class PowerPlantBidController {
     public BidResponse pass(
             @PathVariable("gameId") Integer gameId,
             @RequestBody PassRequest pass) {
-        State game = gameService.getGame(gameId)
+        Game game = gameService.getGame(gameId)
                 .orElseThrow(GameNotFoundException::new);
 
         bidService.validatePass(game);
@@ -56,7 +56,7 @@ public class PowerPlantBidController {
     public AuctionResponse auction(
             @PathVariable("gameId") Integer gameId,
             @RequestBody BidRequest bid) {
-        State game = gameService.getGame(gameId)
+        Game game = gameService.getGame(gameId)
                 .orElseThrow(GameNotFoundException::new);
 
         auctionService.validateAuction(game, bid);
@@ -69,7 +69,7 @@ public class PowerPlantBidController {
             @PathVariable("gameId") Integer gameId,
             @PathVariable("plant") Integer plant,
             @RequestBody PassRequest pass) {
-        State game = gameService.getGame(gameId)
+        Game game = gameService.getGame(gameId)
                 .orElseThrow(GameNotFoundException::new);
 
         return auctionService.pass(game, pass, plant);
@@ -81,7 +81,7 @@ public class PowerPlantBidController {
     public PlantCaptureResponse capture(
             @PathVariable("gameId") Integer gameId,
             @RequestBody PlantCaptureRequest captureRequest) {
-        State game = gameService.getGame(gameId)
+        Game game = gameService.getGame(gameId)
                 .orElseThrow(GameNotFoundException::new);
 
         return bidService.capture(game, captureRequest);

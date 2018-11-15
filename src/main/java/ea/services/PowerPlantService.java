@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import ea.data.PowerPlant;
 import ea.data.Resource;
-import ea.state.State;
+import ea.state.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -254,7 +254,7 @@ public class PowerPlantService {
                 .collect(Collectors.toList());
     }
 
-    public void flipNewCard(State game, PowerPlant removedCard) {
+    public void flipNewCard(Game game, PowerPlant removedCard) {
         game.getCurrentMarketPlants().remove(removedCard);
 
         PowerPlant topPlant = game.getDeckPlants().remove(0);

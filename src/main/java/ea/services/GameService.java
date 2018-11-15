@@ -5,8 +5,8 @@ import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.data.Resource;
 import ea.maps.America;
-import ea.state.GameState;
-import ea.state.State;
+import ea.state.GameDataStore;
+import ea.state.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,28 +17,28 @@ import java.util.Optional;
 @Component
 public class GameService {
 
-    private GameState gameState;
+    private GameDataStore gameDataStore;
     private PlayerService playerService;
     private PowerPlantService powerPlantService;
     private TurnOrderService turnOrderService;
 
     @Autowired
     public GameService(
-            GameState gameState,
+            GameDataStore gameDataStore,
             PlayerService playerService,
             PowerPlantService powerPlantService,
             TurnOrderService turnOrderService) {
-        this.gameState = gameState;
+        this.gameDataStore = gameDataStore;
         this.playerService = playerService;
         this.powerPlantService = powerPlantService;
         this.turnOrderService = turnOrderService;
     }
 
-    public Optional<State> getGame(Integer id) {
-        return Optional.ofNullable(gameState.getById(id));
+    public Optional<Game> getGame(Integer id) {
+        return Optional.ofNullable(gameDataStore.getById(id));
     }
 
-    public State createGame() {
+    public Game createGame() {
         List<PowerPlant> deck = new ArrayList<>(powerPlantService.createInitialPowerPlants());
         List<PowerPlant> currentMarket = powerPlantService.setupCurrentMarket(deck);
         deck.removeAll(currentMarket);
@@ -50,7 +50,7 @@ public class GameService {
         List<Player> players = playerService.setupPlayers();
         List<Color> turnOrder = turnOrderService.determineInitialTurnOrder(players);
 
-        return gameState.createNewGame(
+        return gameDataStore.createNewGame(
                 America.initializeResources(),
                 players,
                 turnOrder,
@@ -59,7 +59,7 @@ public class GameService {
                 futureMarket);
     }
 
-    public void setResourceMarket(State game, Resource resource, List<Integer> market) {
+    public void setResourceMarket(Game game, Resource resource, List<Integer> market) {
         // TODO: Make this immutable
         game.getResources().put(resource, market);
     }

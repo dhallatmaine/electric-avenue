@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import ea.data.*;
 import ea.rules.BaseRules;
-import ea.state.State;
+import ea.state.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -89,7 +89,7 @@ public class PlayerService {
                 );
     }
 
-    public Player findPlayerByColor(State game, Color color) {
+    public Player findPlayerByColor(Game game, Color color) {
         return game.getPlayers().stream()
                 .filter(player -> player.getColor().equals(color))
                 .findFirst()
@@ -97,7 +97,7 @@ public class PlayerService {
     }
 
     public Player capturePlant(
-            State game,
+            Game game,
             PowerPlant plant,
             Player player,
             Integer price,

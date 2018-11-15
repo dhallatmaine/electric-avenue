@@ -9,7 +9,7 @@ import ea.data.Color;
 import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.data.Resource;
-import ea.state.State;
+import ea.state.Game;
 import ea.maps.America;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -35,14 +35,14 @@ public class ResourceServiceTest {
     GameService gameService;
     ResourceService target;
 
-    State game;
+    Game game;
 
     @Before
     public void setup() {
         playerService = mock(PlayerService.class);
         gameService = mock(GameService.class);
         target = new ResourceService(playerService, gameService);
-        game = new State().withResources(America.initializeResources());
+        game = new Game().withResources(America.initializeResources());
     }
 
     @Test

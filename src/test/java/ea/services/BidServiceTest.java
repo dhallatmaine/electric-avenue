@@ -2,14 +2,13 @@ package ea.services;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import ea.api.AuctionResponse;
 import ea.api.BidRequest;
 import ea.api.BidResponse;
 import ea.api.PassRequest;
 import ea.data.*;
 import ea.state.AuctionRound;
 import ea.state.BidRound;
-import ea.state.State;
+import ea.state.Game;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import junitparams.naming.TestCaseName;
@@ -35,7 +34,7 @@ public class BidServiceTest {
     TurnOrderService turnOrderService;
     BidService target;
     Player player;
-    State game;
+    Game game;
 
     @Before
     public void setup() {
@@ -45,7 +44,7 @@ public class BidServiceTest {
         target = new BidService(playerService, powerPlantService, turnOrderService);
 
         player = new Player();
-        game = new State()
+        game = new Game()
                 .withRound(1);
     }
 

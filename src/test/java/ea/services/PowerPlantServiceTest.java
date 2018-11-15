@@ -2,7 +2,7 @@ package ea.services;
 
 import com.google.common.collect.ImmutableList;
 import ea.data.PowerPlant;
-import ea.state.State;
+import ea.state.Game;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import junitparams.naming.TestCaseName;
@@ -83,7 +83,7 @@ public class PowerPlantServiceTest {
     @Test
     public void flipNewCard() {
         // Arrange
-        State game = new State()
+        Game game = new Game()
                 .withDeckPlants(new LinkedList<>(Arrays.asList(
                         new PowerPlant().withValue(13),
                         new PowerPlant().withValue(20))))

@@ -10,7 +10,7 @@ import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.state.AuctionRound;
 import ea.state.BidRound;
-import ea.state.State;
+import ea.state.Game;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import junitparams.naming.TestCaseName;
@@ -36,7 +36,7 @@ public class AuctionServiceTest {
     PlayerService playerService;
     AuctionService target;
 
-    State game;
+    Game game;
     Player player;
 
     @Before
@@ -47,7 +47,7 @@ public class AuctionServiceTest {
         target = new AuctionService(powerPlantService, turnOrderService, playerService);
 
         player = new Player();
-        game = new State()
+        game = new Game()
                 .withRound(1);
     }
 

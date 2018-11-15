@@ -7,7 +7,7 @@ import com.google.common.collect.ImmutableSet;
 import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.data.Resource;
-import ea.state.State;
+import ea.state.Game;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import junitparams.naming.TestCaseName;
@@ -27,14 +27,14 @@ public class PlayerServiceTest {
     Player player;
     PowerPlantService powerPlantService;
     PlayerService target;
-    State game;
+    Game game;
 
     @Before
     public void setup() {
         player = new Player();
         powerPlantService = mock(PowerPlantService.class);
         target = new PlayerService(powerPlantService);
-        game = new State();
+        game = new Game();
     }
 
     @Test

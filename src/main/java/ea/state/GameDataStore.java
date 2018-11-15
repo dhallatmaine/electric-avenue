@@ -14,20 +14,20 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 @Scope("singleton")
-public class GameState {
+public class GameDataStore {
 
     private AtomicInteger currentId = new AtomicInteger();
-    private Map<Integer, State> stateMap = new HashMap<>();
+    private Map<Integer, Game> stateMap = new HashMap<>();
 
-    public State getById(Integer id) {
+    public Game getById(Integer id) {
         return stateMap.get(id);
     }
 
-    public Map<Integer, State> getStateMap() {
+    public Map<Integer, Game> getStateMap() {
         return stateMap;
     }
 
-    public State createNewGame(
+    public Game createNewGame(
             Map<Resource, List<Integer>> resources,
             List<Player> players,
             List<Color> turnOrder,
@@ -36,7 +36,7 @@ public class GameState {
             List<PowerPlant> futureMarket) {
         stateMap.put(
                 currentId.get(),
-                new State()
+                new Game()
                         .withGameId(currentId.get())
                         .withPhase("PowerPlant")
                         .withResources(resources)

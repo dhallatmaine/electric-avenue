@@ -4,7 +4,7 @@ import ea.api.ResourcePlaceRequest;
 import ea.api.ResourcePurchaseRequest;
 import ea.services.GameService;
 import ea.services.ResourceService;
-import ea.state.State;
+import ea.state.Game;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,7 +21,7 @@ public class ResourceControllerTest {
     ResourceService resourceService;
     ResourceController target;
 
-    State game;
+    Game game;
 
     @Before
     public void setup() {
@@ -29,7 +29,7 @@ public class ResourceControllerTest {
         resourceService = mock(ResourceService.class);
         target = new ResourceController(gameService, resourceService);
 
-        game = new State();
+        game = new Game();
 
         when(gameService.getGame(any()))
                 .thenReturn(Optional.of(game));

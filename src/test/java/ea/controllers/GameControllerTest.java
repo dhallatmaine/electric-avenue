@@ -1,7 +1,7 @@
 package ea.controllers;
 
 import ea.services.GameService;
-import ea.state.State;
+import ea.state.Game;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,30 +27,30 @@ public class GameControllerTest {
     public void getGame() {
         // Arrange
         Integer id = 0;
-        State state = mock(State.class);
+        Game game = mock(Game.class);
 
         when(gameService.getGame(id))
-                .thenReturn(Optional.of(state));
+                .thenReturn(Optional.of(game));
 
         // Act
-        State actual = target.getGame(id);
+        Game actual = target.getGame(id);
 
         // Assert
-        assertThat(actual).isEqualTo(state);
+        assertThat(actual).isEqualTo(game);
     }
 
     @Test
     public void createNewGame() {
         // Arrange
         when(gameService.createGame())
-                .thenReturn(new State().withGameId(1));
+                .thenReturn(new Game().withGameId(1));
 
         // Act
-        State actual = target.createNewGame();
+        Game actual = target.createNewGame();
 
         // Assert
         assertThat(actual)
-                .isEqualToComparingFieldByFieldRecursively(new State().withGameId(1).withRound(1));
+                .isEqualToComparingFieldByFieldRecursively(new Game().withGameId(1).withRound(1));
     }
 
 }

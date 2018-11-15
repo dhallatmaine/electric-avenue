@@ -5,7 +5,7 @@ import ea.api.ResourcePurchaseRequest;
 import ea.exceptions.GameNotFoundException;
 import ea.services.GameService;
 import ea.services.ResourceService;
-import ea.state.State;
+import ea.state.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +27,7 @@ public class ResourceController {
     public void purchase(
             @PathVariable("gameId") Integer gameId,
             @RequestBody ResourcePurchaseRequest purchaseRequest) {
-        State game = gameService.getGame(gameId)
+        Game game = gameService.getGame(gameId)
                 .orElseThrow(GameNotFoundException::new);
 
         resourceService.validateResourcePurchase(game, purchaseRequest);
@@ -38,7 +38,7 @@ public class ResourceController {
     public void place(
             @PathVariable("gameId") Integer gameId,
             @RequestBody ResourcePlaceRequest resourcePlaceRequest) {
-        State game = gameService.getGame(gameId)
+        Game game = gameService.getGame(gameId)
                 .orElseThrow(GameNotFoundException::new);
 
         resourceService.validateResourcePlace(game, resourcePlaceRequest);
