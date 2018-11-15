@@ -7,6 +7,7 @@ import ea.data.Color;
 import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.state.AuctionRound;
+import ea.state.BidRound;
 import ea.state.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -60,8 +61,8 @@ public class AuctionService {
                 game.getCurrentMarketPlants(),
                 plantValue);
 
-        AuctionRound auctionRound = game.getBidRounds().get(game.getRound())
-                .getAuctionRounds().get(plant);
+        BidRound bidRound = game.getBidRounds().get(game.getRound());
+        AuctionRound auctionRound = bidRound.getAuctionRounds().get(plant);
         List<Color> order = auctionRound.getAuctionOrder().stream()
                 .filter(color -> !color.equals(pass.getPlayer()))
                 .collect(Collectors.toList());
@@ -70,7 +71,16 @@ public class AuctionService {
                 auctionRound.getAuctionOrder(),
                 pass.getPlayer());
 
-        auctionRound.withAuctionOrder(order).withAuctionFinished(order.size() == 1);
+        auctionRound
+                .withAuctionOrder(order)
+                .withAuctionFinished(order.size() == 1);
+
+        if (auctionRound.getAuctionFinished()) {
+            List<Color> bidOrder = bidRound.getBidOrder().stream()
+                    .filter(color -> !color.equals(auctionRound.getHighBidder()))
+                    .collect(Collectors.toList());
+            bidRound.withBidOrder(bidOrder);
+        }
 
         return new AuctionResponse()
                 .withHighBid(auctionRound.getBid())

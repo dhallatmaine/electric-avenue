@@ -108,15 +108,18 @@ public class AuctionServiceTest {
         List<Color> order = Arrays.stream(orderStr.split(";"))
                 .map(Color::valueOf)
                 .collect(Collectors.toList());
+
         AuctionRound auctionRound = new AuctionRound()
                 .withAuctionOrder(order)
                 .withBid(5)
                 .withHighBidder(Color.GREEN)
                 .withPlant(new PowerPlant().withValue(5));
-
-        game.withBidRounds(ImmutableMap.of(1, new BidRound()
+        BidRound bidRound = new BidRound()
+                .withBidOrder(order)
                 .withAuctionRounds(ImmutableMap.of(
-                        new PowerPlant().withValue(5), auctionRound))));
+                        new PowerPlant().withValue(5), auctionRound));
+
+        game.withBidRounds(ImmutableMap.of(1, bidRound));
 
         when(powerPlantService.findPowerPlantInDeckByValue(any(), any()))
                 .thenReturn(new PowerPlant().withValue(5));
@@ -131,6 +134,10 @@ public class AuctionServiceTest {
         List<Color> expectedOrder = Arrays.stream(expectedOrderStr.split(";"))
                 .map(Color::valueOf)
                 .collect(Collectors.toList());
+        if (phaseOver) {
+            assertThat(game.getBidRounds().get(1).getBidOrder())
+                    .doesNotContain(auctionRound.getHighBidder());
+        }
         assertThat(actual).isEqualToComparingFieldByFieldRecursively(
                 new AuctionResponse()
                         .withHighBidder(Color.GREEN)
