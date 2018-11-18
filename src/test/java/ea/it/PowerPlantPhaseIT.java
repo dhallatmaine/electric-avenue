@@ -1,14 +1,12 @@
 package ea.it;
 
 import com.google.common.collect.ImmutableList;
-import ea.api.AuctionResponse;
-import ea.api.BidRequest;
-import ea.api.BidResponse;
-import ea.api.PassRequest;
+import ea.api.*;
 import ea.controllers.PowerPlantBidController;
 import ea.data.Color;
 import ea.data.PowerPlant;
 import ea.services.GameService;
+import ea.services.PlayerService;
 import ea.state.Game;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,6 +28,9 @@ public class PowerPlantPhaseIT {
 
     @Autowired
     GameService gameService;
+
+    @Autowired
+    PlayerService playerService;
 
     Game game;
 
@@ -103,7 +104,16 @@ public class PowerPlantPhaseIT {
         assertThat(game.getBidRounds().get(1).getBidOrder()).doesNotContain(winningPlayer);
 
         // capture plant
-        assertThat(game.getCurrentMarketPlants()).contains(new PowerPlant().withValue(3));
+        powerPlantBidController.capture(
+                game.getGameId(),
+                new PlantCaptureRequest()
+                        .withPlant(winningAuctionResponse.getPlant().getValue())
+                        .withPlayer(winningPlayer));
+
+        assertThat(game.getCurrentMarketPlants())
+                .doesNotContain(winningAuctionResponse.getPlant());
+        assertThat(playerService.findPlayerByColor(game, winningPlayer).getPowerPlants())
+                .contains(winningAuctionResponse.getPlant());
     }
 
 }
