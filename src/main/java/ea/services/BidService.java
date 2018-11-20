@@ -41,25 +41,33 @@ public class BidService {
         PowerPlant plant = powerPlantService.findPowerPlantInDeckByValue(
                 game.getCurrentMarketPlants(),
                 bidRequest.getPlantValue());
-        Color auctionStartingPayer = turnOrderService.getNextPlayer(
-                bidRound.getBidOrder(),
-                bidRequest.getPlayer());
-        List<Color> auctionOrder = turnOrderService.determineOrderStartingAtPlayer(
-                bidRound.getBidOrder(),
-                auctionStartingPayer);
 
-        AuctionRound auction = new AuctionRound()
-                .withBid(bidRequest.getBidAmount())
-                .withHighBidder(bidRequest.getPlayer())
-                .withPlant(plant)
-                .withAuctionOrder(auctionOrder);
-        bidRound.getAuctionRounds().putIfAbsent(plant, auction);
+        Color auctionStartingPayer = null;
+
+        boolean startAuction = bidRound.getBidOrder().size() > 1;
+        if (startAuction) {
+            auctionStartingPayer = turnOrderService.getNextPlayer(
+                    bidRound.getBidOrder(),
+                    bidRequest.getPlayer());
+
+            List<Color> auctionOrder = turnOrderService.determineOrderStartingAtPlayer(
+                    bidRound.getBidOrder(),
+                    auctionStartingPayer);
+
+            AuctionRound auction = new AuctionRound()
+                    .withBid(bidRequest.getBidAmount())
+                    .withHighBidder(bidRequest.getPlayer())
+                    .withPlant(plant)
+                    .withAuctionOrder(auctionOrder);
+            bidRound.getAuctionRounds().putIfAbsent(plant, auction);
+        }
 
         game.getBidRounds().put(round, bidRound);
 
         return new BidResponse()
                 .withPlant(plant)
-                .withAuctionStarted(true)
+                .withAuctionStarted(startAuction)
+                .withPhaseOver(!startAuction)
                 .withOrder(game.getTurnOrder())
                 .withPlayerToStartAuction(auctionStartingPayer);
     }
@@ -93,7 +101,13 @@ public class BidService {
                 .filter(p -> p.getValue().equals(captureRequest.getPlantToRemove()))
                 .findFirst();
 
-        Integer price = game.getBidRounds().get(game.getRound()).getAuctionRounds().get(plant).getBid();
+        BidRound bidRound = game.getBidRounds().get(game.getRound());
+        Integer price = bidRound.getBidOrder().size() > 1 ?
+                bidRound.getAuctionRounds().get(plant).getBid() : plant.getValue();
+
+        if (bidRound.getBidOrder().size() == 1) {
+            game.withPhase("ResourcePhase");
+        }
 
         Player withPlant = playerService.capturePlant(game, plant, player, price, plantToRemove);
 

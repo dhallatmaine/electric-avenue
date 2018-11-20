@@ -104,16 +104,15 @@ public class PowerPlantPhaseIT {
         assertThat(game.getBidRounds().get(1).getBidOrder()).doesNotContain(winningPlayer);
 
         // capture first plant
+        PowerPlant firstPlant = winningAuctionResponse.getPlant();
         powerPlantBidController.capture(
                 game.getGameId(),
                 new PlantCaptureRequest()
-                        .withPlant(winningAuctionResponse.getPlant().getValue())
+                        .withPlant(firstPlant.getValue())
                         .withPlayer(winningPlayer));
 
-        assertThat(game.getCurrentMarketPlants())
-                .doesNotContain(winningAuctionResponse.getPlant());
-        assertThat(playerService.findPlayerByColor(game, winningPlayer).getPowerPlants())
-                .contains(winningAuctionResponse.getPlant());
+        assertThat(game.getCurrentMarketPlants()).doesNotContain(firstPlant);
+        assertThat(playerService.findPlayerByColor(game, winningPlayer).getPowerPlants()).contains(firstPlant);
 
         /////////////////////////////////
         // Second bidding / auction phase
@@ -141,16 +140,39 @@ public class PowerPlantPhaseIT {
         assertThat(game.getBidRounds().get(1).getBidOrder()).doesNotContain(winningPlayer, secondWinningPlayer);
 
         // capture plant
+        PowerPlant secondPlant = passToEndSecondAuctionResponse.getPlant();
         powerPlantBidController.capture(
                 game.getGameId(),
                 new PlantCaptureRequest()
-                        .withPlant(passToEndSecondAuctionResponse.getPlant().getValue())
+                        .withPlant(secondPlant.getValue())
                         .withPlayer(secondWinningPlayer));
 
-        assertThat(game.getCurrentMarketPlants())
-                .doesNotContain(passToEndSecondAuctionResponse.getPlant());
-        assertThat(playerService.findPlayerByColor(game, secondWinningPlayer).getPowerPlants())
-                .contains(passToEndSecondAuctionResponse.getPlant());
+        assertThat(game.getCurrentMarketPlants()).doesNotContain(secondPlant);
+        assertThat(playerService.findPlayerByColor(game, secondWinningPlayer).getPowerPlants()).contains(secondPlant);
+
+        /////////////////////////////////
+        // Last bid / no auction
+        Color lastWinningPlayer = game.getBidRounds().get(1).getBidOrder().get(0);
+        BidResponse lastBidResponse = powerPlantBidController.bid(game.getGameId(),
+                new BidRequest()
+                        .withPlayer(lastWinningPlayer)
+                        .withBidAmount(5)
+                        .withPlantValue(5));
+
+        assertThat(lastBidResponse.getPhaseOver()).isTrue();
+        assertThat(lastBidResponse.getAuctionStarted()).isFalse();
+        assertThat(game.getPhase()).isEqualToIgnoringCase("ResourcePhase");
+
+        // capture plant
+        PowerPlant lastPlant = lastBidResponse.getPlant();
+        powerPlantBidController.capture(
+                game.getGameId(),
+                new PlantCaptureRequest()
+                        .withPlant(lastPlant.getValue())
+                        .withPlayer(lastWinningPlayer));
+
+        assertThat(game.getCurrentMarketPlants()).doesNotContain(lastPlant);
+        assertThat(playerService.findPlayerByColor(game, lastWinningPlayer).getPowerPlants()).contains(lastPlant);
     }
 
 }
