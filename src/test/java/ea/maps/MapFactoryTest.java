@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class MapFactoryTest {
@@ -40,10 +39,5 @@ public class MapFactoryTest {
             .collect(Collectors.toSet());
 
         assertThat(cityNames).isEqualTo(connectionCityNames);
-    }
-
-    @Test
-    public void allCitiesHaveThreeDistricts() {
-        americaCities.forEach(c -> assertEquals(3, c.getDistricts().size()));
     }
 }
