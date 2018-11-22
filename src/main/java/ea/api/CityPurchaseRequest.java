@@ -2,10 +2,12 @@ package ea.api;
 
 import ea.data.Color;
 
+import java.util.List;
+
 public class CityPurchaseRequest {
 
     private Color player;
-    private String cityName;
+    private List<List<String>> cityPaths;
 
     public Color getPlayer() {
         return player;
@@ -20,17 +22,16 @@ public class CityPurchaseRequest {
         this.player = player;
     }
 
-    public String getCityName() {
-        return cityName;
+    public List<List<String>> getCityPaths() {
+        return cityPaths;
     }
 
-    public CityPurchaseRequest withCityName(String cityName) {
-        this.cityName = cityName;
+    public CityPurchaseRequest withCityPaths(List<List<String>> cityPaths) {
+        this.cityPaths = cityPaths;
         return this;
     }
 
-    public void setCityName(String cityName) {
-        this.cityName = cityName;
+    public void setCityPaths(List<List<String>> cityPaths) {
+        this.cityPaths = cityPaths;
     }
-
 }

@@ -3,10 +3,12 @@ package ea.api;
 import ea.data.Player;
 import ea.maps.City;
 
+import java.util.List;
+
 public class CityPurchaseResponse {
 
     private Player player;
-    private City city;
+    private List<City> purchasedCities;
     private Integer cost;
 
     public Player getPlayer() {
@@ -22,17 +24,17 @@ public class CityPurchaseResponse {
         this.player = player;
     }
 
-    public City getCity() {
-        return city;
+    public List<City> getPurchasedCities() {
+        return purchasedCities;
     }
 
-    public CityPurchaseResponse withCity(City city) {
-        this.city = city;
+    public CityPurchaseResponse withPurchasedCities(List<City> purchasedCities) {
+        this.purchasedCities = purchasedCities;
         return this;
     }
 
-    public void setCity(City city) {
-        this.city = city;
+    public void setPurchasedCities(List<City> purchasedCities) {
+        this.purchasedCities = purchasedCities;
     }
 
     public Integer getCost() {
