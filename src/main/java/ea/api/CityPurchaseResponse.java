@@ -8,8 +8,8 @@ import java.util.List;
 public class CityPurchaseResponse {
 
     private Player player;
-    private List<City> purchasedCities;
     private Integer cost;
+    private List<City> purchasedCities;
 
     public Player getPlayer() {
         return player;
@@ -24,19 +24,6 @@ public class CityPurchaseResponse {
         this.player = player;
     }
 
-    public List<City> getPurchasedCities() {
-        return purchasedCities;
-    }
-
-    public CityPurchaseResponse withPurchasedCities(List<City> purchasedCities) {
-        this.purchasedCities = purchasedCities;
-        return this;
-    }
-
-    public void setPurchasedCities(List<City> purchasedCities) {
-        this.purchasedCities = purchasedCities;
-    }
-
     public Integer getCost() {
         return cost;
     }
@@ -48,5 +35,18 @@ public class CityPurchaseResponse {
 
     public void setCost(Integer cost) {
         this.cost = cost;
+    }
+
+    public List<City> getPurchasedCities() {
+        return purchasedCities;
+    }
+
+    public CityPurchaseResponse withPurchasedCities(List<City> purchasedCities) {
+        this.purchasedCities = purchasedCities;
+        return this;
+    }
+
+    public void setPurchasedCities(List<City> purchasedCities) {
+        this.purchasedCities = purchasedCities;
     }
 }
