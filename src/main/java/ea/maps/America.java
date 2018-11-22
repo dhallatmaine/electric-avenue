@@ -2,16 +2,16 @@ package ea.maps;
 
 import com.google.common.collect.ImmutableList;
 import ea.data.Resource;
-import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.*;
 
-@Component
-public class America extends BaseMap {
+public class America {
 
-    public void initializeCityList() throws IOException {
-        cities = MapFactory.getCityListFromJson("america");
+    private final static List<City> americaMap =
+        MapFactory.getCityListFromJson("america");
+
+    public static List<City> getAmericaMap() {
+        return americaMap;
     }
 
     public static Map<Resource, List<Integer>> initializeResources() {

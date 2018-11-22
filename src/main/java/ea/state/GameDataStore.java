@@ -4,6 +4,7 @@ import ea.data.Color;
 import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.data.Resource;
+import ea.maps.City;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +29,7 @@ public class GameDataStore {
     }
 
     public Game createNewGame(
+            List<City> gameMap,
             Map<Resource, List<Integer>> resources,
             List<Player> players,
             List<Color> turnOrder,
@@ -39,6 +41,7 @@ public class GameDataStore {
                 new Game()
                         .withGameId(currentId.get())
                         .withPhase("PowerPlant")
+                        .withGameMap(gameMap)
                         .withResources(resources)
                         .withPlayers(players)
                         .withTurnOrder(turnOrder)
