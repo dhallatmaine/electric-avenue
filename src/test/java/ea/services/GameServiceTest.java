@@ -39,7 +39,7 @@ public class GameServiceTest {
         verify(powerPlantService, times(1)).shuffleDeck(any(), anyBoolean());
         verify(playerService, times(1)).setupPlayers();
         verify(turnOrderService, times(1)).determineInitialTurnOrder(any());
-        verify(gameDataStore, times(1)).createNewGame(any(), any(), any(), any(), any(), any());
+        verify(gameDataStore, times(1)).createNewGame(any(), any(), any(), any(), any(), any(), any());
     }
 
 }
