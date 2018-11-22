@@ -51,6 +51,7 @@ public class GameService {
         List<Color> turnOrder = turnOrderService.determineInitialTurnOrder(players);
 
         return gameDataStore.createNewGame(
+                America.getAmericaMap(),
                 America.initializeResources(),
                 players,
                 turnOrder,

@@ -4,6 +4,7 @@ import ea.data.Color;
 import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.data.Resource;
+import ea.maps.City;
 
 import java.util.*;
 
@@ -12,6 +13,7 @@ public class Game {
     private Integer gameId;
     private String phase;
     private Integer round;
+    private List<City> gameMap;
     private List<PowerPlant> deckPlants;
     private List<PowerPlant> currentMarketPlants;
     private List<PowerPlant> futureMarketPlants;
@@ -49,6 +51,15 @@ public class Game {
 
     public Game withRound(Integer round) {
         this.round = round;
+        return this;
+    }
+
+    public List<City> getGameMap() {
+        return gameMap;
+    }
+
+    public Game withGameMap(List<City> gameMap) {
+        this.gameMap = gameMap;
         return this;
     }
 
