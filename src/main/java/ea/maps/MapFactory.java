@@ -27,8 +27,7 @@ class MapFactory {
             cityList = mapper.readValue(json, new TypeReference<List<City>>() { });
 
         } catch (IOException ioe) {
-            throw new RuntimeException(
-                "IOException caught: " + countryName + ".json cannot be found or read properly.");
+            throw new RuntimeException(String.format("%s.json cannot be found or read properly.", countryName), ioe);
         }
 
         return cityList;

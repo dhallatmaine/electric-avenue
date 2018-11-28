@@ -28,15 +28,15 @@ public class MapFactoryTest {
     public void allConnectionsCityNamesCorrespondToExistingCity() {
 
         Set<String> connectionCityNames = americaCities
-            .stream()
-            .flatMap(ac -> ac.getConnectedCities().stream())
-            .map(Connection::getCityName)
-            .collect(Collectors.toSet());
+                .stream()
+                .flatMap(ac -> ac.getConnectedCities().stream())
+                .map(Connection::getCityName)
+                .collect(Collectors.toSet());
 
         Set<String> cityNames = americaCities
-            .stream()
-            .map(City::getName)
-            .collect(Collectors.toSet());
+                .stream()
+                .map(City::getName)
+                .collect(Collectors.toSet());
 
         assertThat(cityNames).isEqualTo(connectionCityNames);
     }

@@ -29,7 +29,7 @@ public class GameDataStore {
     }
 
     public Game createNewGame(
-            List<City> gameMap,
+            Map<String, City> gameMap,
             Map<Resource, List<Integer>> resources,
             List<Player> players,
             List<Color> turnOrder,

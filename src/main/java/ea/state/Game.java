@@ -13,7 +13,7 @@ public class Game {
     private Integer gameId;
     private String phase;
     private Integer round;
-    private List<City> gameMap;
+    private Map<String, City> gameMap;
     private List<PowerPlant> deckPlants;
     private List<PowerPlant> currentMarketPlants;
     private List<PowerPlant> futureMarketPlants;
@@ -54,11 +54,11 @@ public class Game {
         return this;
     }
 
-    public List<City> getGameMap() {
+    public Map<String, City> getGameMap() {
         return gameMap;
     }
 
-    public Game withGameMap(List<City> gameMap) {
+    public Game withGameMap(Map<String, City> gameMap) {
         this.gameMap = gameMap;
         return this;
     }
