@@ -8,7 +8,7 @@ public class City {
 
     private String name;
     private Region region;
-    private List<Integer> districts;
+    private List<District> districts;
     private List<Connection> connectedCities;
 
     public City() { }
@@ -44,17 +44,13 @@ public class City {
         this.region = region;
     }
 
-    public List<Integer> getDistricts() {
+    public List<District> getDistricts() {
         return districts;
     }
 
-    public City withDistricts(List<Integer> districts) {
+    public City withDistricts(List<District> districts) {
         this.districts = districts;
         return this;
-    }
-
-    public void setDistricts(List<Integer> districts) {
-        this.districts = districts;
     }
 
     public List<Connection> getConnectedCities() {

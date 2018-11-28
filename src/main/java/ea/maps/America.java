@@ -4,14 +4,17 @@ import com.google.common.collect.ImmutableList;
 import ea.data.Resource;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class America {
 
     private final static List<City> americaMap =
         MapFactory.getCityListFromJson("america");
 
-    public static List<City> getAmericaMap() {
-        return americaMap;
+    public static Map<String, City> getAmericaMap() {
+        return americaMap.stream()
+                .collect(Collectors.toMap(City::getName, Function.identity()));
     }
 
     public static Map<Resource, List<Integer>> initializeResources() {
