@@ -5,11 +5,13 @@ import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.data.Resource;
 import ea.maps.City;
+import org.springframework.data.annotation.Id;
 
 import java.util.*;
 
 public class Game {
 
+    @Id
     private String gameId;
     private String phase;
     private Integer round;

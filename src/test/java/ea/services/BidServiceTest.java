@@ -32,6 +32,7 @@ public class BidServiceTest {
     PlayerService playerService;
     PowerPlantService powerPlantService;
     TurnOrderService turnOrderService;
+    GameService gameService;
     BidService target;
     Player player;
     Game game;
@@ -41,7 +42,8 @@ public class BidServiceTest {
         playerService = mock(PlayerService.class);
         powerPlantService = mock(PowerPlantService.class);
         turnOrderService = mock(TurnOrderService.class);
-        target = new BidService(playerService, powerPlantService, turnOrderService);
+        gameService = mock(GameService.class);
+        target = new BidService(playerService, powerPlantService, turnOrderService, gameService);
 
         player = new Player();
         game = new Game()

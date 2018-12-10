@@ -1,6 +1,6 @@
 package ea.services;
 
-import ea.state.GameDataStore;
+import ea.state.MongoGameDataStore;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,7 +12,7 @@ import static org.mockito.Mockito.verify;
 
 public class GameServiceTest {
 
-    GameDataStore gameDataStore;
+    MongoGameDataStore gameDataStore;
     PlayerService playerService;
     PowerPlantService powerPlantService;
     TurnOrderService turnOrderService;
@@ -20,7 +20,7 @@ public class GameServiceTest {
 
     @Before
     public void setup() {
-        gameDataStore = mock(GameDataStore.class);
+        gameDataStore = mock(MongoGameDataStore.class);
         playerService = mock(PlayerService.class);
         powerPlantService = mock(PowerPlantService.class);
         turnOrderService = mock(TurnOrderService.class);
@@ -39,7 +39,7 @@ public class GameServiceTest {
         verify(powerPlantService, times(1)).shuffleDeck(any(), anyBoolean());
         verify(playerService, times(1)).setupPlayers();
         verify(turnOrderService, times(1)).determineInitialTurnOrder(any());
-        verify(gameDataStore, times(1)).createNewGame(any(), any(), any(), any(), any(), any(), any());
+        verify(gameDataStore, times(1)).create(any(), any(), any(), any(), any(), any(), any());
     }
 
 }

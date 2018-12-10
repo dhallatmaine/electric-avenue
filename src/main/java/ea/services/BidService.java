@@ -18,15 +18,18 @@ public class BidService {
     private final PlayerService playerService;
     private final PowerPlantService powerPlantService;
     private final TurnOrderService turnOrderService;
+    private final GameService gameService;
 
     @Autowired
     public BidService(
             PlayerService playerService,
             PowerPlantService powerPlantService,
-            TurnOrderService turnOrderService) {
+            TurnOrderService turnOrderService,
+            GameService gameService) {
         this.playerService = playerService;
         this.powerPlantService = powerPlantService;
         this.turnOrderService = turnOrderService;
+        this.gameService = gameService;
     }
 
     public BidResponse bid(Game game, BidRequest bidRequest) {
@@ -63,6 +66,7 @@ public class BidService {
         }
 
         game.getBidRounds().put(round, bidRound);
+        gameService.save(game);
 
         return new BidResponse()
                 .withPlant(plant)

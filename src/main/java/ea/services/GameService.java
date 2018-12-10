@@ -7,6 +7,7 @@ import ea.data.Resource;
 import ea.maps.America;
 import ea.state.GameDataStore;
 import ea.state.Game;
+import ea.state.MongoGameDataStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,14 +18,14 @@ import java.util.Optional;
 @Component
 public class GameService {
 
-    private GameDataStore gameDataStore;
+    private MongoGameDataStore gameDataStore;
     private PlayerService playerService;
     private PowerPlantService powerPlantService;
     private TurnOrderService turnOrderService;
 
     @Autowired
     public GameService(
-            GameDataStore gameDataStore,
+            MongoGameDataStore gameDataStore,
             PlayerService playerService,
             PowerPlantService powerPlantService,
             TurnOrderService turnOrderService) {
@@ -35,7 +36,7 @@ public class GameService {
     }
 
     public Optional<Game> getGame(String id) {
-        return Optional.ofNullable(gameDataStore.getById(id));
+        return gameDataStore.getGameById(id);
     }
 
     public Game createGame() {
@@ -50,7 +51,7 @@ public class GameService {
         List<Player> players = playerService.setupPlayers();
         List<Color> turnOrder = turnOrderService.determineInitialTurnOrder(players);
 
-        return gameDataStore.createNewGame(
+        return gameDataStore.create(
                 America.getAmericaMap(),
                 America.initializeResources(),
                 players,
@@ -58,6 +59,10 @@ public class GameService {
                 shuffledDeck,
                 currentMarket,
                 futureMarket);
+    }
+
+    public void save(Game game) {
+        gameDataStore.save(game);
     }
 
     public void setResourceMarket(Game game, Resource resource, List<Integer> market) {
