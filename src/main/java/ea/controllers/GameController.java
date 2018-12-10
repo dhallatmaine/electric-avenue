@@ -20,7 +20,7 @@ public class GameController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping("/{id}")
-    public Game getGame(@PathVariable("id") Integer id) {
+    public Game getGame(@PathVariable("id") String id) {
         return gameService.getGame(id)
                 .orElseThrow(GameNotFoundException::new);
     }

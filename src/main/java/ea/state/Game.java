@@ -10,7 +10,7 @@ import java.util.*;
 
 public class Game {
 
-    private Integer gameId;
+    private String gameId;
     private String phase;
     private Integer round;
     private Map<String, City> gameMap;
@@ -27,11 +27,11 @@ public class Game {
         round = 1;
     }
 
-    public Integer getGameId() {
+    public String getGameId() {
         return gameId;
     }
 
-    public Game withGameId(Integer gameId) {
+    public Game withGameId(String gameId) {
         this.gameId = gameId;
         return this;
     }

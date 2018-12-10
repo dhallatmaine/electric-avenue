@@ -30,7 +30,7 @@ public class PowerPlantBidController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping("/bid/{gameId}")
     public BidResponse bid(
-            @PathVariable("gameId") Integer gameId,
+            @PathVariable("gameId") String gameId,
             @RequestBody BidRequest bid) {
         Game game = gameService.getGame(gameId)
                 .orElseThrow(GameNotFoundException::new);
@@ -42,7 +42,7 @@ public class PowerPlantBidController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping("/bid/pass/{gameId}")
     public BidResponse pass(
-            @PathVariable("gameId") Integer gameId,
+            @PathVariable("gameId") String gameId,
             @RequestBody PassRequest pass) {
         Game game = gameService.getGame(gameId)
                 .orElseThrow(GameNotFoundException::new);
@@ -54,7 +54,7 @@ public class PowerPlantBidController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping("/auction/{gameId}")
     public AuctionResponse auction(
-            @PathVariable("gameId") Integer gameId,
+            @PathVariable("gameId") String gameId,
             @RequestBody BidRequest bid) {
         Game game = gameService.getGame(gameId)
                 .orElseThrow(GameNotFoundException::new);
@@ -66,7 +66,7 @@ public class PowerPlantBidController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping("/auction/pass/{gameId}/{plant}")
     public AuctionResponse auctionPass(
-            @PathVariable("gameId") Integer gameId,
+            @PathVariable("gameId") String gameId,
             @PathVariable("plant") Integer plant,
             @RequestBody PassRequest pass) {
         Game game = gameService.getGame(gameId)
@@ -79,7 +79,7 @@ public class PowerPlantBidController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping("/capture/{gameId}")
     public PlantCaptureResponse capture(
-            @PathVariable("gameId") Integer gameId,
+            @PathVariable("gameId") String gameId,
             @RequestBody PlantCaptureRequest captureRequest) {
         Game game = gameService.getGame(gameId)
                 .orElseThrow(GameNotFoundException::new);

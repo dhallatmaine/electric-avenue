@@ -23,6 +23,8 @@ public class ResourceControllerTest {
 
     Game game;
 
+    String gameId = "1";
+
     @Before
     public void setup() {
         gameService = mock(GameService.class);
@@ -41,7 +43,7 @@ public class ResourceControllerTest {
         ResourcePurchaseRequest request = mock(ResourcePurchaseRequest.class);
 
         // Act
-        target.purchase(1, request);
+        target.purchase(gameId, request);
 
         // Assert
         verify(resourceService).validateResourcePurchase(game, request);
@@ -53,7 +55,7 @@ public class ResourceControllerTest {
         ResourcePlaceRequest request = mock(ResourcePlaceRequest.class);
 
         // Act
-        target.place(1, request);
+        target.place(gameId, request);
 
         // Assert
         verify(resourceService).validateResourcePlace(game, request);

@@ -18,13 +18,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class GameDataStore {
 
     private AtomicInteger currentId = new AtomicInteger();
-    private Map<Integer, Game> stateMap = new HashMap<>();
+    private Map<String, Game> stateMap = new HashMap<>();
 
-    public Game getById(Integer id) {
+    public Game getById(String id) {
         return stateMap.get(id);
     }
 
-    public Map<Integer, Game> getStateMap() {
+    public Map<String, Game> getStateMap() {
         return stateMap;
     }
 
@@ -37,9 +37,9 @@ public class GameDataStore {
             List<PowerPlant> currentMarket,
             List<PowerPlant> futureMarket) {
         stateMap.put(
-                currentId.get(),
+                Integer.toString(currentId.get()),
                 new Game()
-                        .withGameId(currentId.get())
+                        .withGameId(Integer.toString(currentId.get()))
                         .withPhase("PowerPlant")
                         .withGameMap(gameMap)
                         .withResources(resources)
@@ -49,7 +49,7 @@ public class GameDataStore {
                         .withCurrentMarketPlants(currentMarket)
                         .withFutureMarketPlants(futureMarket)
                         .withCurrentTurn(turnOrder.get(0)));
-        return stateMap.get(currentId.getAndIncrement());
+        return stateMap.get(Integer.toString(currentId.getAndIncrement()));
     }
 
 }

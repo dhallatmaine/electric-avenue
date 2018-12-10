@@ -16,6 +16,8 @@ public class GameControllerTest {
     private GameService gameService;
     private GameController target;
 
+    String gameId = "1";
+
     @Before
     public void setup() {
         gameService = mock(GameService.class);
@@ -26,14 +28,13 @@ public class GameControllerTest {
     @Test
     public void getGame() {
         // Arrange
-        Integer id = 0;
         Game game = mock(Game.class);
 
-        when(gameService.getGame(id))
+        when(gameService.getGame(gameId))
                 .thenReturn(Optional.of(game));
 
         // Act
-        Game actual = target.getGame(id);
+        Game actual = target.getGame(gameId);
 
         // Assert
         assertThat(actual).isEqualTo(game);
@@ -43,14 +44,14 @@ public class GameControllerTest {
     public void createNewGame() {
         // Arrange
         when(gameService.createGame())
-                .thenReturn(new Game().withGameId(1));
+                .thenReturn(new Game().withGameId(gameId));
 
         // Act
         Game actual = target.createNewGame();
 
         // Assert
         assertThat(actual)
-                .isEqualToComparingFieldByFieldRecursively(new Game().withGameId(1).withRound(1));
+                .isEqualToComparingFieldByFieldRecursively(new Game().withGameId(gameId).withRound(1));
     }
 
 }

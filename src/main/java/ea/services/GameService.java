@@ -34,7 +34,7 @@ public class GameService {
         this.turnOrderService = turnOrderService;
     }
 
-    public Optional<Game> getGame(Integer id) {
+    public Optional<Game> getGame(String id) {
         return Optional.ofNullable(gameDataStore.getById(id));
     }
 

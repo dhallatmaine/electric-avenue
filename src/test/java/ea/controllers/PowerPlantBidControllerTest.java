@@ -24,6 +24,7 @@ public class PowerPlantBidControllerTest {
     PowerPlantBidController target;
 
     Game game;
+    String gameId = "1";
 
     @Before
     public void setup() {
@@ -50,7 +51,7 @@ public class PowerPlantBidControllerTest {
                 .thenReturn(bidResponse);
 
         // Act
-        BidResponse actual = target.bid(1, new BidRequest());
+        BidResponse actual = target.bid(gameId, new BidRequest());
 
         // Assert
         assertThat(actual).isEqualToComparingFieldByFieldRecursively(bidResponse);
@@ -68,7 +69,7 @@ public class PowerPlantBidControllerTest {
                 .thenReturn(bidResponse);
 
         // Act
-        BidResponse actual = target.pass(1, new PassRequest());
+        BidResponse actual = target.pass(gameId, new PassRequest());
 
         // Assert
         assertThat(actual).isEqualToComparingFieldByFieldRecursively(bidResponse);
@@ -86,7 +87,7 @@ public class PowerPlantBidControllerTest {
                 .thenReturn(auctionResponse);
 
         // Act
-        AuctionResponse actual = target.auction(1, new BidRequest());
+        AuctionResponse actual = target.auction(gameId, new BidRequest());
 
         // Assert
         assertThat(actual).isEqualToComparingFieldByFieldRecursively(auctionResponse);
@@ -104,7 +105,7 @@ public class PowerPlantBidControllerTest {
                 .thenReturn(auctionResponse);
 
         // Act
-        AuctionResponse actual = target.auctionPass(1, 1, new PassRequest());
+        AuctionResponse actual = target.auctionPass(gameId, 1, new PassRequest());
 
         // Assert
         assertThat(actual).isEqualToComparingFieldByFieldRecursively(auctionResponse);
@@ -122,7 +123,7 @@ public class PowerPlantBidControllerTest {
                 .thenReturn(plantCaptureResponse);
 
         // Act
-        PlantCaptureResponse actual = target.capture(1, new PlantCaptureRequest());
+        PlantCaptureResponse actual = target.capture(gameId, new PlantCaptureRequest());
 
         // Assert
         assertThat(actual).isEqualToComparingFieldByFieldRecursively(plantCaptureResponse);

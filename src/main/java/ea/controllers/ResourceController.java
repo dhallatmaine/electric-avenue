@@ -25,7 +25,7 @@ public class ResourceController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping("/resource/{gameId}")
     public void purchase(
-            @PathVariable("gameId") Integer gameId,
+            @PathVariable("gameId") String gameId,
             @RequestBody ResourcePurchaseRequest purchaseRequest) {
         Game game = gameService.getGame(gameId)
                 .orElseThrow(GameNotFoundException::new);
@@ -36,7 +36,7 @@ public class ResourceController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @RequestMapping("/resource/place/{gameId}")
     public void place(
-            @PathVariable("gameId") Integer gameId,
+            @PathVariable("gameId") String gameId,
             @RequestBody ResourcePlaceRequest resourcePlaceRequest) {
         Game game = gameService.getGame(gameId)
                 .orElseThrow(GameNotFoundException::new);
