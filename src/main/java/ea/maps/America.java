@@ -17,10 +17,10 @@ public class America {
                 .collect(Collectors.toMap(City::getName, Function.identity()));
     }
 
-    public static Map<Resource, List<Integer>> initializeResources() {
-        Map<Resource, List<Integer>> built = new HashMap<>();
+    public static Map<String, List<Integer>> initializeResources() {
+        Map<String, List<Integer>> built = new HashMap<>();
 
-        built.put(Resource.COAL, ImmutableList.of(
+        built.put(Resource.COAL.name(), ImmutableList.of(
             1, 1, 1,
             2, 2, 2,
             3, 3, 3,
@@ -30,7 +30,7 @@ public class America {
             7, 7, 7,
             8, 8, 8));
 
-        built.put(Resource.OIL, ImmutableList.of(
+        built.put(Resource.OIL.name(), ImmutableList.of(
             0, 0, 0,
             0, 0, 0,
             3, 3, 3,
@@ -40,7 +40,7 @@ public class America {
             7, 7, 7,
             8, 8, 8));
 
-        built.put(Resource.TRASH, ImmutableList.of(
+        built.put(Resource.TRASH.name(), ImmutableList.of(
             0, 0, 0,
             0, 0, 0,
             0, 0, 0,
@@ -50,7 +50,7 @@ public class America {
             7, 7, 7,
             8, 8, 8));
 
-        built.put(Resource.URANIUM, ImmutableList.of(
+        built.put(Resource.URANIUM.name(), ImmutableList.of(
             0,
             0,
             0,

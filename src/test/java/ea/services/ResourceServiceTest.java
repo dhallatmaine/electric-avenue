@@ -63,7 +63,7 @@ public class ResourceServiceTest {
         Resource resourceType = Resource.valueOf(type);
 
         // Act
-        Integer actual = target.getPrice(game.getResources().get(resourceType), amount);
+        Integer actual = target.getPrice(game.getResources().get(resourceType.name()), amount);
 
         // Assert
         assertThat(actual).isEqualTo(expectedPrice);
@@ -90,7 +90,7 @@ public class ResourceServiceTest {
                 .collect(Collectors.toList());
 
         // Act
-        List<Integer> actual = target.removeFromMarket(game.getResources().get(resourceType), amount);
+        List<Integer> actual = target.removeFromMarket(game.getResources().get(resourceType.name()), amount);
 
         // Assert
         assertThat(actual).isEqualTo(expectedMarket);
@@ -119,17 +119,17 @@ public class ResourceServiceTest {
 
         List<Integer> coalMarket = Stream.concat(
                 Stream.of(0),
-                game.getResources().get(Resource.COAL).stream()
+                game.getResources().get(Resource.COAL.name()).stream()
                         .skip(1)
-                        .limit(game.getResources().get(Resource.COAL).size() - 1))
+                        .limit(game.getResources().get(Resource.COAL.name()).size() - 1))
                 .collect(Collectors.toList());
         verify(gameService, times(1)).setResourceMarket(game, Resource.COAL, coalMarket);
 
         List<Integer> oilMarket = Stream.concat(
                 Stream.of(0, 0, 0, 0, 0, 0, 0),
-                game.getResources().get(Resource.OIL).stream()
+                game.getResources().get(Resource.OIL.name()).stream()
                         .skip(7)
-                        .limit(game.getResources().get(Resource.OIL).size() - 1))
+                        .limit(game.getResources().get(Resource.OIL.name()).size() - 1))
                 .collect(Collectors.toList());
         verify(gameService, times(1)).setResourceMarket(game, Resource.OIL, oilMarket);
     }
@@ -149,7 +149,7 @@ public class ResourceServiceTest {
                 .withColor(Color.BLUE)
                 .withPowerPlants(ImmutableList.of(plant))
                 .withResources(ImmutableMap.of(
-                        plant, ImmutableList.of(Resource.OIL)));
+                        plant.getValue(), ImmutableList.of(Resource.OIL)));
 
         when(playerService.findPlayerByColor(game, Color.BLUE))
                 .thenReturn(player);
@@ -214,21 +214,21 @@ public class ResourceServiceTest {
             boolean expectException,
             String exception) {
         // Arrange
-        ResourcePlaceRequest request = new ResourcePlaceRequest()
-                .withPlayer(Color.BLUE)
-                .withResourcesToPlace(ImmutableMap.of(
-                        1, ImmutableList.of(resource)
-                ));
-
         PowerPlant plant = new PowerPlant()
                 .withValue(1)
                 .withResources(resources)
                 .withResourceEnums(ImmutableSet.of(Resource.COAL));
 
+        ResourcePlaceRequest request = new ResourcePlaceRequest()
+                .withPlayer(Color.BLUE)
+                .withResourcesToPlace(ImmutableMap.of(
+                        plant.getValue(), ImmutableList.of(resource)));
+
         when(playerService.findPlayerByColor(game, Color.BLUE))
                 .thenReturn(new Player()
                         .withPowerPlants(ImmutableList.of(plant))
-                        .withResources(ImmutableMap.of(plant, ImmutableList.of(Resource.COAL))));
+                        .withResources(ImmutableMap.of(
+                                plant.getValue(), ImmutableList.of(Resource.COAL))));
 
         // Act
         Throwable thrown = catchThrowable(() -> target.validateResourcePlace(game, request));

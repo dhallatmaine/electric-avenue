@@ -56,9 +56,9 @@ public class ResourceService {
 
         List<Integer> price = new ArrayList<>();
         purchaseRequest.getResources().entrySet().forEach(entry -> {
-            List<Integer> newMarket = removeFromMarket(game.getResources().get(entry.getKey()), entry.getValue());
+            List<Integer> newMarket = removeFromMarket(game.getResources().get(entry.getKey().name()), entry.getValue());
             gameService.setResourceMarket(game, entry.getKey(), newMarket);
-            price.add(getPrice(game.getResources().get(entry.getKey()), entry.getValue()));
+            price.add(getPrice(game.getResources().get(entry.getKey().name()), entry.getValue()));
         });
 
         Integer totalPrice = price.stream().mapToInt(Integer::intValue).sum();
@@ -74,7 +74,7 @@ public class ResourceService {
                     .findFirst()
                     .get();
             List<Resource> newResources =
-                    Stream.concat(player.getResources().get(plant).stream(), entry.getValue().stream())
+                    Stream.concat(player.getResources().get(plant.getValue()).stream(), entry.getValue().stream())
                             .collect(Collectors.toList());
             gameService.setPlayerResources(newResources, player, plant);
         });
@@ -85,7 +85,7 @@ public class ResourceService {
 
         List<Integer> price = new ArrayList<>();
         purchaseRequest.getResources().entrySet().forEach(entry -> {
-            price.add(getPrice(game.getResources().get(entry.getKey()), entry.getValue()));
+            price.add(getPrice(game.getResources().get(entry.getKey().name()), entry.getValue()));
             int max = playerService.getMaxResourcesAllowedForPurchase(player, entry.getKey());
             if (entry.getValue() > max)
                 throw new RuntimeException("Can not purchase this many " + entry.getKey() + " resources");
@@ -109,7 +109,7 @@ public class ResourceService {
             if (!resources.containsAll(plant.getResources()))
                 throw new RuntimeException("This plant does not allow this resource type");
 
-            if (plant.getResourceCapacity() - player.getResources().get(plant).size() < entry.getValue().size())
+            if (plant.getResourceCapacity() - player.getResources().get(plant.getValue()).size() < entry.getValue().size())
                 throw new RuntimeException("Not enough room on this plant to place these resources");
         });
     }

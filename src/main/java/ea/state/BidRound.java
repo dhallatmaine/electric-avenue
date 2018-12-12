@@ -11,7 +11,7 @@ public class BidRound {
 
     private List<Color> bidOrder;
     private boolean plantPurchased = false;
-    private Map<PowerPlant, AuctionRound> auctionRounds = new HashMap<>();
+    private Map<Integer, AuctionRound> auctionRounds = new HashMap<>();
 
     public List<Color> getBidOrder() {
         return bidOrder;
@@ -31,11 +31,11 @@ public class BidRound {
         return this;
     }
 
-    public Map<PowerPlant, AuctionRound> getAuctionRounds() {
+    public Map<Integer, AuctionRound> getAuctionRounds() {
         return auctionRounds;
     }
 
-    public BidRound withAuctionRounds(Map<PowerPlant, AuctionRound> auctionRounds) {
+    public BidRound withAuctionRounds(Map<Integer, AuctionRound> auctionRounds) {
         this.auctionRounds = auctionRounds;
         return this;
     }

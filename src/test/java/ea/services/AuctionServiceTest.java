@@ -34,6 +34,7 @@ public class AuctionServiceTest {
     PowerPlantService powerPlantService;
     TurnOrderService turnOrderService;
     PlayerService playerService;
+    GameService gameService;
     AuctionService target;
 
     Game game;
@@ -44,7 +45,8 @@ public class AuctionServiceTest {
         powerPlantService = mock(PowerPlantService.class);
         turnOrderService = mock(TurnOrderService.class);
         playerService = mock(PlayerService.class);
-        target = new AuctionService(powerPlantService, turnOrderService, playerService);
+        gameService = mock(GameService.class);
+        target = new AuctionService(powerPlantService, turnOrderService, playerService, gameService);
 
         player = new Player();
         game = new Game()
@@ -67,7 +69,7 @@ public class AuctionServiceTest {
 
         game.withBidRounds(ImmutableMap.of(1, new BidRound()
                 .withAuctionRounds(ImmutableMap.of(
-                        new PowerPlant().withValue(5), auctionRound))));
+                        5, auctionRound))));
 
         when(powerPlantService.findPowerPlantInDeckByValue(any(), any()))
                 .thenReturn(new PowerPlant().withValue(5));
@@ -117,7 +119,7 @@ public class AuctionServiceTest {
         BidRound bidRound = new BidRound()
                 .withBidOrder(order)
                 .withAuctionRounds(ImmutableMap.of(
-                        new PowerPlant().withValue(5), auctionRound));
+                        5, auctionRound));
 
         game.withBidRounds(ImmutableMap.of(1, bidRound));
 
@@ -181,7 +183,7 @@ public class AuctionServiceTest {
 
         game.withRound(1).withBidRounds(
                 ImmutableMap.of(1, new BidRound().withAuctionRounds(ImmutableMap.of(
-                        plant,
+                        plant.getValue(),
                         new AuctionRound().withAuctionOrder(order).withBid(currentBid)))));
 
         // Act

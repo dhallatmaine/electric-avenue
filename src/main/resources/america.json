@@ -625,7 +625,7 @@
         "cost": 7
       },
       {
-        "city": "st. louis",
+        "city": "st louis",
         "cost": 10
       },
       {
@@ -639,7 +639,7 @@
     ]
   },
   {
-    "name": "st. louis",
+    "name": "st louis",
     "region": "YELLOW",
     "districts": [
       {
@@ -691,7 +691,7 @@
     ],
     "connections": [
       {
-        "city": "st. louis",
+        "city": "st louis",
         "cost": 12
       },
       {
@@ -781,7 +781,7 @@
         "cost": 8
       },
       {
-        "city": "st. louis",
+        "city": "st louis",
         "cost": 6
       }
     ]
@@ -921,7 +921,7 @@
         "cost": 12
       },
       {
-        "city": "st. louis",
+        "city": "st louis",
         "cost": 7
       }
     ]
@@ -1132,13 +1132,13 @@
         "cost": 0
       },
       {
-        "city": "washington d.c.",
+        "city": "washington dc",
         "cost": 3
       }
     ]
   },
   {
-    "name": "washington d.c.",
+    "name": "washington dc",
     "region": "BROWN",
     "districts": [
       {
@@ -1190,7 +1190,7 @@
         "cost": 7
       },
       {
-        "city": "washington d.c.",
+        "city": "washington dc",
         "cost": 6
       },
       {
@@ -1219,7 +1219,7 @@
     ],
     "connections": [
       {
-        "city": "washington d.c.",
+        "city": "washington dc",
         "cost": 5
       },
       {
@@ -1293,7 +1293,7 @@
         "cost": 3
       },
       {
-        "city": "st. louis",
+        "city": "st louis",
         "cost": 12
       },
       {

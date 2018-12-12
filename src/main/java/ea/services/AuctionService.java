@@ -21,15 +21,18 @@ public class AuctionService {
     private final PowerPlantService powerPlantService;
     private final TurnOrderService turnOrderService;
     private final PlayerService playerService;
+    private final GameService gameService;
 
     @Autowired
     public AuctionService(
             PowerPlantService powerPlantService,
             TurnOrderService turnOrderService,
-            PlayerService playerService) {
+            PlayerService playerService,
+            GameService gameService) {
         this.powerPlantService = powerPlantService;
         this.turnOrderService = turnOrderService;
         this.playerService = playerService;
+        this.gameService = gameService;
     }
 
     public AuctionResponse auction(Game game, BidRequest bidRequest) {
@@ -38,7 +41,7 @@ public class AuctionService {
                 game.getCurrentMarketPlants(),
                 bidRequest.getPlantValue());
 
-        AuctionRound auctionRound = game.getBidRounds().get(round).getAuctionRounds().get(plant);
+        AuctionRound auctionRound = game.getBidRounds().get(round).getAuctionRounds().get(plant.getValue());
 
         Color nextBidder = turnOrderService.getNextPlayer(
                 auctionRound.getAuctionOrder(),
@@ -47,6 +50,8 @@ public class AuctionService {
         auctionRound
                 .withHighBidder(bidRequest.getPlayer())
                 .withBid(bidRequest.getBidAmount());
+
+        gameService.save(game);
 
         return new AuctionResponse()
                 .withHighBid(bidRequest.getBidAmount())
@@ -62,7 +67,7 @@ public class AuctionService {
                 plantValue);
 
         BidRound bidRound = game.getBidRounds().get(game.getRound());
-        AuctionRound auctionRound = bidRound.getAuctionRounds().get(plant);
+        AuctionRound auctionRound = bidRound.getAuctionRounds().get(plant.getValue());
         List<Color> order = auctionRound.getAuctionOrder().stream()
                 .filter(color -> !color.equals(pass.getPlayer()))
                 .collect(Collectors.toList());
@@ -81,6 +86,8 @@ public class AuctionService {
                     .collect(Collectors.toList());
             bidRound.withBidOrder(bidOrder);
         }
+
+        gameService.save(game);
 
         return new AuctionResponse()
                 .withHighBid(auctionRound.getBid())
@@ -101,11 +108,11 @@ public class AuctionService {
             throw new RuntimeException("Insufficient funds");
 
         if (bidRequest.getBidAmount() <= game.getBidRounds().get(game.getRound())
-                .getAuctionRounds().get(plant).getBid())
+                .getAuctionRounds().get(plant.getValue()).getBid())
             throw new RuntimeException("Bid must be greater than current high bid");
 
         if (!game.getBidRounds().get(game.getRound())
-                .getAuctionRounds().get(plant).getAuctionOrder().contains(bidRequest.getPlayer()))
+                .getAuctionRounds().get(plant.getValue()).getAuctionOrder().contains(bidRequest.getPlayer()))
             throw new RuntimeException("Player is not eligible to bid");
     }
 

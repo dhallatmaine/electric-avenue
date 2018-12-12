@@ -18,15 +18,18 @@ public class BidService {
     private final PlayerService playerService;
     private final PowerPlantService powerPlantService;
     private final TurnOrderService turnOrderService;
+    private final GameService gameService;
 
     @Autowired
     public BidService(
             PlayerService playerService,
             PowerPlantService powerPlantService,
-            TurnOrderService turnOrderService) {
+            TurnOrderService turnOrderService,
+            GameService gameService) {
         this.playerService = playerService;
         this.powerPlantService = powerPlantService;
         this.turnOrderService = turnOrderService;
+        this.gameService = gameService;
     }
 
     public BidResponse bid(Game game, BidRequest bidRequest) {
@@ -59,10 +62,11 @@ public class BidService {
                     .withHighBidder(bidRequest.getPlayer())
                     .withPlant(plant)
                     .withAuctionOrder(auctionOrder);
-            bidRound.getAuctionRounds().putIfAbsent(plant, auction);
+            bidRound.getAuctionRounds().putIfAbsent(plant.getValue(), auction);
         }
 
         game.getBidRounds().put(round, bidRound);
+        gameService.save(game);
 
         return new BidResponse()
                 .withPlant(plant)
@@ -84,6 +88,8 @@ public class BidService {
 
         game.getBidRounds().put(game.getRound(), bidRound);
 
+        gameService.save(game);
+
         return new BidResponse()
                 .withAuctionStarted(false)
                 .withOrder(order)
@@ -103,13 +109,15 @@ public class BidService {
 
         BidRound bidRound = game.getBidRounds().get(game.getRound());
         Integer price = bidRound.getBidOrder().size() > 1 ?
-                bidRound.getAuctionRounds().get(plant).getBid() : plant.getValue();
+                bidRound.getAuctionRounds().get(plant.getValue()).getBid() : plant.getValue();
 
         if (bidRound.getBidOrder().size() == 1) {
             game.withPhase("ResourcePhase");
         }
 
         Player withPlant = playerService.capturePlant(game, plant, player, price, plantToRemove);
+
+        gameService.save(game);
 
         return new PlantCaptureResponse()
                 .withPlant(plant)

@@ -15,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -101,6 +99,7 @@ public class PowerPlantPhaseIT {
                         .withOrder(ImmutableList.of(winningPlayer)));
 
         // make sure the winner of the auction is removed from the bid turn order
+        game = gameService.getGame(game.getGameId()).get();
         assertThat(game.getBidRounds().get(1).getBidOrder()).doesNotContain(winningPlayer);
 
         // capture first plant
@@ -111,6 +110,7 @@ public class PowerPlantPhaseIT {
                         .withPlant(firstPlant.getValue())
                         .withPlayer(winningPlayer));
 
+        game = gameService.getGame(game.getGameId()).get();
         assertThat(game.getCurrentMarketPlants()).doesNotContain(firstPlant);
         assertThat(playerService.findPlayerByColor(game, winningPlayer).getPowerPlants()).contains(firstPlant);
 
@@ -137,6 +137,7 @@ public class PowerPlantPhaseIT {
                         .withNextBidder(null)
                         .withOrder(ImmutableList.of(secondWinningPlayer)));
 
+        game = gameService.getGame(game.getGameId()).get();
         assertThat(game.getBidRounds().get(1).getBidOrder()).doesNotContain(winningPlayer, secondWinningPlayer);
 
         // capture plant
@@ -147,6 +148,7 @@ public class PowerPlantPhaseIT {
                         .withPlant(secondPlant.getValue())
                         .withPlayer(secondWinningPlayer));
 
+        game = gameService.getGame(game.getGameId()).get();
         assertThat(game.getCurrentMarketPlants()).doesNotContain(secondPlant);
         assertThat(playerService.findPlayerByColor(game, secondWinningPlayer).getPowerPlants()).contains(secondPlant);
 
@@ -159,6 +161,7 @@ public class PowerPlantPhaseIT {
                         .withBidAmount(5)
                         .withPlantValue(5));
 
+        game = gameService.getGame(game.getGameId()).get();
         assertThat(lastBidResponse.getPhaseOver()).isTrue();
         assertThat(lastBidResponse.getAuctionStarted()).isFalse();
         assertThat(game.getPhase()).isEqualToIgnoringCase("ResourcePhase");
@@ -171,6 +174,7 @@ public class PowerPlantPhaseIT {
                         .withPlant(lastPlant.getValue())
                         .withPlayer(lastWinningPlayer));
 
+        game = gameService.getGame(game.getGameId()).get();
         assertThat(game.getCurrentMarketPlants()).doesNotContain(lastPlant);
         assertThat(playerService.findPlayerByColor(game, lastWinningPlayer).getPowerPlants()).contains(lastPlant);
     }
