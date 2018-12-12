@@ -72,7 +72,7 @@ public class GameService {
 
     public void setPlayerResources(List<Resource> resources, Player player, PowerPlant plant) {
         // TODO: Make this immutable
-        player.getResources().put(plant, resources);
+        player.getResources().put(plant.getValue(), resources);
     }
 
 }

@@ -149,7 +149,7 @@ public class ResourceServiceTest {
                 .withColor(Color.BLUE)
                 .withPowerPlants(ImmutableList.of(plant))
                 .withResources(ImmutableMap.of(
-                        plant, ImmutableList.of(Resource.OIL)));
+                        plant.getValue(), ImmutableList.of(Resource.OIL)));
 
         when(playerService.findPlayerByColor(game, Color.BLUE))
                 .thenReturn(player);
@@ -214,21 +214,21 @@ public class ResourceServiceTest {
             boolean expectException,
             String exception) {
         // Arrange
-        ResourcePlaceRequest request = new ResourcePlaceRequest()
-                .withPlayer(Color.BLUE)
-                .withResourcesToPlace(ImmutableMap.of(
-                        1, ImmutableList.of(resource)
-                ));
-
         PowerPlant plant = new PowerPlant()
                 .withValue(1)
                 .withResources(resources)
                 .withResourceEnums(ImmutableSet.of(Resource.COAL));
 
+        ResourcePlaceRequest request = new ResourcePlaceRequest()
+                .withPlayer(Color.BLUE)
+                .withResourcesToPlace(ImmutableMap.of(
+                        plant.getValue(), ImmutableList.of(resource)));
+
         when(playerService.findPlayerByColor(game, Color.BLUE))
                 .thenReturn(new Player()
                         .withPowerPlants(ImmutableList.of(plant))
-                        .withResources(ImmutableMap.of(plant, ImmutableList.of(Resource.COAL))));
+                        .withResources(ImmutableMap.of(
+                                plant.getValue(), ImmutableList.of(Resource.COAL))));
 
         // Act
         Throwable thrown = catchThrowable(() -> target.validateResourcePlace(game, request));

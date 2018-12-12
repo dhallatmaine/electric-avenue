@@ -12,7 +12,7 @@ public class Player {
     private Integer money;
     private List<PowerPlant> powerPlants;
     private List<City> cities;
-    private Map<PowerPlant, List<Resource>> resources;
+    private Map<Integer, List<Resource>> resources;
     private Color color;
 
     public Long getId() {
@@ -60,11 +60,11 @@ public class Player {
         return this;
     }
 
-    public Map<PowerPlant, List<Resource>> getResources() {
+    public Map<Integer, List<Resource>> getResources() {
         return resources;
     }
 
-    public Player withResources(Map<PowerPlant, List<Resource>> resources) {
+    public Player withResources(Map<Integer, List<Resource>> resources) {
         this.resources = resources;
         return this;
     }

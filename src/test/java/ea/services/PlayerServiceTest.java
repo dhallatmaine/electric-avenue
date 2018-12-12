@@ -53,6 +53,7 @@ public class PlayerServiceTest {
 
         // Arrange
         PowerPlant plant = new PowerPlant()
+                .withValue(1)
                 .withResources(plantResourcesCapacity)
                 .withResourceEnums(
                         Arrays.stream(plantResourcesStr.split(";"))
@@ -62,7 +63,7 @@ public class PlayerServiceTest {
         player.withPowerPlants(ImmutableList.of(plant));
         Optional.ofNullable(Strings.emptyToNull(playerResources)).ifPresent(playerResource ->
                 player.withResources(ImmutableMap.of(
-                        plant, ImmutableList.of(Resource.valueOf(playerResources)))));
+                        plant.getValue(), ImmutableList.of(Resource.valueOf(playerResources)))));
 
         // Act
         int actual = target.getMaxResourcesAllowedForPurchase(player, Resource.valueOf(typeBeingPurchased));
@@ -80,13 +81,14 @@ public class PlayerServiceTest {
                 .withResourceEnums(ImmutableSet.of(Resource.COAL));
 
         player.withPowerPlants(ImmutableList.of(plant));
-        player.withResources(ImmutableMap.of(plant, new ArrayList<>()));
+        player.withResources(ImmutableMap.of(
+                plant.getValue(), new ArrayList<>()));
 
         // Act
         target.addToPlayerResources(player, Resource.COAL, 2);
 
         // Assert
-        assertThat(player.getResources().get(plant).size()).isEqualTo(2);
+        assertThat(player.getResources().get(plant.getValue()).size()).isEqualTo(2);
     }
 
     @Test

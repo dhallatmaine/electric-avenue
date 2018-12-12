@@ -81,8 +81,12 @@ public class PlayerService {
                 .forEach(i ->
                         player.getResources().entrySet().stream()
                                 .forEach(entry -> {
-                                    if (!entry.getKey().getResourceCapacity().equals(entry.getValue().size())
-                                            && entry.getKey().getResources().contains(type)) {
+                                    PowerPlant plant = player.getPowerPlants().stream()
+                                            .filter(p -> p.getValue().equals(entry.getKey()))
+                                            .findFirst()
+                                            .orElse(null);
+                                    if (!plant.getResourceCapacity().equals(entry.getValue().size())
+                                            && plant.getResources().contains(type)) {
                                         entry.getValue().add(type);
                                     }
                                 })
