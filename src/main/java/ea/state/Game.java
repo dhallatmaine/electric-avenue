@@ -19,7 +19,7 @@ public class Game {
     private List<PowerPlant> deckPlants;
     private List<PowerPlant> currentMarketPlants;
     private List<PowerPlant> futureMarketPlants;
-    private Map<Resource, List<Integer>> resources;
+    private Map<String, List<Integer>> resources;
     private List<Player> players;
     private List<Color> turnOrder;
     private Color currentTurn;
@@ -101,11 +101,11 @@ public class Game {
         return this;
     }
 
-    public Map<Resource, List<Integer>> getResources() {
+    public Map<String, List<Integer>> getResources() {
         return resources;
     }
 
-    public Game withResources(Map<Resource, List<Integer>> resources) {
+    public Game withResources(Map<String, List<Integer>> resources) {
         this.resources = resources;
         return this;
     }

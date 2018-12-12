@@ -24,7 +24,7 @@ public class MongoGameDataStore {
     }
 
     public Game create(Map<String, City> gameMap,
-                         Map<Resource, List<Integer>> resources,
+                         Map<String, List<Integer>> resources,
                          List<Player> players,
                          List<Color> turnOrder,
                          List<PowerPlant> deck,

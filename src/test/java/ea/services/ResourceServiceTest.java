@@ -63,7 +63,7 @@ public class ResourceServiceTest {
         Resource resourceType = Resource.valueOf(type);
 
         // Act
-        Integer actual = target.getPrice(game.getResources().get(resourceType), amount);
+        Integer actual = target.getPrice(game.getResources().get(resourceType.name()), amount);
 
         // Assert
         assertThat(actual).isEqualTo(expectedPrice);
@@ -90,7 +90,7 @@ public class ResourceServiceTest {
                 .collect(Collectors.toList());
 
         // Act
-        List<Integer> actual = target.removeFromMarket(game.getResources().get(resourceType), amount);
+        List<Integer> actual = target.removeFromMarket(game.getResources().get(resourceType.name()), amount);
 
         // Assert
         assertThat(actual).isEqualTo(expectedMarket);
@@ -119,17 +119,17 @@ public class ResourceServiceTest {
 
         List<Integer> coalMarket = Stream.concat(
                 Stream.of(0),
-                game.getResources().get(Resource.COAL).stream()
+                game.getResources().get(Resource.COAL.name()).stream()
                         .skip(1)
-                        .limit(game.getResources().get(Resource.COAL).size() - 1))
+                        .limit(game.getResources().get(Resource.COAL.name()).size() - 1))
                 .collect(Collectors.toList());
         verify(gameService, times(1)).setResourceMarket(game, Resource.COAL, coalMarket);
 
         List<Integer> oilMarket = Stream.concat(
                 Stream.of(0, 0, 0, 0, 0, 0, 0),
-                game.getResources().get(Resource.OIL).stream()
+                game.getResources().get(Resource.OIL.name()).stream()
                         .skip(7)
-                        .limit(game.getResources().get(Resource.OIL).size() - 1))
+                        .limit(game.getResources().get(Resource.OIL.name()).size() - 1))
                 .collect(Collectors.toList());
         verify(gameService, times(1)).setResourceMarket(game, Resource.OIL, oilMarket);
     }
