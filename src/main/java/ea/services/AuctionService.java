@@ -21,15 +21,18 @@ public class AuctionService {
     private final PowerPlantService powerPlantService;
     private final TurnOrderService turnOrderService;
     private final PlayerService playerService;
+    private final GameService gameService;
 
     @Autowired
     public AuctionService(
             PowerPlantService powerPlantService,
             TurnOrderService turnOrderService,
-            PlayerService playerService) {
+            PlayerService playerService,
+            GameService gameService) {
         this.powerPlantService = powerPlantService;
         this.turnOrderService = turnOrderService;
         this.playerService = playerService;
+        this.gameService = gameService;
     }
 
     public AuctionResponse auction(Game game, BidRequest bidRequest) {
@@ -47,6 +50,8 @@ public class AuctionService {
         auctionRound
                 .withHighBidder(bidRequest.getPlayer())
                 .withBid(bidRequest.getBidAmount());
+
+        gameService.save(game);
 
         return new AuctionResponse()
                 .withHighBid(bidRequest.getBidAmount())
@@ -81,6 +86,8 @@ public class AuctionService {
                     .collect(Collectors.toList());
             bidRound.withBidOrder(bidOrder);
         }
+
+        gameService.save(game);
 
         return new AuctionResponse()
                 .withHighBid(auctionRound.getBid())

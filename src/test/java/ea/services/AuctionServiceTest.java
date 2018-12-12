@@ -34,6 +34,7 @@ public class AuctionServiceTest {
     PowerPlantService powerPlantService;
     TurnOrderService turnOrderService;
     PlayerService playerService;
+    GameService gameService;
     AuctionService target;
 
     Game game;
@@ -44,7 +45,8 @@ public class AuctionServiceTest {
         powerPlantService = mock(PowerPlantService.class);
         turnOrderService = mock(TurnOrderService.class);
         playerService = mock(PlayerService.class);
-        target = new AuctionService(powerPlantService, turnOrderService, playerService);
+        gameService = mock(GameService.class);
+        target = new AuctionService(powerPlantService, turnOrderService, playerService, gameService);
 
         player = new Player();
         game = new Game()

@@ -88,6 +88,8 @@ public class BidService {
 
         game.getBidRounds().put(game.getRound(), bidRound);
 
+        gameService.save(game);
+
         return new BidResponse()
                 .withAuctionStarted(false)
                 .withOrder(order)
@@ -107,13 +109,15 @@ public class BidService {
 
         BidRound bidRound = game.getBidRounds().get(game.getRound());
         Integer price = bidRound.getBidOrder().size() > 1 ?
-                bidRound.getAuctionRounds().get(plant).getBid() : plant.getValue();
+                bidRound.getAuctionRounds().get(plant.getValue()).getBid() : plant.getValue();
 
         if (bidRound.getBidOrder().size() == 1) {
             game.withPhase("ResourcePhase");
         }
 
         Player withPlant = playerService.capturePlant(game, plant, player, price, plantToRemove);
+
+        gameService.save(game);
 
         return new PlantCaptureResponse()
                 .withPlant(plant)
