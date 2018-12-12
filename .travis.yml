@@ -1,5 +1,10 @@
 language: java
+install: true
+script:
+- mvn install
 jvm:
-  - oraclejdk11
+- oraclejdk11
 jdk:
-  - oraclejdk11
+- oraclejdk11
+services:
+- mongodb
