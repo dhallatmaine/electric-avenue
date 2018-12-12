@@ -67,7 +67,7 @@ public class AuctionServiceTest {
 
         game.withBidRounds(ImmutableMap.of(1, new BidRound()
                 .withAuctionRounds(ImmutableMap.of(
-                        new PowerPlant().withValue(5), auctionRound))));
+                        5, auctionRound))));
 
         when(powerPlantService.findPowerPlantInDeckByValue(any(), any()))
                 .thenReturn(new PowerPlant().withValue(5));
@@ -117,7 +117,7 @@ public class AuctionServiceTest {
         BidRound bidRound = new BidRound()
                 .withBidOrder(order)
                 .withAuctionRounds(ImmutableMap.of(
-                        new PowerPlant().withValue(5), auctionRound));
+                        5, auctionRound));
 
         game.withBidRounds(ImmutableMap.of(1, bidRound));
 
@@ -181,7 +181,7 @@ public class AuctionServiceTest {
 
         game.withRound(1).withBidRounds(
                 ImmutableMap.of(1, new BidRound().withAuctionRounds(ImmutableMap.of(
-                        plant,
+                        plant.getValue(),
                         new AuctionRound().withAuctionOrder(order).withBid(currentBid)))));
 
         // Act

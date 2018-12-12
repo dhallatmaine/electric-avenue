@@ -62,7 +62,7 @@ public class BidService {
                     .withHighBidder(bidRequest.getPlayer())
                     .withPlant(plant)
                     .withAuctionOrder(auctionOrder);
-            bidRound.getAuctionRounds().putIfAbsent(plant, auction);
+            bidRound.getAuctionRounds().putIfAbsent(plant.getValue(), auction);
         }
 
         game.getBidRounds().put(round, bidRound);

@@ -88,7 +88,7 @@ public class BidServiceTest {
                         .withBidOrder(order)
                         .withPlantPurchased(true)
                         .withAuctionRounds(ImmutableMap.of(
-                                new PowerPlant().withValue(5),
+                                5,
                                 new AuctionRound()
                                         .withBid(5)
                                         .withHighBidder(Color.BLUE)
