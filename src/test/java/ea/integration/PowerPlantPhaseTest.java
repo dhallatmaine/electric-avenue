@@ -1,4 +1,4 @@
-package ea.it;
+package ea.integration;
 
 import com.google.common.collect.ImmutableList;
 import ea.api.*;
@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class PowerPlantPhaseIT {
+public class PowerPlantPhaseTest {
 
     @Autowired
     PowerPlantBidController powerPlantBidController;
