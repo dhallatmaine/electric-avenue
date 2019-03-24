@@ -1,6 +1,5 @@
-package ea;
+package ea.state;
 
-import ea.state.Game;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface GameRepository extends MongoRepository<Game, String> {

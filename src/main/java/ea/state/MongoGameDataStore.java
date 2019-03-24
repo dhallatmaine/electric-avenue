@@ -1,10 +1,8 @@
 package ea.state;
 
-import ea.GameRepository;
 import ea.data.Color;
 import ea.data.Player;
 import ea.data.PowerPlant;
-import ea.data.Resource;
 import ea.maps.City;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
