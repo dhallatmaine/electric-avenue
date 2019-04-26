@@ -7,7 +7,6 @@ import ea.services.GameService;
 import ea.services.ResourceService;
 import ea.state.Game;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,7 +21,7 @@ public class ResourceController {
         this.resourceService = resourceService;
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping
     @RequestMapping("/resource/{gameId}")
     public void purchase(
             @PathVariable("gameId") String gameId,
@@ -33,7 +32,7 @@ public class ResourceController {
         resourceService.validateResourcePurchase(game, purchaseRequest);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping
     @RequestMapping("/resource/place/{gameId}")
     public void place(
             @PathVariable("gameId") String gameId,

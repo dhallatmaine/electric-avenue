@@ -7,7 +7,6 @@ import ea.services.BidService;
 import ea.services.GameService;
 import ea.state.Game;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,7 +26,7 @@ public class PowerPlantBidController {
         this.auctionService = auctionService;
     }
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping
     @RequestMapping("/bid/{gameId}")
     public BidResponse bid(
             @PathVariable("gameId") String gameId,
@@ -39,7 +38,7 @@ public class PowerPlantBidController {
         return bidService.bid(game, bid);
     }
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping
     @RequestMapping("/bid/pass/{gameId}")
     public BidResponse pass(
             @PathVariable("gameId") String gameId,
@@ -51,7 +50,7 @@ public class PowerPlantBidController {
         return bidService.pass(game, pass);
     }
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping
     @RequestMapping("/auction/{gameId}")
     public AuctionResponse auction(
             @PathVariable("gameId") String gameId,
@@ -63,7 +62,7 @@ public class PowerPlantBidController {
         return auctionService.auction(game, bid);
     }
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping
     @RequestMapping("/auction/pass/{gameId}/{plant}")
     public AuctionResponse auctionPass(
             @PathVariable("gameId") String gameId,
@@ -76,7 +75,7 @@ public class PowerPlantBidController {
     }
 
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping
     @RequestMapping("/capture/{gameId}")
     public PlantCaptureResponse capture(
             @PathVariable("gameId") String gameId,
