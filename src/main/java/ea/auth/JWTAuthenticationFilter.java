@@ -21,42 +21,42 @@ import static ea.auth.SecurityConstants.*;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-  private AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
-  public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
-    this.authenticationManager = authenticationManager;
-  }
-
-  @Override
-  public Authentication attemptAuthentication(
-    HttpServletRequest req,
-    HttpServletResponse res) throws AuthenticationException {
-
-    try {
-      ea.user.User creds = new ObjectMapper().readValue(req.getInputStream(), ea.user.User.class);
-
-      return authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(
-          creds.getUsername(),
-          creds.getPassword(),
-          new ArrayList<>())
-      );
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
     }
-  }
 
-  @Override
-  protected void successfulAuthentication(
-    HttpServletRequest req,
-    HttpServletResponse res,
-    FilterChain chain,
-    Authentication auth) {
+    @Override
+    public Authentication attemptAuthentication(
+            HttpServletRequest req,
+            HttpServletResponse res) throws AuthenticationException {
 
-    String token = JWT.create()
-      .withSubject(((User) auth.getPrincipal()).getUsername())
-      .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-      .sign(HMAC512(SECRET.getBytes()));
-    res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
-  }
+        try {
+            ea.user.User creds = new ObjectMapper().readValue(req.getInputStream(), ea.user.User.class);
+
+            return authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            creds.getUsername(),
+                            creds.getPassword(),
+                            new ArrayList<>())
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    protected void successfulAuthentication(
+            HttpServletRequest req,
+            HttpServletResponse res,
+            FilterChain chain,
+            Authentication auth) {
+
+        String token = JWT.create()
+                .withSubject(((User) auth.getPrincipal()).getUsername())
+                .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .sign(HMAC512(SECRET.getBytes()));
+        res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+    }
 }

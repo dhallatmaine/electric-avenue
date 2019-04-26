@@ -1,7 +1,6 @@
 package ea.state;
 
 import ea.data.Color;
-import ea.data.PowerPlant;
 
 import java.util.HashMap;
 import java.util.List;

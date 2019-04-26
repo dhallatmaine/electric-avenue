@@ -5,7 +5,6 @@ import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.data.Resource;
 import ea.maps.America;
-import ea.state.GameDataStore;
 import ea.state.Game;
 import ea.state.MongoGameDataStore;
 import org.springframework.beans.factory.annotation.Autowired;

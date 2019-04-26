@@ -8,7 +8,8 @@ import ea.state.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -244,13 +245,13 @@ public class PowerPlantService {
                     .filter(plant -> !plant.getValue().equals(13))
                     .collect(Collectors.toList());
             shuffled = Stream.concat(Stream.of(createThirteenPlant()), shuffled.stream())
-                        .collect(Collectors.toList());
+                    .collect(Collectors.toList());
         }
 
         // phase 3 card
         return Stream.concat(
-                        shuffled.stream(),
-                        Stream.of(new PowerPlant().withValue(0)))
+                shuffled.stream(),
+                Stream.of(new PowerPlant().withValue(0)))
                 .collect(Collectors.toList());
     }
 

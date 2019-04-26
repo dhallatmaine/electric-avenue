@@ -2,13 +2,19 @@ package ea.services;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import ea.data.*;
+import ea.data.Color;
+import ea.data.Player;
+import ea.data.PowerPlant;
+import ea.data.Resource;
 import ea.rules.BaseRules;
 import ea.state.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;

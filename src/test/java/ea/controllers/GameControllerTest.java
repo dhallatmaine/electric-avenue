@@ -13,10 +13,9 @@ import static org.mockito.Mockito.when;
 
 public class GameControllerTest {
 
+    String gameId = "1";
     private GameService gameService;
     private GameController target;
-
-    String gameId = "1";
 
     @Before
     public void setup() {

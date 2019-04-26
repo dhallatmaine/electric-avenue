@@ -3,7 +3,6 @@ package ea.state;
 import ea.data.Color;
 import ea.data.Player;
 import ea.data.PowerPlant;
-import ea.data.Resource;
 import ea.maps.City;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

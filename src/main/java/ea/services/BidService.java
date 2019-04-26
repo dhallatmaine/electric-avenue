@@ -1,7 +1,9 @@
 package ea.services;
 
 import ea.api.*;
-import ea.data.*;
+import ea.data.Color;
+import ea.data.Player;
+import ea.data.PowerPlant;
 import ea.state.AuctionRound;
 import ea.state.BidRound;
 import ea.state.Game;

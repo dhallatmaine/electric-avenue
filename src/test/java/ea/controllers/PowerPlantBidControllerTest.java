@@ -1,7 +1,7 @@
 package ea.controllers;
 
 import ea.api.*;
-import ea.data.*;
+import ea.data.PowerPlant;
 import ea.services.AuctionService;
 import ea.services.BidService;
 import ea.services.GameService;

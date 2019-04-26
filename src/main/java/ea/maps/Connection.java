@@ -7,7 +7,8 @@ public class Connection {
     private String cityName;
     private int cost;
 
-    public Connection() { }
+    public Connection() {
+    }
 
     public Connection(String cityName, int cost) {
         this.cityName = cityName;

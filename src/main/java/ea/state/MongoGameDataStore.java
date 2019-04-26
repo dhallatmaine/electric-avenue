@@ -22,12 +22,12 @@ public class MongoGameDataStore {
     }
 
     public Game create(Map<String, City> gameMap,
-                         Map<String, List<Integer>> resources,
-                         List<Player> players,
-                         List<Color> turnOrder,
-                         List<PowerPlant> deck,
-                         List<PowerPlant> currentMarket,
-                         List<PowerPlant> futureMarket) {
+                       Map<String, List<Integer>> resources,
+                       List<Player> players,
+                       List<Color> turnOrder,
+                       List<PowerPlant> deck,
+                       List<PowerPlant> currentMarket,
+                       List<PowerPlant> futureMarket) {
 
         Game game = new Game()
                 .withPhase("PowerPlant")

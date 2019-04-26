@@ -13,25 +13,25 @@ public class CityPurchaseRequest {
         return player;
     }
 
+    public void setPlayer(Color player) {
+        this.player = player;
+    }
+
     public CityPurchaseRequest withPlayer(Color player) {
         this.player = player;
         return this;
-    }
-
-    public void setPlayer(Color player) {
-        this.player = player;
     }
 
     public List<List<String>> getCityPaths() {
         return cityPaths;
     }
 
+    public void setCityPaths(List<List<String>> cityPaths) {
+        this.cityPaths = cityPaths;
+    }
+
     public CityPurchaseRequest withCityPaths(List<List<String>> cityPaths) {
         this.cityPaths = cityPaths;
         return this;
-    }
-
-    public void setCityPaths(List<List<String>> cityPaths) {
-        this.cityPaths = cityPaths;
     }
 }

@@ -11,7 +11,8 @@ public class City {
     private List<District> districts;
     private List<Connection> connectedCities;
 
-    public City() { }
+    public City() {
+    }
 
     public City(String name, Region region) {
         this.name = name;
@@ -22,26 +23,26 @@ public class City {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public City withName(String name) {
         this.name = name;
         return this;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Region getRegion() {
         return region;
     }
 
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+
     public City withRegion(Region region) {
         this.region = region;
         return this;
-    }
-
-    public void setRegion(Region region) {
-        this.region = region;
     }
 
     public List<District> getDistricts() {
@@ -57,14 +58,14 @@ public class City {
         return connectedCities;
     }
 
-    public City withConnectedCities(List<Connection> connectedCities) {
-        this.connectedCities = connectedCities;
-        return this;
-    }
-
     @JsonProperty("connections")
     public void setConnectedCities(List<Connection> connectedCities) {
         this.connectedCities = connectedCities;
+    }
+
+    public City withConnectedCities(List<Connection> connectedCities) {
+        this.connectedCities = connectedCities;
+        return this;
     }
 
     @Override

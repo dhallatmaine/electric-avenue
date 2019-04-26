@@ -15,17 +15,21 @@ public class CityPurchaseResponse {
         return player;
     }
 
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
     public CityPurchaseResponse withPlayer(Player player) {
         this.player = player;
         return this;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
     public Integer getCost() {
         return cost;
+    }
+
+    public void setCost(Integer cost) {
+        this.cost = cost;
     }
 
     public CityPurchaseResponse withCost(Integer cost) {
@@ -33,20 +37,16 @@ public class CityPurchaseResponse {
         return this;
     }
 
-    public void setCost(Integer cost) {
-        this.cost = cost;
-    }
-
     public List<City> getPurchasedCities() {
         return purchasedCities;
+    }
+
+    public void setPurchasedCities(List<City> purchasedCities) {
+        this.purchasedCities = purchasedCities;
     }
 
     public CityPurchaseResponse withPurchasedCities(List<City> purchasedCities) {
         this.purchasedCities = purchasedCities;
         return this;
-    }
-
-    public void setPurchasedCities(List<City> purchasedCities) {
-        this.purchasedCities = purchasedCities;
     }
 }
