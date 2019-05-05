@@ -1,10 +1,8 @@
 package ea.services;
 
-import ea.data.Color;
-import ea.data.Player;
-import ea.data.PowerPlant;
-import ea.data.Resource;
+import ea.data.*;
 import ea.maps.America;
+import ea.maps.City;
 import ea.state.Game;
 import ea.state.MongoGameDataStore;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Component
@@ -57,7 +56,8 @@ public class GameService {
                 turnOrder,
                 shuffledDeck,
                 currentMarket,
-                futureMarket);
+                futureMarket,
+                Phase.LOBBY);
     }
 
     public void save(Game game) {

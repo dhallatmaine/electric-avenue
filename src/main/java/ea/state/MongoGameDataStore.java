@@ -1,6 +1,7 @@
 package ea.state;
 
 import ea.data.Color;
+import ea.data.Phase;
 import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.maps.City;
@@ -21,16 +22,18 @@ public class MongoGameDataStore {
         this.gameRepository = gameRepository;
     }
 
-    public Game create(Map<String, City> gameMap,
-                       Map<String, List<Integer>> resources,
-                       List<Player> players,
-                       List<Color> turnOrder,
-                       List<PowerPlant> deck,
-                       List<PowerPlant> currentMarket,
-                       List<PowerPlant> futureMarket) {
+    public Game create(
+            Map<String, City> gameMap,
+            Map<String, List<Integer>> resources,
+            List<Player> players,
+            List<Color> turnOrder,
+            List<PowerPlant> deck,
+            List<PowerPlant> currentMarket,
+            List<PowerPlant> futureMarket,
+            Phase phase) {
 
         Game game = new Game()
-                .withPhase("PowerPlant")
+                .withPhase(phase)
                 .withGameMap(gameMap)
                 .withResources(resources)
                 .withPlayers(players)

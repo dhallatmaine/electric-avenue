@@ -1,6 +1,7 @@
 package ea.state;
 
 import ea.data.Color;
+import ea.data.Phase;
 import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.maps.City;
@@ -14,7 +15,7 @@ public class Game {
 
     @Id
     private String gameId;
-    private String phase;
+    private Phase phase;
     private Integer round;
     private Map<String, City> gameMap;
     private List<PowerPlant> deckPlants;
@@ -39,11 +40,11 @@ public class Game {
         return this;
     }
 
-    public String getPhase() {
+    public Phase getPhase() {
         return phase;
     }
 
-    public Game withPhase(String phase) {
+    public Game withPhase(Phase phase) {
         this.phase = phase;
         return this;
     }

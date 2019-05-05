@@ -29,4 +29,12 @@ public class GameController {
         return gameService.createGame();
     }
 
+    // creating a game starts a lobby
+    // a lobby has a join password and a list of players
+    // when the game is created, the lobby is deleted
+    @PostMapping("/create")
+    public Game create() {
+        
+    }
+
 }
