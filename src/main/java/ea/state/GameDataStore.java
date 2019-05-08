@@ -1,6 +1,7 @@
 package ea.state;
 
 import ea.data.Color;
+import ea.data.Phase;
 import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.maps.City;
@@ -39,7 +40,7 @@ public class GameDataStore {
                 Integer.toString(currentId.get()),
                 new Game()
                         .withGameId(Integer.toString(currentId.get()))
-                        .withPhase("PowerPlant")
+                        .withPhase(Phase.POWER_PLANT_BIDS)
                         .withGameMap(gameMap)
                         .withResources(resources)
                         .withPlayers(players)

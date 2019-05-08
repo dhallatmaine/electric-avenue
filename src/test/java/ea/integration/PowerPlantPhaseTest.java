@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import ea.api.*;
 import ea.controllers.PowerPlantBidController;
 import ea.data.Color;
+import ea.data.Phase;
 import ea.data.PowerPlant;
 import ea.services.GameService;
 import ea.services.PlayerService;
@@ -164,7 +165,7 @@ public class PowerPlantPhaseTest {
         game = gameService.getGame(game.getGameId()).get();
         assertThat(lastBidResponse.getPhaseOver()).isTrue();
         assertThat(lastBidResponse.getAuctionStarted()).isFalse();
-        assertThat(game.getPhase()).isEqualToIgnoringCase("ResourcePhase");
+        assertThat(game.getPhase()).isEqualTo(Phase.RESOURCE_PURCHASING);
 
         // capture plant
         PowerPlant lastPlant = lastBidResponse.getPlant();

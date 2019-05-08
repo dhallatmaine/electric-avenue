@@ -2,6 +2,7 @@ package ea.services;
 
 import ea.api.*;
 import ea.data.Color;
+import ea.data.Phase;
 import ea.data.Player;
 import ea.data.PowerPlant;
 import ea.state.AuctionRound;
@@ -114,7 +115,7 @@ public class BidService {
                 bidRound.getAuctionRounds().get(plant.getValue()).getBid() : plant.getValue();
 
         if (bidRound.getBidOrder().size() == 1) {
-            game.withPhase("ResourcePhase");
+            game.withPhase(Phase.RESOURCE_PURCHASING);
         }
 
         Player withPlant = playerService.capturePlant(game, plant, player, price, plantToRemove);
