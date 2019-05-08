@@ -1,6 +1,6 @@
 package ea.api;
 
-import ea.data.Player;
+import ea.player.Player;
 import ea.maps.City;
 
 import java.util.List;

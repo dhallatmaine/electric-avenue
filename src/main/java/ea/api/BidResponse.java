@@ -1,7 +1,7 @@
 package ea.api;
 
-import ea.data.Color;
-import ea.data.PowerPlant;
+import ea.player.Color;
+import ea.powerplant.PowerPlant;
 
 import java.util.List;
 

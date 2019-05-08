@@ -1,6 +1,6 @@
 package ea.api;
 
-import ea.data.Color;
+import ea.player.Color;
 
 import java.util.List;
 

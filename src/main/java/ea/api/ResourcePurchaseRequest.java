@@ -1,7 +1,7 @@
 package ea.api;
 
-import ea.data.Color;
-import ea.data.Resource;
+import ea.player.Color;
+import ea.resource.Resource;
 
 import java.util.Map;
 

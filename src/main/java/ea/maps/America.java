@@ -1,7 +1,7 @@
 package ea.maps;
 
 import com.google.common.collect.ImmutableList;
-import ea.data.Resource;
+import ea.resource.Resource;
 
 import java.util.HashMap;
 import java.util.List;

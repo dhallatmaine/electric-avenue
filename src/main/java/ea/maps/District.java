@@ -1,6 +1,6 @@
 package ea.maps;
 
-import ea.data.Color;
+import ea.player.Color;
 
 public class District {
 
