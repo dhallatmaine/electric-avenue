@@ -9,29 +9,19 @@ import java.util.Map;
 
 public class Player {
 
-    private Long id;
-    private String name;
+    private String userId;
     private Integer money;
     private List<PowerPlant> powerPlants;
     private List<City> cities;
     private Map<Integer, List<Resource>> resources;
     private Color color;
 
-    public Long getId() {
-        return id;
+    public String getUserId() {
+        return userId;
     }
 
-    public Player withId(Long id) {
-        this.id = id;
-        return this;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Player withName(String name) {
-        this.name = name;
+    public Player withUserId(String userId) {
+        this.userId = userId;
         return this;
     }
 

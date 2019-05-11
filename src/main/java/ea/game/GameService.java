@@ -1,5 +1,6 @@
 package ea.game;
 
+import ea.lobby.Lobby;
 import ea.maps.America;
 import ea.player.Color;
 import ea.player.Player;
@@ -8,6 +9,7 @@ import ea.player.PlayerService;
 import ea.powerplant.PowerPlantService;
 import ea.resource.Resource;
 import ea.turnorder.TurnOrderService;
+import ea.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -59,7 +61,30 @@ public class GameService {
                 shuffledDeck,
                 currentMarket,
                 futureMarket,
-                Phase.LOBBY);
+                Phase.POWER_PLANT_BIDS);
+    }
+
+    public Game createGame(List<User> users) {
+        List<PowerPlant> deck = new ArrayList<>(powerPlantService.createInitialPowerPlants());
+        List<PowerPlant> currentMarket = powerPlantService.setupCurrentMarket(deck);
+        deck.removeAll(currentMarket);
+        List<PowerPlant> futureMarket = powerPlantService.setupFutureMarket(deck);
+        deck.removeAll(futureMarket);
+
+        List<PowerPlant> shuffledDeck = powerPlantService.shuffleDeck(deck, true);
+
+        List<Player> players = playerService.setupPlayers(users);
+        List<Color> turnOrder = turnOrderService.determineInitialTurnOrder(players);
+
+        return gameDataStore.create(
+                America.getAmericaMap(),
+                America.initializeResources(),
+                players,
+                turnOrder,
+                shuffledDeck,
+                currentMarket,
+                futureMarket,
+                Phase.POWER_PLANT_BIDS);
     }
 
     public void save(Game game) {

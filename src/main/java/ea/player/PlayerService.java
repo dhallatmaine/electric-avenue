@@ -7,13 +7,11 @@ import ea.resource.Resource;
 import ea.powerplant.PowerPlantService;
 import ea.rules.BaseRules;
 import ea.game.Game;
+import ea.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -30,33 +28,45 @@ public class PlayerService {
 
     public List<Player> setupPlayers() {
         Player player1 = new Player()
-                .withId(1L)
+                .withUserId("1")
                 .withColor(Color.BLACK)
                 .withMoney(BaseRules.START_MONEY)
-                .withName("Player 1")
                 .withCities(new LinkedList<>())
                 .withPowerPlants(new LinkedList<>())
                 .withResources(new HashMap<>());
 
         Player player2 = new Player()
-                .withId(2L)
+                .withUserId("2")
                 .withColor(Color.BLUE)
                 .withMoney(BaseRules.START_MONEY)
-                .withName("Player 2")
                 .withCities(new LinkedList<>())
                 .withPowerPlants(new LinkedList<>())
                 .withResources(new HashMap<>());
 
         Player player3 = new Player()
-                .withId(3L)
+                .withUserId("3")
                 .withColor(Color.GREEN)
                 .withMoney(BaseRules.START_MONEY)
-                .withName("Player 3")
                 .withCities(new LinkedList<>())
                 .withPowerPlants(new LinkedList<>())
                 .withResources(new HashMap<>());
 
         return ImmutableList.of(player1, player2, player3);
+    }
+
+    public List<Player> setupPlayers(List<User> users) {
+        List<Color> colors = Arrays.asList(Color.values());
+        Collections.shuffle(colors);
+
+        return IntStream.range(0, users.size())
+                .mapToObj(i -> new Player()
+                        .withUserId(users.get(i).getId())
+                        .withColor(colors.get(i))
+                        .withMoney(BaseRules.START_MONEY)
+                        .withCities(new LinkedList<>())
+                        .withPowerPlants(new LinkedList<>())
+                        .withResources(new HashMap<>()))
+                .collect(Collectors.toList());
     }
 
     public int getMaxResourcesAllowedForPurchase(Player player, Resource resource) {

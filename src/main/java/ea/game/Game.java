@@ -4,6 +4,7 @@ import ea.player.Color;
 import ea.player.Player;
 import ea.powerplant.PowerPlant;
 import ea.maps.City;
+import ea.user.User;
 import org.springframework.data.annotation.Id;
 
 import java.util.HashMap;

@@ -1,8 +1,7 @@
 package ea.game;
 
-import ea.game.GameController;
-import ea.game.GameService;
-import ea.game.Game;
+import ea.lobby.LobbyService;
+import ea.user.UserService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,13 +15,17 @@ public class GameControllerTest {
 
     String gameId = "1";
     private GameService gameService;
+    private LobbyService lobbyService;
+    private UserService userService;
     private GameController target;
 
     @Before
     public void setup() {
         gameService = mock(GameService.class);
+        lobbyService = mock(LobbyService.class);
+        userService = mock(UserService.class);
 
-        target = new GameController(gameService);
+        target = new GameController(gameService, lobbyService, userService);
     }
 
     @Test

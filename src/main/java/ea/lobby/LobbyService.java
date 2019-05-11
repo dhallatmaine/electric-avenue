@@ -30,4 +30,9 @@ public class LobbyService {
         return lobbyRepository.findAll();
     }
 
+    public Lobby findById(String id) {
+        return lobbyRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Unable to find lobby with id " + id));
+    }
+
 }
