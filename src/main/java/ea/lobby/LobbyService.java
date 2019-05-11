@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class LobbyService {
@@ -24,6 +26,15 @@ public class LobbyService {
                 .withJoinCode(UUID.randomUUID().toString());
 
         return lobbyRepository.save(lobby);
+    }
+
+    public Lobby joinLobby(User user, String joinCode) {
+        Lobby lobby = lobbyRepository.findByJoinCode(joinCode);
+        List<String> currentPlayers = lobby.getUsers();
+        List<String> newPlayers = Stream.concat(currentPlayers.stream(), Stream.of(user.getUsername()))
+                .collect(Collectors.toList());
+        lobby.withUsers(newPlayers);
+        return lobby;
     }
 
     public List<Lobby> getLobbies() {

@@ -21,6 +21,7 @@ public class CurrentUserService {
             throw new RuntimeException("Could not fetch security context to determine user");
         }
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        System.out.println(username);
         return userRepository.findByUsername(username);
     }
 
