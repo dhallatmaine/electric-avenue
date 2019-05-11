@@ -23,12 +23,12 @@ public class LobbyService {
     public Lobby create(User user) {
         Lobby lobby = new Lobby()
                 .withUsers(ImmutableList.of(user.getUsername()))
-                .withJoinCode(UUID.randomUUID().toString());
+                .withJoinCode(UUID.randomUUID());
 
         return lobbyRepository.save(lobby);
     }
 
-    public Lobby joinLobby(User user, String joinCode) {
+    public Lobby joinLobby(User user, UUID joinCode) {
         Lobby lobby = lobbyRepository.findByJoinCode(joinCode);
         List<String> currentPlayers = lobby.getUsers();
         List<String> newPlayers = Stream.concat(currentPlayers.stream(), Stream.of(user.getUsername()))

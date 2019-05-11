@@ -19,15 +19,14 @@ public class LobbyController {
         this.lobbyService = lobbyService;
     }
 
-    //@PostMapping
-    //public Lobby create() {
-        //return lobbyService.create(currentUserService.getCurrentUser());
-    //}
+    @PostMapping
+    public Lobby create() {
+        return lobbyService.create(currentUserService.getCurrentUser());
+    }
 
-    @PostMapping(path = "/join/{joinCode}")
-    public Lobby join(@PathVariable("joinCode") UUID joinCode) {
-        System.out.println("WHAT THE FUCK");
-        return lobbyService.joinLobby(currentUserService.getCurrentUser(), joinCode.toString());
+    @PutMapping("/{code}")
+    public Lobby join(@PathVariable UUID code) {
+        return lobbyService.joinLobby(currentUserService.getCurrentUser(), code);
     }
 
     @GetMapping

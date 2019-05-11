@@ -1,12 +1,13 @@
 package ea.lobby;
 
 import java.util.List;
+import java.util.UUID;
 
 public class Lobby {
 
     private String id;
     private List<String> users;
-    private String joinCode;
+    private UUID joinCode;
 
     public String getId() {
         return id;
@@ -26,11 +27,11 @@ public class Lobby {
         return this;
     }
 
-    public String getJoinCode() {
+    public UUID getJoinCode() {
         return joinCode;
     }
 
-    public Lobby withJoinCode(String joinCode) {
+    public Lobby withJoinCode(UUID joinCode) {
         this.joinCode = joinCode;
         return this;
     }
