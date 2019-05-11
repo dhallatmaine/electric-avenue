@@ -37,8 +37,12 @@ public class LobbyService {
         return lobby;
     }
 
-    public List<Lobby> getLobbies() {
-        return lobbyRepository.findAll();
+    // TODO: Fix with query
+    public List<Lobby> getLobbies(User user) {
+        List<Lobby> lobbies = lobbyRepository.findAll();
+        return lobbies.stream()
+                .filter(lobby -> lobby.getUsers().contains(user.getUsername()))
+                .collect(Collectors.toList());
     }
 
     public Lobby findById(String id) {

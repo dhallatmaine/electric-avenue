@@ -31,7 +31,7 @@ public class LobbyController {
 
     @GetMapping
     public List<Lobby> viewLobbies() {
-        return lobbyService.getLobbies();
+        return lobbyService.getLobbies(currentUserService.getCurrentUser());
     }
 
 }
