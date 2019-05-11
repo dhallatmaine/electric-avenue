@@ -58,14 +58,25 @@ public class BidServiceTest {
     }
 
     @Test
-    public void bid() {
+    @Parameters({
+            " BLACK;BLUE;GREEN | true  | More bidders ",
+            " BLUE             | false | Last bidder  "
+    })
+    @TestCaseName("{2}")
+    public void bid(
+            String turnOrderStr,
+            boolean startAuction,
+            String description) {
+
         // Arrange
         BidRequest request = new BidRequest()
                 .withPlayer(Color.BLUE)
                 .withBidAmount(5)
                 .withPlantValue(5);
 
-        List<Color> order = ImmutableList.of(Color.BLACK, Color.BLUE, Color.GREEN);
+        List<Color> order = Arrays.stream(turnOrderStr.split(";"))
+                .map(Color::valueOf)
+                .collect(Collectors.toList());
         game.withTurnOrder(order);
 
         PowerPlant plant = new PowerPlant().withValue(5);
@@ -74,7 +85,7 @@ public class BidServiceTest {
 
         when(turnOrderService.getNextPlayer(any(), any()))
                 .thenReturn(Color.GREEN);
-        List<Color> auctionOrder = ImmutableList.of(Color.GREEN, Color.BLACK, Color.BLUE);
+        List<Color> auctionOrder = ImmutableList.copyOf(order).reverse();
         when(turnOrderService.determineOrderStartingAtPlayer(any(), any()))
                 .thenReturn(auctionOrder);
 
@@ -86,23 +97,22 @@ public class BidServiceTest {
         assertThat(actual).isEqualToComparingFieldByFieldRecursively(
                 new BidResponse()
                         .withPlant(new PowerPlant().withValue(5))
-                        .withPlayerToStartAuction(Color.GREEN)
-                        .withPhaseOver(false)
+                        .withPlayerToStartAuction(startAuction ? Color.GREEN : null)
+                        .withPhaseOver(!startAuction)
                         .withOrder(order)
-                        .withAuctionStarted(true));
+                        .withAuctionStarted(startAuction));
         assertThat(bidRound).isEqualToComparingFieldByFieldRecursively(
                 new BidRound()
                         .withBidOrder(order)
                         .withPlantPurchased(true)
-                        .withAuctionRounds(ImmutableMap.of(
+                        .withAuctionRounds(!startAuction ? ImmutableMap.of() : ImmutableMap.of(
                                 5,
                                 new AuctionRound()
                                         .withBid(5)
                                         .withHighBidder(Color.BLUE)
                                         .withAuctionFinished(false)
                                         .withPlant(new PowerPlant().withValue(5))
-                                        .withAuctionOrder(ImmutableList.of(
-                                                Color.GREEN, Color.BLACK, Color.BLUE)))));
+                                        .withAuctionOrder(auctionOrder))));
     }
 
     @Test
